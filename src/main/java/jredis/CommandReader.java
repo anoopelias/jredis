@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import jredis.exceptions.InvalidCommand;
+import jredis.exception.InvalidCommand;
 
 public class CommandReader {
 
@@ -16,6 +16,9 @@ public class CommandReader {
     }
 
     public Command next() throws InvalidCommand {
+        
+        Command c = null;
+        
         try {
             String str = reader.readLine();
 
@@ -23,12 +26,33 @@ public class CommandReader {
                 return null;
 
             int argLen = readArgLen(str);
+            c = readCommand(c);
+            
+            for(int i=0; i<argLen - 1; i++) {
+                reader.readLine();
+                reader.readLine();
+            }
 
         } catch (IOException e) {
             throw new InvalidCommand();
         }
+        
+        return c;
+    }
 
-        return null;
+    private Command readCommand(Command c) throws IOException, InvalidCommand {
+        String str;
+        // Byte size of Command
+        str = reader.readLine();
+        if(str == null)
+            throw new InvalidCommand();
+
+        // Command
+        str = reader.readLine();
+        if(str == null)
+            throw new InvalidCommand();
+        
+        return CommandFactory.INSTANCE.createCommand(str, null);
     }
 
     private int readArgLen(String str) throws InvalidCommand {

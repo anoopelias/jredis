@@ -1,34 +1,77 @@
 package jredis;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
-import jredis.exceptions.InvalidCommand;
+import jredis.exception.InvalidCommand;
 
 import org.junit.Test;
 
 public class CommandReaderTest {
 
     private static String CMD_GET = "*3\r\n$3\r\nGET\r\n$4\r\nJeff\r\n";
+    private static String CMD_SET = "*4\r\n$3\r\nSET\r\n$4\r\nElon\r\n$4Musk\r\n";
     private static String CMD_INVALID_ARG_COUNT = "*k\r\n";
+    private static String CMD_NONE = "";
 
     @Test
-    public void test_read_number_of_args() throws UnsupportedEncodingException,
+    public void test_read_get() throws UnsupportedEncodingException,
             InvalidCommand {
         
         CommandReader reader = new CommandReader(new ByteArrayInputStream(
                 CMD_GET.getBytes("UTF-8")));
         Command c = reader.next();
         assertTrue(c instanceof GetCommand);
+        assertNull(reader.next());
+    }
+
+    @Test
+    public void test_read_set() throws UnsupportedEncodingException,
+            InvalidCommand {
+        
+        CommandReader reader = new CommandReader(new ByteArrayInputStream(
+                CMD_SET.getBytes("UTF-8")));
+        Command c = reader.next();
+        assertTrue(c instanceof SetCommand);
+        assertNull(reader.next());
+    }
+
+    @Test
+    public void test_read_none() throws UnsupportedEncodingException,
+            InvalidCommand {
+        
+        CommandReader reader = new CommandReader(new ByteArrayInputStream(
+                CMD_NONE.getBytes("UTF-8")));
+        assertNull(reader.next());
     }
 
     @Test(expected = InvalidCommand.class)
     public void test_invalid_arg_count() throws UnsupportedEncodingException,
             InvalidCommand {
-        new CommandReader(new ByteArrayInputStream(
+        CommandReader reader = new CommandReader(new ByteArrayInputStream(
                 CMD_INVALID_ARG_COUNT.getBytes("UTF-8")));
+        reader.next();
     }
+
+    /* TODO : InvalidCommand test cases
+     * 1. GET with two args
+     * 2. SET with only one arg
+     * 3. Commands which doesn't start with a *
+     * 4. Commands which do not belong to any specified commands
+     * 5. Commands where there is not enough arguments as specified initially. (For eg. the stream finishes earlier)
+     * 6. Commands which ends on just \n and not on \r\n
+     * 7. Commands which specify an invalid byte size of an arg
+     * 8. Commands with inconsistent number of bytes as the command itself has specified
+     */
+    
+    /*
+     * TODO: Some more functional issues to cover. 
+     * 1. CommandReader recovery in case of an error.
+     * 2. 
+     * 
+     */
 
 }

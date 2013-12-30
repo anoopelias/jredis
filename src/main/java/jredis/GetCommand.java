@@ -1,6 +1,6 @@
 package jredis;
 
-import jredis.exceptions.InvalidCommand;
+import jredis.exception.InvalidCommand;
 
 public class GetCommand implements Command {
     

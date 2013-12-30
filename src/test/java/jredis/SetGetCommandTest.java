@@ -2,7 +2,7 @@ package jredis;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import jredis.exceptions.InvalidCommand;
+import jredis.exception.InvalidCommand;
 
 import org.junit.Test;
 

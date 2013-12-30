@@ -1,4 +1,4 @@
-package jredis.exceptions;
+package jredis.exception;
 
 public class InvalidCommand extends Exception {
 
