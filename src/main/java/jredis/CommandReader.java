@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 import jredis.exception.InvalidCommand;
 
@@ -16,52 +17,45 @@ public class CommandReader {
     }
 
     public Command next() throws InvalidCommand {
-        
-        Command c = null;
-        
+
         try {
-            String str = reader.readLine();
-
-            if (str == null)
-                return null;
-
-            int argLen = readArgLen(str);
-            c = readCommand(c);
+            int argLen;
             
-            for(int i=0; i<argLen - 1; i++) {
-                reader.readLine();
-                reader.readLine();
-            }
+            if ((argLen = readArgLen()) == -1)
+                return null;
+            
+            String[] args = readArgs(argLen);
+
+            return CommandFactory.INSTANCE.createCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
 
         } catch (IOException e) {
             throw new InvalidCommand();
         }
-        
-        return c;
+
     }
 
-    private Command readCommand(Command c) throws IOException, InvalidCommand {
-        String str;
-        // Byte size of Command
-        str = reader.readLine();
-        if(str == null)
-            throw new InvalidCommand();
+    private String[] readArgs(int argLen) throws IOException {
+        String[] args = new String[argLen];
+        for (int i = 0; i < argLen; i++) {
+            // Byte size of the arg
+            reader.readLine();
 
-        // Command
-        str = reader.readLine();
-        if(str == null)
-            throw new InvalidCommand();
-        
-        return CommandFactory.INSTANCE.createCommand(str, null);
+            // Actual value of the arg
+            args[i] = reader.readLine();
+        }
+        return args;
     }
 
-    private int readArgLen(String str) throws InvalidCommand {
+    private int readArgLen() throws InvalidCommand, IOException {
+
+        String str = reader.readLine();
+
         if (str == null)
-            throw new InvalidCommand();
+            return -1;
 
         if (str.charAt(0) != '*')
             throw new InvalidCommand();
-        
+
         if (!Character.isDigit(str.charAt(1)))
             throw new InvalidCommand();
 

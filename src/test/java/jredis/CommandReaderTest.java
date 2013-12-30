@@ -1,5 +1,6 @@
 package jredis;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -12,8 +13,9 @@ import org.junit.Test;
 
 public class CommandReaderTest {
 
-    private static String CMD_GET = "*3\r\n$3\r\nGET\r\n$4\r\nJeff\r\n";
-    private static String CMD_SET = "*4\r\n$3\r\nSET\r\n$4\r\nElon\r\n$4Musk\r\n";
+    private static String CMD_GET = "*2\r\n$3\r\nGET\r\n$4\r\nJeff\r\n";
+    private static String CMD_GET_ELON = "*2\r\n$3\r\nGET\r\n$4\r\nElon\r\n";
+    private static String CMD_SET = "*3\r\n$3\r\nSET\r\n$4\r\nElon\r\n$4\r\nMusk\r\n";
     private static String CMD_INVALID_ARG_COUNT = "*k\r\n";
     private static String CMD_NONE = "";
 
@@ -37,6 +39,21 @@ public class CommandReaderTest {
         Command c = reader.next();
         assertTrue(c instanceof SetCommand);
         assertNull(reader.next());
+    }
+
+    @Test
+    public void test_set_get() throws UnsupportedEncodingException,
+            InvalidCommand {
+        
+        CommandReader reader = new CommandReader(new ByteArrayInputStream(
+                CMD_SET.getBytes("UTF-8")));
+        Command c = reader.next();
+        assertEquals("OK", c.execute());
+        
+        reader = new CommandReader(new ByteArrayInputStream(
+                CMD_GET_ELON.getBytes("UTF-8")));
+        c = reader.next();
+        assertEquals("Musk", c.execute());
     }
 
     @Test
@@ -64,7 +81,8 @@ public class CommandReaderTest {
      * 5. Commands where there is not enough arguments as specified initially. (For eg. the stream finishes earlier)
      * 6. Commands which ends on just \n and not on \r\n
      * 7. Commands which specify an invalid byte size of an arg
-     * 8. Commands with inconsistent number of bytes as the command itself has specified
+     * 8. Commands with byte size which do not start in $
+     * 9. Commands with inconsistent number of bytes as the command itself has specified
      */
     
     /*
