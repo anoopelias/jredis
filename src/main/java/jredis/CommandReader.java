@@ -29,7 +29,7 @@ public class CommandReader {
             return CommandFactory.INSTANCE.createCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
 
         } catch (IOException e) {
-            throw new InvalidCommand();
+            throw new InvalidCommand("IO Exception during reading the command");
         }
 
     }
@@ -54,10 +54,10 @@ public class CommandReader {
             return -1;
 
         if (str.charAt(0) != '*')
-            throw new InvalidCommand();
+            throw new InvalidCommand("Disagreement to Command Protocol");
 
         if (!Character.isDigit(str.charAt(1)))
-            throw new InvalidCommand();
+            throw new InvalidCommand("Disagreement to Command Protocol");
 
         return Character.getNumericValue(str.charAt(1));
 

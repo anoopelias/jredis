@@ -13,7 +13,7 @@ public class GetCommand implements Command {
     @Override
     public String execute() throws InvalidCommand {
         if(args.length != 1)
-            throw new InvalidCommand();
+            throw new InvalidCommand("Invalid number of arguments");
         
         return DataMap.INSTANCE.get(args[0]);
     }
