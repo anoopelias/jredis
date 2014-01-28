@@ -88,7 +88,7 @@ public class CommandReaderTest {
     /*
      * TODO: Some more functional issues to cover. 
      * 1. CommandReader recovery in case of an error.
-     * 2. 
+     * 2. CommandReader with new line inside keys and values
      * 
      */
 
