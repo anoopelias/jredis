@@ -1,8 +1,7 @@
 package jredis;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -25,16 +24,17 @@ public class Server {
 
             while (true) {
                 try (Socket clientSocket = serverSocket.accept();
-                        BufferedReader in = new BufferedReader(
-                                new InputStreamReader(
-                                        clientSocket.getInputStream()));
-                        PrintWriter out = new PrintWriter(
-                                clientSocket.getOutputStream(), true)) {
+                        InputStream is = clientSocket.getInputStream();
+                        OutputStream os = clientSocket.getOutputStream()) {
+
+                    CommandReader reader = new CommandReader(
+                            clientSocket.getInputStream());
                     
-                    String command;
-                    while ((command = in.readLine()) != null) {
-                        System.out.println("Command " + command);
-                        out.println("Responding to " + command);
+                    ResponseWriter writer = new ResponseWriter(os);
+
+                    Command c;
+                    while ((c = reader.next()) != null) {
+                        writer.write("+" + c.execute() + "\r");
                     }
                 }
             }
@@ -42,6 +42,7 @@ public class Server {
         } catch (Throwable e) {
             // TODO : Exception Handling
             System.out.println("Internal Server error");
+            e.printStackTrace();
         }
     }
 
