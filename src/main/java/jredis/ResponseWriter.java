@@ -12,7 +12,7 @@ public class ResponseWriter {
     }
     
     public void write(String output) {
-        out.println("+" + output +" \r");
+        out.println("+" + output +"\r");
     }
 
 }

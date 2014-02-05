@@ -34,7 +34,7 @@ public class Server {
 
                     Command c;
                     while ((c = reader.next()) != null) {
-                        writer.write("+" + c.execute() + "\r");
+                        writer.write(c.execute());
                     }
                 }
             }

@@ -53,8 +53,8 @@ public class ServerTest {
     @Test
     public void test_server_request() throws UnknownHostException, IOException {
         Jedis jedis = new Jedis(HOST, PORT);
-        assertEquals("+OK", jedis.set("Elon", "Musk").trim());
-        assertEquals("+Musk", jedis.get("Elon").trim());
+        assertEquals("OK", jedis.set("Elon", "Musk").trim());
+        assertEquals("Musk", jedis.get("Elon").trim());
     }
 
 }
