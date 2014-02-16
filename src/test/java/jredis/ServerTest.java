@@ -18,8 +18,7 @@ public class ServerTest {
     private static String HOST = "localhost";
     private static int PORT = 15000;
 
-    @Before
-    public void setup() {
+    public ServerTest() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -31,13 +30,17 @@ public class ServerTest {
         waitForServerStartup();
     }
 
+    @Before
+    public void setup() {
+    }
+
     private void waitForServerStartup() {
         Socket tempSocket = null;
         Timer timer = new Timer();
         while (tempSocket == null && timer.time() < SERVER_START_TIMEOUT) {
 
             try (Socket kkSocket = new Socket(HOST, PORT)) {
-                
+
                 tempSocket = kkSocket;
             } catch (UnknownHostException e) {
                 throw new AssertionError("Unknown Host", e);
@@ -53,8 +56,13 @@ public class ServerTest {
     @Test
     public void test_server_request() throws UnknownHostException, IOException {
         Jedis jedis = new Jedis(HOST, PORT);
-        assertEquals("OK", jedis.set("Elon", "Musk").trim());
-        assertEquals("Musk", jedis.get("Elon").trim());
+        Jedis jedis2 = new Jedis(HOST, PORT);
+        assertEquals("OK", jedis.set("Jack", "Dorsey").trim());
+        assertEquals("OK", jedis2.set("Elon", "Musk").trim());
+
+        assertEquals("Dorsey", jedis.get("Jack").trim());
+        assertEquals("Musk", jedis2.get("Elon").trim());
+
     }
 
 }
