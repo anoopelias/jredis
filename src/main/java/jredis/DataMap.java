@@ -1,6 +1,5 @@
 package jredis;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,20 +10,41 @@ public class DataMap {
     private DataMap() {
     }
 
-    /*
-     * It seems ConcurrentHashMap gives better performance only if we are
-     * iterating thru the keys. A synchornized Map gives better performance than
-     * ConcurrentHashMap in this case as it avoids segmentation overhead.
-     */
-    private Map<String, String> data = Collections
-            .synchronizedMap(new HashMap<String, String>());
+    private Map<String, String> data = new HashMap<String, String>();
 
-    public void put(String key, String value) {
+    /**
+     * Put data in to the key value store.
+     * 
+     * This method is synchronized. It is better synchronize this method than to
+     * use a synchronized HashMap because this will allow external commands to join the
+     * synchronization.
+     * 
+     * @param key
+     * @param value
+     */
+    public synchronized void put(String key, String value) {
         data.put(key, value);
     }
 
-    public String get(String key) {
+    /**
+     * Get value from the key store.
+     * 
+     * This method is synchronized.
+     * 
+     * @param key
+     * @return
+     */
+    public synchronized String get(String key) {
         return data.get(key);
+    }
+    
+    
+    /**
+     * This method clears all the data in the data store.
+     * 
+     */
+    public synchronized void clear() {
+        data = new HashMap<String, String>();
     }
 
 }
