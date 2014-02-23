@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import jredis.nft.Timer;
+
 import org.junit.Before;
 import org.junit.Test;
 
