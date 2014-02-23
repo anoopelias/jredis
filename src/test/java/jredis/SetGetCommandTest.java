@@ -77,5 +77,17 @@ public class SetGetCommandTest {
         assertNull(command.execute());
     }
 
+    @Test
+    public void test_setxx_negative() throws InvalidCommand {
+        Command command = new SetCommand(SET_ARGS);
+        assertEquals("OK",  command.execute());
+
+        command = new SetCommand(SET_XX_ARGS);
+        assertEquals("OK",  command.execute());
+
+        command = new GetCommand(GET_ARGS);
+        assertEquals("Gandhi",  command.execute());
+    }
+
 
 }
