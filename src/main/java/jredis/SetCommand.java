@@ -35,9 +35,11 @@ public class SetCommand implements Command {
     @Override
     public String execute() {
         if (isNx) {
-            set(true);
+            if(!set(true))
+                return null;
         } else if (isXx) {
-            set(false);
+            if(!set(false))
+                return null;
         } else {
             set();
         }
@@ -45,12 +47,16 @@ public class SetCommand implements Command {
         return "OK";
     }
 
-    private void set(boolean condition) {
+    private boolean set(boolean condition) {
+        boolean status = false;
         synchronized (DataMap.INSTANCE) {
             if ((DataMap.INSTANCE.get(key) == null) == condition) {
                 set();
+                status = true;
             }
         }
+        
+        return status;
     }
 
     private void set() {
