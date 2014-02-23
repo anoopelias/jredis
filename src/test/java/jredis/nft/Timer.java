@@ -26,6 +26,10 @@ public class Timer {
         return (System.nanoTime() - time);
     }
 
+    public long milliTime() {
+        return (System.nanoTime() - time) / 1000000;
+    }
+
     public long total() {
         return totalTime;
     }

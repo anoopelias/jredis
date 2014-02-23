@@ -10,8 +10,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.junit.Test;
-
 import redis.clients.jedis.Jedis;
 
 public class JedisTest {
@@ -20,7 +18,7 @@ public class JedisTest {
     private static final int REPEAT = 50;
     private static final int TEST_POOL_SIZE = 200;
 
-    @Test
+    //@Test
     public void test_jedis_concurrent() throws InterruptedException,
             ExecutionException {
         for(int i=0; i<30; i++) {

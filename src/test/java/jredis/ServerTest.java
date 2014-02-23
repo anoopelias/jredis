@@ -1,6 +1,7 @@
 package jredis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -15,7 +16,7 @@ import redis.clients.jedis.Jedis;
 
 public class ServerTest {
 
-    private static final int SERVER_START_TIMEOUT = 1000; // mSecs
+    private static final int SERVER_START_TIMEOUT = 2000; // mSecs
 
     private static String HOST = "localhost";
     private static int PORT = 15000;
@@ -39,7 +40,7 @@ public class ServerTest {
     private void waitForServerStartup() {
         Socket tempSocket = null;
         Timer timer = new Timer();
-        while (tempSocket == null && timer.time() < SERVER_START_TIMEOUT) {
+        while (tempSocket == null && timer.milliTime() < SERVER_START_TIMEOUT) {
 
             try (Socket kkSocket = new Socket(HOST, PORT)) {
 
@@ -64,6 +65,8 @@ public class ServerTest {
 
         assertEquals("Dorsey", jedis.get("Jack").trim());
         assertEquals("Musk", jedis2.get("Elon").trim());
+        
+        assertNull(jedis.get("Filipe"));
 
     }
 
