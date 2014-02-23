@@ -34,32 +34,28 @@ public class SetCommand implements Command {
 
     @Override
     public String execute() {
-        if (isNx) {
-            if(!set(true))
-                return null;
-        } else if (isXx) {
-            if(!set(false))
-                return null;
-        } else {
-            set();
-        }
-        
-        return "OK";
+        if (isNx)
+            return set(true);
+
+        else if (isXx)
+            return set(false);
+
+        return set();
     }
 
-    private boolean set(boolean condition) {
-        boolean status = false;
+    private String set(boolean haveKey) {
         synchronized (DataMap.INSTANCE) {
-            if ((DataMap.INSTANCE.get(key) == null) == condition) {
-                set();
-                status = true;
-            }
+            if ((DataMap.INSTANCE.get(key) != null) == haveKey)
+                return null;
+
+            return set();
         }
-        
-        return status;
+
     }
 
-    private void set() {
+    private String set() {
         DataMap.INSTANCE.put(key, value);
+
+        return "OK";
     }
 }
