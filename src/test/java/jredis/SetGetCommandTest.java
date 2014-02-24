@@ -17,6 +17,8 @@ public class SetGetCommandTest {
     public static String[] SET_XX_ARGS = {"Rahul", "Gandhi", "XX"};
     public static String[] SET_NX_XX_ARGS = {"Rahul", "Gandhi", "NX", "XX"};
     public static String[] SET_NX_KX_ARGS = {"Rahul", "Gandhi", "NX", "KX"};
+
+    public static String[] SET_PX_ARGS = {"Rahul", "Dravid", "PX", "100"};
     
     @Before
     public void setup() {
@@ -117,6 +119,18 @@ public class SetGetCommandTest {
     public void test_set_unknown_argument() throws InvalidCommand {
         Command command = new GetCommand(SET_NX_KX_ARGS);
         command.execute();
+    }
+
+    @Test
+    public void test_setpx() throws InvalidCommand, InterruptedException {
+        Command command = new SetCommand(SET_PX_ARGS);
+        assertEquals("OK",  command.execute());
+
+        command = new GetCommand(GET_ARGS);
+        assertEquals("Dravid",  command.execute());
+        
+        Thread.sleep(101);
+        assertNull(command.execute());
     }
 
 
