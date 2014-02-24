@@ -18,10 +18,19 @@ public class Server {
     
     private long reqId;
 
+    /**
+     * Psvm to start the server.
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         new Server().start();
     }
 
+    /**
+     * Start the server.
+     * 
+     */
     public void start() {
         System.out.println("Server starting..");
         try (ServerSocket serverSocket = new ServerSocket(15000)) {
@@ -39,6 +48,11 @@ public class Server {
         }
     }
     
+    /**
+     * Check if the server is in debug mode.
+     * 
+     * @return
+     */
     public static boolean isDebug() {
         
         //TODO: Get some jvm args to set this.

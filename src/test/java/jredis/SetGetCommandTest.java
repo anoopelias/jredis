@@ -20,7 +20,12 @@ public class SetGetCommandTest {
 
     public static String[] SET_PX_ARGS = {"Rahul", "Dravid", "PX", "100"};
     public static String[] SET_EX_ARGS = {"Rahul", "Dravid", "EX", "2"};
-    
+
+    public static String[] SET_PX_NO_TIME_ARGS = {"Rahul", "Dravid", "PX"};
+    public static String[] SET_EX_NO_TIME_ARGS = {"Rahul", "Dravid", "EX"};
+    public static String[] SET_PX_INVALID_TIME_ARGS = {"Rahul", "Dravid", "PX", "NX"};
+    public static String[] SET_EX_INVALID_TIME_ARGS = {"Rahul", "Dravid", "EX", "XX"};
+
     @Before
     public void setup() {
         DataMap.INSTANCE.clear();
@@ -146,5 +151,28 @@ public class SetGetCommandTest {
         assertNull(command.execute());
     }
 
+    @Test(expected = InvalidCommand.class)
+    public void test_get_px_no_time() throws InvalidCommand {
+        Command command = new SetCommand(SET_PX_NO_TIME_ARGS);
+        command.execute();
+    }
+
+    @Test(expected = InvalidCommand.class)
+    public void test_get_ex_no_time() throws InvalidCommand {
+        Command command = new SetCommand(SET_EX_NO_TIME_ARGS);
+        command.execute();
+    }
+
+    @Test(expected = InvalidCommand.class)
+    public void test_get_px_invalid_time() throws InvalidCommand {
+        Command command = new SetCommand(SET_PX_INVALID_TIME_ARGS);
+        command.execute();
+    }
+
+    @Test(expected = InvalidCommand.class)
+    public void test_get_ex_invalid_time() throws InvalidCommand {
+        Command command = new SetCommand(SET_EX_INVALID_TIME_ARGS);
+        command.execute();
+    }
 
 }

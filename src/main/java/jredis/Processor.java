@@ -6,12 +6,24 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.Callable;
 
+/**
+ * A thread which processes one socket client.
+ * 
+ * @author anoopelias
+ *
+ */
 public class Processor implements Callable<Object> {
 
     private Socket clientSocket = null;
     
     private long reqId;
 
+    /**
+     * Construct the processor.
+     * 
+     * @param clientSocket
+     * @param reqId unique identifier for each new socket.
+     */
     public Processor(Socket clientSocket, long reqId) {
         this.clientSocket = clientSocket;
         this.reqId = reqId;
