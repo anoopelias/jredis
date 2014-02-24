@@ -140,6 +140,25 @@ public class SetGetCommandTest {
     }
 
     @Test
+    public void test_setpx_overwrite() throws InvalidCommand, InterruptedException {
+        Command command = new SetCommand(SET_PX_ARGS);
+        assertEquals("OK",  command.execute());
+
+        command = new GetCommand(GET_ARGS);
+        assertEquals("Dravid",  command.execute());
+
+        command = new SetCommand(SET_XX_ARGS);
+        assertEquals("OK",  command.execute());
+
+        command = new GetCommand(GET_ARGS);
+        assertEquals("Gandhi",  command.execute());
+
+        Thread.sleep(101);
+        command = new GetCommand(GET_ARGS);
+        assertEquals("Gandhi",  command.execute());
+    }
+
+    @Test
     public void test_setex() throws InvalidCommand, InterruptedException {
         Command command = new SetCommand(SET_EX_ARGS);
         assertEquals("OK",  command.execute());
