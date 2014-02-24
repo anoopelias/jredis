@@ -20,42 +20,36 @@ public class SetCommand implements Command {
 
         key = args[0];
         value = args[1];
-
-        if (args.length == 3) {
-            if ("NX".equals(args[2]))
+        
+        for(int i=2; i<args.length; i++) {
+            
+            if ("NX".equals(args[i]))
                 isNx = true;
-            else if ("XX".equals(args[2]))
+            else if ("XX".equals(args[i]))
                 isXx = true;
             else
-                throw new InvalidCommand("Unknown argument :" + args[2]);
+                throw new InvalidCommand("Unknown argument :" + args[i]);
         }
 
     }
 
     @Override
     public String execute() {
-        if (isNx)
-            return set(true);
-
-        else if (isXx)
-            return set(false);
-
-        return set();
-    }
-
-    private String set(boolean haveKey) {
         synchronized (DataMap.INSTANCE) {
-            if ((DataMap.INSTANCE.get(key) != null) == haveKey)
+            
+            if (isNx && hasKey(key))
                 return null;
 
-            return set();
+            if (isXx && !hasKey(key))
+                return null;
+
+            DataMap.INSTANCE.put(key, value);
+            return "OK";
         }
-
+    }
+    
+    private boolean hasKey(String key) {
+        return DataMap.INSTANCE.get(key) != null;
     }
 
-    private String set() {
-        DataMap.INSTANCE.put(key, value);
-
-        return "OK";
-    }
 }

@@ -13,7 +13,10 @@ public class SetGetCommandTest {
     public static String[] GET_ARGS = {"Rahul"};
 
     public static String[] SET_NX_ARGS = {"Rahul", "Gandhi", "NX"};
+    public static String[] SET_NX_NX_ARGS = {"Rahul", "Gandhi", "NX", "NX"};
     public static String[] SET_XX_ARGS = {"Rahul", "Gandhi", "XX"};
+    public static String[] SET_NX_XX_ARGS = {"Rahul", "Gandhi", "NX", "XX"};
+    public static String[] SET_NX_KX_ARGS = {"Rahul", "Gandhi", "NX", "KX"};
     
     @Before
     public void setup() {
@@ -87,6 +90,33 @@ public class SetGetCommandTest {
 
         command = new GetCommand(GET_ARGS);
         assertEquals("Gandhi",  command.execute());
+    }
+
+    @Test
+    public void test_setNxXx() throws InvalidCommand {
+        Command command = new SetCommand(SET_NX_XX_ARGS);
+        assertNull(command.execute());
+
+        command = new GetCommand(GET_ARGS);
+        assertNull(command.execute());
+    }
+
+    @Test
+    public void test_setnxnx() throws InvalidCommand {
+        Command command = new SetCommand(SET_ARGS);
+        assertEquals("OK",  command.execute());
+
+        command = new SetCommand(SET_NX_NX_ARGS);
+        assertNull(command.execute());
+
+        command = new GetCommand(GET_ARGS);
+        assertEquals("Dravid",  command.execute());
+    }
+
+    @Test(expected = InvalidCommand.class)
+    public void test_set_unknown_argument() throws InvalidCommand {
+        Command command = new GetCommand(SET_NX_KX_ARGS);
+        command.execute();
     }
 
 
