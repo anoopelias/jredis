@@ -40,6 +40,9 @@ public class SetCommand implements Command {
             else if ("PX".equals(args[i])) {
                 expiry = Long.parseLong(args[i + 1]);
                 i++;
+            } else if ("EX".equals(args[i])) {
+                expiry = Long.parseLong(args[i + 1]) * 1000;
+                i++;
             } else
                 throw new InvalidCommand("Unknown argument :" + args[i]);
         }
@@ -68,8 +71,7 @@ public class SetCommand implements Command {
 
         StringValue stringValue = null;
         if (expiry != null)
-            stringValue = new StringValue(value, expiry
-                    + System.currentTimeMillis());
+            stringValue = new StringValue(value, expiry);
         else
             stringValue = new StringValue(value);
 

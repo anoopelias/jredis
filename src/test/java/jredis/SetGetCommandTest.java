@@ -19,6 +19,7 @@ public class SetGetCommandTest {
     public static String[] SET_NX_KX_ARGS = {"Rahul", "Gandhi", "NX", "KX"};
 
     public static String[] SET_PX_ARGS = {"Rahul", "Dravid", "PX", "100"};
+    public static String[] SET_EX_ARGS = {"Rahul", "Dravid", "EX", "2"};
     
     @Before
     public void setup() {
@@ -130,6 +131,18 @@ public class SetGetCommandTest {
         assertEquals("Dravid",  command.execute());
         
         Thread.sleep(101);
+        assertNull(command.execute());
+    }
+
+    @Test
+    public void test_setex() throws InvalidCommand, InterruptedException {
+        Command command = new SetCommand(SET_EX_ARGS);
+        assertEquals("OK",  command.execute());
+
+        command = new GetCommand(GET_ARGS);
+        assertEquals("Dravid",  command.execute());
+        
+        Thread.sleep(2001);
         assertNull(command.execute());
     }
 

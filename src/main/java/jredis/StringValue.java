@@ -10,7 +10,7 @@ public class StringValue {
     
     private String value;
     
-    private Long expiry;
+    private Long expiryTime;
 
     public StringValue(String value) {
         this.value = value;
@@ -18,7 +18,7 @@ public class StringValue {
 
     public StringValue(String value, Long expiry) {
         this.value = value;
-        this.expiry = expiry;
+        this.expiryTime = expiry + System.currentTimeMillis();
     }
     
     /**
@@ -36,7 +36,7 @@ public class StringValue {
      * @return
      */
     public boolean isValid() {
-        return expiry == null || expiry > System.currentTimeMillis();
+        return expiryTime == null || expiryTime > System.currentTimeMillis();
     }
 
 }
