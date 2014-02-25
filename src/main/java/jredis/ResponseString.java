@@ -11,6 +11,14 @@ public class ResponseString implements Response<String> {
     private String value;
     
     /**
+     * ResponseString constructor to be used for 'nil' response.
+     * 
+     */
+    public ResponseString() {
+        
+    }
+    
+    /**
      * Construct a String response.
      * 
      * @param value

@@ -32,11 +32,11 @@ public class GetCommand implements Command<String> {
             TimedString value = DataMap.INSTANCE.get(key, TimedString.class);
             
             if(value == null)
-                return new ResponseString(null);
+                return new ResponseString();
             
             if(!value.isValid()) {
                 DataMap.INSTANCE.remove(key);
-                return new ResponseString(null);
+                return new ResponseString();
             }
             return new ResponseString(value.value());
         }
