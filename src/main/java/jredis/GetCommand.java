@@ -29,7 +29,7 @@ public class GetCommand implements Command<String> {
         
         synchronized(DataMap.INSTANCE) {
             
-            StringValue value = DataMap.INSTANCE.get(key, StringValue.class);
+            TimedString value = DataMap.INSTANCE.get(key, TimedString.class);
             
             if(value == null)
                 return new ResponseString(null);

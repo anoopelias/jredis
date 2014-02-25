@@ -72,7 +72,7 @@ public class SetCommand implements Command<String> {
 
     @Override
     public Response<String> execute() {
-        StringValue stringValue = createValue();
+        TimedString stringValue = createValue();
 
         synchronized (DataMap.INSTANCE) {
 
@@ -87,19 +87,19 @@ public class SetCommand implements Command<String> {
         }
     }
 
-    private StringValue createValue() {
+    private TimedString createValue() {
 
-        StringValue stringValue = null;
+        TimedString stringValue = null;
         if (expiry != null)
-            stringValue = new StringValue(value, expiry);
+            stringValue = new TimedString(value, expiry);
         else
-            stringValue = new StringValue(value);
+            stringValue = new TimedString(value);
 
         return stringValue;
     }
 
     private boolean hasKey(String key) {
-        return DataMap.INSTANCE.get(key, StringValue.class) != null;
+        return DataMap.INSTANCE.get(key, TimedString.class) != null;
     }
 
 }

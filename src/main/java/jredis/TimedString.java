@@ -6,17 +6,17 @@ package jredis;
  * @author anoopelias
  *
  */
-public class StringValue {
+public class TimedString {
     
     private String value;
     
     private Long expiryTime;
 
-    public StringValue(String value) {
+    public TimedString(String value) {
         this.value = value;
     }
 
-    public StringValue(String value, Long expiry) {
+    public TimedString(String value, Long expiry) {
         this.value = value;
         this.expiryTime = expiry + System.currentTimeMillis();
     }
