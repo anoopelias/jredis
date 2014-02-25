@@ -1,7 +1,9 @@
 package jredis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -67,6 +69,11 @@ public class ServerTest {
         assertEquals("Musk", jedis2.get("Elon").trim());
         
         assertNull(jedis.get("Filipe"));
+        
+        byte[] key = "Keys".getBytes();
+        assertFalse(jedis.setbit(key, 10, true));
+        assertTrue(jedis.getbit(key, 10));
+        assertFalse(jedis.getbit(key, 20));
 
     }
 

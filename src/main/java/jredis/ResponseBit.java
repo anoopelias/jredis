@@ -15,8 +15,7 @@ public class ResponseBit implements Response<Boolean> {
 
     @Override
     public String toProtocolString() {
-        // TODO Auto-generated method stub
-        return null;
+        return ":" + ((bit) ? "1" : "0");
     }
 
 }
