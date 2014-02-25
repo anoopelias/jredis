@@ -41,20 +41,22 @@ public class DataMap {
      * @return
      */
     public synchronized StringValue get(String key) {
-        StringValue value = data.get(key);
-        
-        if(value == null)
-            return null;
-        
-        if(!value.isValid()) {
-            data.remove(key);
-            return null;
-        }
-        
-        return value;
+        return data.get(key);
     }
     
-    
+
+    /**
+     * Remove key from the key store.
+     * 
+     * This method is synchronized.
+     * 
+     * @param key
+     * @return
+     */
+    public synchronized StringValue remove(String key) {
+        return data.remove(key);
+    }
+
     /**
      * This method clears all the data in the data store.
      * 

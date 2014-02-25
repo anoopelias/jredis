@@ -26,8 +26,21 @@ public class GetCommand implements Command<String> {
 
     @Override
     public Response<String> execute() {
-        StringValue value = DataMap.INSTANCE.get(key);
-        return new ResponseString((value == null) ? null : value.value());
+        
+        synchronized(DataMap.INSTANCE) {
+            
+            StringValue value = DataMap.INSTANCE.get(key);
+            
+            if(value == null)
+                return new ResponseString(null);
+            
+            if(!value.isValid()) {
+                DataMap.INSTANCE.remove(key);
+                return new ResponseString(null);
+            }
+            return new ResponseString(value.value());
+        }
+        
     }
 
 }
