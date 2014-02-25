@@ -10,7 +10,7 @@ import jredis.exception.InvalidCommand;
  * @author anoopelias
  * 
  */
-public class SetCommand implements Command {
+public class SetCommand implements Command<String> {
 
     private String key;
     private String value;
@@ -71,7 +71,7 @@ public class SetCommand implements Command {
     }
 
     @Override
-    public String execute() {
+    public Response<String> execute() {
         StringValue stringValue = createValue();
 
         synchronized (DataMap.INSTANCE) {
@@ -83,7 +83,7 @@ public class SetCommand implements Command {
                 return null;
 
             DataMap.INSTANCE.put(key, stringValue);
-            return "OK";
+            return new ResponseString("OK");
         }
     }
 

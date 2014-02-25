@@ -8,7 +8,7 @@ import jredis.exception.InvalidCommand;
  * @author anoopelias
  *
  */
-public class GetCommand implements Command {
+public class GetCommand implements Command<String> {
     
     private String key;
     
@@ -25,9 +25,17 @@ public class GetCommand implements Command {
     }
 
     @Override
-    public String execute() {
+    public Response<String> execute() {
         StringValue value = DataMap.INSTANCE.get(key);
-        return (value == null) ? null : value.value();
+        
+        /*
+         * Ideally we would like to return a ResponseNil. But this is not Scala.
+         * :-)
+         */
+        if(value == null)
+            return null;
+        
+        return new ResponseString(value.value());
     }
 
 }

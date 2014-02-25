@@ -27,9 +27,9 @@ public class ResponseWriter {
      * 
      * @param output
      */
-    public void write(String output) {
-        if (output != null)
-            out.println("+" + output + "\r");
+    public void write(Response<?> response) {
+        if (response != null)
+            out.println(response.toProtocolString() + "\r");
         else
             out.println("$-1\r");
     }

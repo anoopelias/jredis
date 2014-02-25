@@ -25,7 +25,7 @@ public class CommandReaderTest {
         
         CommandReader reader = new CommandReader(new ByteArrayInputStream(
                 CMD_GET.getBytes("UTF-8")));
-        Command c = reader.next();
+        Command<?> c = reader.next();
         assertTrue(c instanceof GetCommand);
         assertNull(reader.next());
     }
@@ -36,7 +36,7 @@ public class CommandReaderTest {
         
         CommandReader reader = new CommandReader(new ByteArrayInputStream(
                 CMD_SET.getBytes("UTF-8")));
-        Command c = reader.next();
+        Command<?> c = reader.next();
         assertTrue(c instanceof SetCommand);
         assertNull(reader.next());
     }
@@ -47,13 +47,13 @@ public class CommandReaderTest {
         
         CommandReader reader = new CommandReader(new ByteArrayInputStream(
                 CMD_SET.getBytes("UTF-8")));
-        Command c = reader.next();
-        assertEquals("OK", c.execute());
+        Command<?> c = reader.next();
+        assertEquals("OK", c.execute().value());
         
         reader = new CommandReader(new ByteArrayInputStream(
                 CMD_GET_ELON.getBytes("UTF-8")));
         c = reader.next();
-        assertEquals("Musk", c.execute());
+        assertEquals("Musk", c.execute().value());
     }
 
     @Test

@@ -16,7 +16,7 @@ public class CommandReader {
         this.reader = new BufferedReader(new InputStreamReader(is));
     }
 
-    public Command next() throws InvalidCommand {
+    public Command<?> next() throws InvalidCommand {
 
         try {
             int argLen;

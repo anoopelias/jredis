@@ -2,8 +2,8 @@ package jredis;
 
 import jredis.exception.InvalidCommand;
 
-public interface Command {
+public interface Command<T> {
     
-    public String execute() throws InvalidCommand;
+    public Response<T> execute() throws InvalidCommand;
     
 }

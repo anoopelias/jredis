@@ -40,7 +40,7 @@ public class Processor implements Callable<Object> {
             CommandReader reader = new CommandReader(is);
             ResponseWriter writer = new ResponseWriter(os);
     
-            Command c;
+            Command<?> c;
             while ((c = reader.next()) != null) {
                 writer.write(c.execute());
             }
