@@ -8,7 +8,7 @@ import jredis.exception.InvalidCommand;
  * @author anoopelias
  * 
  */
-public class SetbitCommand implements Command<String> {
+public class SetbitCommand implements Command<Boolean> {
 
     private String key;
     private int offset;
@@ -46,7 +46,7 @@ public class SetbitCommand implements Command<String> {
     }
 
     @Override
-    public Response<String> execute() throws InvalidCommand {
+    public Response<Boolean> execute() throws InvalidCommand {
         synchronized (DataMap.INSTANCE) {
             BitString bitString = DataMap.INSTANCE.get(key, BitString.class);
             if (bitString == null) {
@@ -54,10 +54,8 @@ public class SetbitCommand implements Command<String> {
                 DataMap.INSTANCE.put(key, bitString);
             }
 
-            bitString.set(offset, value);
+            return new ResponseBit(bitString.set(offset, value));
         }
-
-        return new ResponseString("OK");
     }
 
 }

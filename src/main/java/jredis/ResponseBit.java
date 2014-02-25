@@ -4,9 +4,6 @@ public class ResponseBit implements Response<Boolean> {
     
     private Boolean bit;
     
-    public ResponseBit() {
-    }
-
     public ResponseBit(Boolean bit) {
         this.bit = bit;
     }

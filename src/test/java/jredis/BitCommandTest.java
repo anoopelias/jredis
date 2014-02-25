@@ -1,6 +1,5 @@
 package jredis;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import jredis.exception.InvalidCommand;
@@ -35,7 +34,7 @@ public class BitCommandTest {
     @Test
     public void test_setbit_getbit() throws InvalidCommand {
         SetbitCommand setbitCommand = new SetbitCommand(SETBIT);
-        assertEquals("OK", setbitCommand.execute().value());
+        assertFalse(setbitCommand.execute().value());
 
         GetbitCommand getbitCommand = new GetbitCommand(GETBIT);
         assertTrue(getbitCommand.execute().value());
@@ -44,10 +43,17 @@ public class BitCommandTest {
     @Test
     public void test_setbit_getbit_zero() throws InvalidCommand {
         SetbitCommand setbitCommand = new SetbitCommand(SETBIT_ZERO);
-        assertEquals("OK", setbitCommand.execute().value());
+        assertFalse(setbitCommand.execute().value());
 
         GetbitCommand getbitCommand = new GetbitCommand(GETBIT_ZERO);
         assertFalse(getbitCommand.execute().value());
+    }
+
+    @Test
+    public void test_setbit_current_value() throws InvalidCommand {
+        SetbitCommand setbitCommand = new SetbitCommand(SETBIT);
+        assertFalse(setbitCommand.execute().value());
+        assertTrue(setbitCommand.execute().value());
     }
     
     @Test

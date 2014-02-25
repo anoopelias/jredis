@@ -18,12 +18,17 @@ public class BitString {
      * 
      * @param offset
      * @param value
+     * @return current value
      */
-    public void set(Integer offset, boolean value) {
+    public boolean set(Integer offset, boolean value) {
+        boolean current;
+        
         if(value)
-            ones.add(offset);
+            current = !ones.add(offset);
         else
-            ones.remove(offset);
+            current = ones.remove(offset);
+        
+        return current;
     }
     
     /**
