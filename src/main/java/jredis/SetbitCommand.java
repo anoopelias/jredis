@@ -33,6 +33,9 @@ public class SetbitCommand implements Command<String> {
             if(val < 0 || val > 1)
                 throw new InvalidCommand("Value is not a bit");
             
+            if(offset < 0)
+                throw new InvalidCommand("Offset below range");
+            
             if (val == 1)
                 value = true;
             

@@ -2,7 +2,6 @@ package jredis;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import jredis.exception.InvalidCommand;
 
@@ -10,21 +9,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BitCommandTest {
-    public static String[] SETBIT = {"Keys", "7", "1"};
-    public static String[] GETBIT = {"Keys", "7"};
+    private static String[] SETBIT = {"Keys", "7", "1"};
+    private static String[] GETBIT = {"Keys", "7"};
 
-    public static String[] SETBIT_ZERO = {"Keys", "200", "0"};
-    public static String[] GETBIT_ZERO = {"Keys", "200"};
+    private static String[] SETBIT_ZERO = {"Keys", "200", "0"};
+    private static String[] GETBIT_ZERO = {"Keys", "200"};
     
-    public static String[] NO_ARGS = {}; 
-    public static String[] ONE_ARG = {"Keys"};
+    private static String[] NO_ARGS = {}; 
+    private static String[] ONE_ARG = {"Keys"};
     
-    public static String[] SETBIT_INVALID_OFFSET = {"Keys", "K", "1"};
-    public static String[] SETBIT_INVALID_VALUE = {"Keys", "7", "K"};
-    public static String[] SETBIT_VALUE_ABOVE_1 = {"Keys", "7", "2"};
-    public static String[] SETBIT_VALUE_BELOW_0 = {"Keys", "7", "-1"};
+    private static String[] SETBIT_INVALID_OFFSET = {"Keys", "K", "1"};
+    private static String[] SETBIT_OFFSET_BELOW_0 = {"Keys", "-1", "1"};
+    private static String[] SETBIT_INVALID_VALUE = {"Keys", "7", "K"};
+    private static String[] SETBIT_VALUE_ABOVE_1 = {"Keys", "7", "2"};
+    private static String[] SETBIT_VALUE_BELOW_0 = {"Keys", "7", "-1"};
 
-    public static String[] GETBIT_INVALID_OFFSET = {"Keys", "K"};
+    private static String[] GETBIT_INVALID_OFFSET = {"Keys", "K"};
+    private static String[] GETBIT_OFFSET_BELOW_0 = {"Keys", "-1"};
 
     @Before
     public void setup() {
@@ -52,7 +53,7 @@ public class BitCommandTest {
     @Test
     public void test_getbit_null() throws InvalidCommand {
         GetbitCommand getbitCommand = new GetbitCommand(GETBIT);
-        assertNull(getbitCommand.execute().value());
+        assertFalse(getbitCommand.execute().value());
     }
 
     @Test(expected=InvalidCommand.class)
@@ -76,6 +77,12 @@ public class BitCommandTest {
     @Test(expected=InvalidCommand.class)
     public void test_setbit_string_offset() throws InvalidCommand {
         SetbitCommand setbitCommand = new SetbitCommand(SETBIT_INVALID_OFFSET);
+        setbitCommand.execute();
+    }
+
+    @Test(expected=InvalidCommand.class)
+    public void test_setbit_offset_below_range() throws InvalidCommand {
+        SetbitCommand setbitCommand = new SetbitCommand(SETBIT_OFFSET_BELOW_0);
         setbitCommand.execute();
     }
 
@@ -114,7 +121,13 @@ public class BitCommandTest {
         GetbitCommand getbitCommand = new GetbitCommand(GETBIT_INVALID_OFFSET);
         getbitCommand.execute();
     }
-    
+
+    @Test(expected=InvalidCommand.class)
+    public void test_getbit_offset_below_range() throws InvalidCommand {
+        GetbitCommand getbitCommand = new GetbitCommand(GETBIT_OFFSET_BELOW_0);
+        getbitCommand.execute();
+    }
+
     /*
      * TODO: Out of range offset tests
      */
