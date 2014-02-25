@@ -14,7 +14,7 @@ public class ResponseWriter {
     private PrintWriter out;
 
     /**
-     * Contruct a writer using output stream.
+     * Construct a writer using output stream.
      * 
      * @param os
      */
