@@ -29,16 +29,16 @@ public class SetbitCommand implements Command<Boolean> {
             key = args[0];
             offset = Integer.parseInt(args[1]);
             int val = Integer.parseInt(args[2]);
-            
-            if(val < 0 || val > 1)
+
+            if (val < 0 || val > 1)
                 throw new InvalidCommand("Value is not a bit");
-            
-            if(offset < 0)
+
+            if (offset < 0)
                 throw new InvalidCommand("Offset below range");
-            
+
             if (val == 1)
                 value = true;
-            
+
         } catch (NumberFormatException e) {
             throw new InvalidCommand("Unparsable offset / value");
 
@@ -54,6 +54,10 @@ public class SetbitCommand implements Command<Boolean> {
                 DataMap.INSTANCE.put(key, bitString);
             }
 
+            /*
+             * TODO: Probably we can move the set method outside synchronization
+             * block if we synchronize BitString instead.
+             */
             return new ResponseBit(bitString.set(offset, value));
         }
     }
