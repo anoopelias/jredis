@@ -1,9 +1,20 @@
 package jredis;
 
+/**
+ * Bit response type.
+ * 
+ * @author anoopelias
+ *
+ */
 public class ResponseBit implements Response<Boolean> {
     
     private Boolean bit;
     
+    /**
+     * Construct a response of type bit with the value specified.
+     * 
+     * @param bit
+     */
     public ResponseBit(Boolean bit) {
         this.bit = bit;
     }
