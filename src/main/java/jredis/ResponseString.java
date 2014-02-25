@@ -26,6 +26,9 @@ public class ResponseString implements Response<String> {
 
     @Override
     public String toProtocolString() {
+        if(value == null)
+            return "$-1";
+        
         return "+" + value;
     }
 

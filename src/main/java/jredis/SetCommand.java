@@ -77,10 +77,10 @@ public class SetCommand implements Command<String> {
         synchronized (DataMap.INSTANCE) {
 
             if (isNx && hasKey(key))
-                return null;
+                return new ResponseString(null);
 
             if (isXx && !hasKey(key))
-                return null;
+                return new ResponseString(null);
 
             DataMap.INSTANCE.put(key, stringValue);
             return new ResponseString("OK");

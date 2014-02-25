@@ -58,7 +58,7 @@ public class SetGetCommandTest {
     @Test
     public void test_get_null() throws InvalidCommand {
         Command<String> command = new GetCommand(new String[]{"MangoMan"});
-        assertNull(command.execute());
+        assertNull(command.execute().value());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class SetGetCommandTest {
         assertEquals("OK",  command.execute().value());
 
         command = new SetCommand(SET_NX);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
 
         command = new GetCommand(GET);
         assertEquals("Dravid",  command.execute().value());
@@ -85,10 +85,10 @@ public class SetGetCommandTest {
     @Test
     public void test_setxx() throws InvalidCommand {
         Command<String> command = new SetCommand(SET_XX);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
 
         command = new GetCommand(GET);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
     }
 
     @Test
@@ -106,19 +106,19 @@ public class SetGetCommandTest {
     @Test
     public void test_setNxXx() throws InvalidCommand {
         Command<String> command = new SetCommand(SET_NX_XX);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
 
         command = new GetCommand(GET);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
     }
 
     @Test
-    public void test_setnxnx() throws InvalidCommand {
+    public void test_setNxNx() throws InvalidCommand {
         Command<String> command = new SetCommand(SET);
         assertEquals("OK",  command.execute().value());
 
         command = new SetCommand(SET_NX_NX);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
 
         command = new GetCommand(GET);
         assertEquals("Dravid",  command.execute().value());
@@ -139,7 +139,7 @@ public class SetGetCommandTest {
         assertEquals("Dravid",  command.execute().value());
         
         Thread.sleep(101);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
     }
 
     @Test
@@ -170,7 +170,7 @@ public class SetGetCommandTest {
         assertEquals("Dravid",  command.execute().value());
         
         Thread.sleep(2001);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
     }
 
     @Test(expected = InvalidCommand.class)
@@ -206,7 +206,7 @@ public class SetGetCommandTest {
         assertEquals("Dravid",  getCommand.execute().value());
 
         command = new SetCommand(SET_PX_NX_COMBINATION);
-        assertNull(command.execute());
+        assertNull(command.execute().value());
 
         assertEquals("Dravid",  getCommand.execute().value());
         Thread.sleep(101);
@@ -217,7 +217,7 @@ public class SetGetCommandTest {
 
         assertEquals("Gandhi",  getCommand.execute().value());
         Thread.sleep(101);
-        assertNull(getCommand.execute());
+        assertNull(getCommand.execute().value());
     }
 
 

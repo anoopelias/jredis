@@ -27,15 +27,7 @@ public class GetCommand implements Command<String> {
     @Override
     public Response<String> execute() {
         StringValue value = DataMap.INSTANCE.get(key);
-        
-        /*
-         * Ideally we would like to return a ResponseNil. But this is not Scala.
-         * :-)
-         */
-        if(value == null)
-            return null;
-        
-        return new ResponseString(value.value());
+        return new ResponseString((value == null) ? null : value.value());
     }
 
 }
