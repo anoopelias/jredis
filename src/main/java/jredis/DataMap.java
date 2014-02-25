@@ -16,7 +16,7 @@ public class DataMap {
     private DataMap() {
     }
 
-    private Map<String, StringValue> data = new HashMap<String, StringValue>();
+    private Map<String, Object> data = new HashMap<String, Object>();
 
     /**
      * Put data in to the key value store.
@@ -28,7 +28,7 @@ public class DataMap {
      * @param key
      * @param value
      */
-    public synchronized void put(String key, StringValue value) {
+    public synchronized <T> void put(String key, T value) {
         data.put(key, value);
     }
 
@@ -40,8 +40,8 @@ public class DataMap {
      * @param key
      * @return
      */
-    public synchronized StringValue get(String key) {
-        return data.get(key);
+    public synchronized <T> T get(String key, Class<T> type) {
+        return type.cast(data.get(key));
     }
     
 
@@ -53,8 +53,8 @@ public class DataMap {
      * @param key
      * @return
      */
-    public synchronized StringValue remove(String key) {
-        return data.remove(key);
+    public synchronized void remove(String key) {
+        data.remove(key);
     }
 
     /**
@@ -62,7 +62,7 @@ public class DataMap {
      * 
      */
     public synchronized void clear() {
-        data = new HashMap<String, StringValue>();
+        data = new HashMap<String, Object>();
     }
 
 }

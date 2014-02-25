@@ -99,7 +99,7 @@ public class SetCommand implements Command<String> {
     }
 
     private boolean hasKey(String key) {
-        return DataMap.INSTANCE.get(key) != null;
+        return DataMap.INSTANCE.get(key, StringValue.class) != null;
     }
 
 }
