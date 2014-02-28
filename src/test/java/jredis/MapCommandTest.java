@@ -58,6 +58,41 @@ public class MapCommandTest {
 
     @Test
     public void test_count() throws InvalidCommand {
+        addAll();
+
+        String[] range = {"Phones", "40", "60"};
+        Command<?> command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(2), command.execute().value());
+    }
+
+    @Test
+    public void test_count_inclusive() throws InvalidCommand {
+        addAll();
+
+        String[] range = {"Phones", "36.85", "54.32"};
+        Command<?> command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(3), command.execute().value());
+    }
+
+    @Test
+    public void test_count_from_infinity_to_infinity() throws InvalidCommand {
+        addAll();
+
+        String[] range = {"Phones", "-inf", "+inf"};
+        Command<?> command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(7), command.execute().value());
+    }
+
+    @Test
+    public void test_count_to_infinity() throws InvalidCommand {
+        addAll();
+
+        String[] range = {"Phones", "50", "inf"};
+        Command<?> command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(3), command.execute().value());
+    }
+
+    private void addAll() throws InvalidCommand {
         Command<?> command = new ZaddCommand(ADD_IP5C);
         command.execute();
         command = new ZaddCommand(ADD_IP5S);
@@ -72,11 +107,6 @@ public class MapCommandTest {
         command.execute();
         command = new ZaddCommand(ADD_SG5);
         command.execute();
-
-        String[] range = {"Phones", "40", "60"};
-        command = new ZcountCommand(range);
-        assertEquals(Integer.valueOf(2), command.execute().value());
     }
 
-    
 }
