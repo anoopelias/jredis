@@ -93,11 +93,24 @@ public class MapCommandTest {
     }
 
     @Test
-    public void test_count_zero() throws InvalidCommand {
+    public void test_count_infinity_to_minus_infinity() throws InvalidCommand {
         addAll();
 
         String[] range = {"Phones", "inf", "-inf"};
         Command<?> command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(0), command.execute().value());
+    }
+
+    @Test
+    public void test_count_equal_value() throws InvalidCommand {
+        addAll();
+
+        String[] range = {"Phones", "25.03", "25.03"};
+        Command<?> command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(1), command.execute().value());
+        
+        String[] range2 = {"Phones", "25.05", "25.05"};
+        command = new ZcountCommand(range2);
         assertEquals(Integer.valueOf(0), command.execute().value());
     }
 
