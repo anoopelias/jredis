@@ -1,19 +1,41 @@
 package jredis;
 
+/**
+ * An Element to capture the member and its score. a.k.a the zelement.
+ * 
+ * @author anoopelias
+ *
+ */
 public class Element implements Comparable<Element> {
 
     private Double score;
     private String member;
 
+    /**
+     * Create an element with its member and score.
+     * 
+     * @param member
+     * @param score
+     */
     public Element(String member, Double score) {
         this.member = member;
         this.score = score;
     }
 
+    /**
+     * Get the score of the element.
+     * 
+     * @return
+     */
     public Double getScore() {
         return score;
     }
 
+    /**
+     * Get the member string of the element.
+     * 
+     * @return
+     */
     public String getMember() {
         return member;
     }

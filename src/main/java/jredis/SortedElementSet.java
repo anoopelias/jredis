@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * A data structure to keep the element data sorted by score.
+ * A data structure to keep the element data sorted by score (zset).
  * 
  * @author anoopelias
  * 
@@ -17,12 +17,18 @@ public class SortedElementSet implements Iterable<Element> {
     private Map<String, Double> hashMap = new HashMap<>();
     private TreeSet<Element> sortedSet = new TreeSet<>();
 
+    /**
+     * Insert an element in to the set. Guaranteed O(log(N)) time.
+     * 
+     * @param element
+     * @return true if inserted, false if updated
+     */
     public boolean insert(Element element) {
 
         boolean updated = false;
         Double currentScore = hashMap.get(element.getMember());
 
-        if (currentScore != null && !currentScore.equals(element.getScore())) {
+        if (currentScore != null) {
 
             Element existingElement = new Element(element.getMember(),
                     currentScore);
@@ -45,13 +51,27 @@ public class SortedElementSet implements Iterable<Element> {
         return sortedSet.iterator();
     }
 
+    /**
+     * Size of the collection.
+     * 
+     * @return
+     */
     public int size() {
         return sortedSet.size();
     }
 
+    /**
+     * Sublist of elements at the given range of scores, both inclusive.
+     * 
+     * @param from
+     * @param to
+     * @return
+     */
     public Set<Element> subList(Double from, Double to) {
-        return sortedSet.subSet(new Element(null, from), true, new Element(
-                null, to), true);
+        Element fromElement = new Element(null, from);
+        Element toElement = new Element(null, to);
+
+        return sortedSet.subSet(fromElement, true, toElement, true);
     }
 
 }
