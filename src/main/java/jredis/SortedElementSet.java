@@ -1,5 +1,6 @@
 package jredis;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -68,6 +69,10 @@ public class SortedElementSet implements Iterable<Element> {
      * @return
      */
     public Set<Element> subList(Double from, Double to) {
+        
+        if(from > to)
+            return Collections.emptySet();
+        
         Element fromElement = new Element(null, from);
         Element toElement = new Element(null, to);
 

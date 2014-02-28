@@ -2,12 +2,24 @@ package jredis;
 
 import jredis.exception.InvalidCommand;
 
+/**
+ * Implementation of Zcount command.
+ * 
+ * @author anoopelias
+ *
+ */
 public class ZcountCommand implements Command<Integer> {
 
     private String key;
     private Double from;
     private Double to;
 
+    /**
+     * Construct command from arguments.
+     * 
+     * @param args
+     * @throws InvalidCommand
+     */
     public ZcountCommand(String[] args) throws InvalidCommand {
         key = args[0];
         from = parse(args[1]);

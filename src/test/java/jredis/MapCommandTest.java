@@ -92,6 +92,15 @@ public class MapCommandTest {
         assertEquals(Integer.valueOf(3), command.execute().value());
     }
 
+    @Test
+    public void test_count_zero() throws InvalidCommand {
+        addAll();
+
+        String[] range = {"Phones", "inf", "-inf"};
+        Command<?> command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(0), command.execute().value());
+    }
+
     private void addAll() throws InvalidCommand {
         Command<?> command = new ZaddCommand(ADD_IP5C);
         command.execute();
