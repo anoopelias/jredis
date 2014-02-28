@@ -13,7 +13,7 @@ public class ZcardCommand implements Command<Integer> {
     @Override
     public Response<Integer> execute() throws InvalidCommand {
         synchronized(DataMap.INSTANCE) {
-            ValueSortedMap map = DataMap.INSTANCE.get(key, ValueSortedMap.class);
+            SortedElementSet map = DataMap.INSTANCE.get(key, SortedElementSet.class);
             return new ResponseNumber((map == null) ? 0 : map.size());
         }
     }

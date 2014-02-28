@@ -17,18 +17,19 @@ public class ZaddCommand implements Command<Integer> {
     @Override
     public Response<Integer> execute() throws InvalidCommand {
         
-        boolean insert;
+        boolean inserted;
+        
         synchronized(DataMap.INSTANCE) {
-            ValueSortedMap map = DataMap.INSTANCE.get(key, ValueSortedMap.class);
+            SortedElementSet map = DataMap.INSTANCE.get(key, SortedElementSet.class);
             if(map == null) {
-                map = new ValueSortedMap();
+                map = new SortedElementSet();
                 DataMap.INSTANCE.put(key, map);
             }
             
-            insert = (map.put(value, score) == null);
+            inserted = map.insert(new Element(value, score));
         }
         
-        return new ResponseNumber(insert? 1 : 0);
+        return new ResponseNumber(inserted? 1 : 0);
     }
 
 }

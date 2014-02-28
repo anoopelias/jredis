@@ -17,13 +17,14 @@ public class ZcountCommand implements Command<Integer> {
     @Override
     public Response<Integer> execute() throws InvalidCommand {
         synchronized (DataMap.INSTANCE) {
-            ValueSortedMap map = DataMap.INSTANCE.get(key, ValueSortedMap.class);
-            if(map == null)
+            SortedElementSet set = DataMap.INSTANCE.get(key, SortedElementSet.class);
+            if(set == null)
                 return new ResponseNumber(0);
             
+            int count = set.subList(from, to).size();
+            return new ResponseNumber(count);
         }
         
-        return null;
     }
 
 }

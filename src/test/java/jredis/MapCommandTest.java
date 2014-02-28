@@ -75,7 +75,7 @@ public class MapCommandTest {
 
         String[] range = {"Phones", "40", "60"};
         command = new ZcountCommand(range);
-        //assertEquals(Integer.valueOf(2), command.execute().value());
+        assertEquals(Integer.valueOf(2), command.execute().value());
     }
 
     
