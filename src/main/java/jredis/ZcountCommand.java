@@ -52,12 +52,12 @@ public class ZcountCommand implements Command<Integer> {
     @Override
     public Response<Integer> execute() throws InvalidCommand {
         synchronized (DataMap.INSTANCE) {
-            SortedElementSet set = DataMap.INSTANCE.get(key,
-                    SortedElementSet.class);
+            ElementSet set = DataMap.INSTANCE.get(key,
+                    ElementSet.class);
             if (set == null)
                 return new ResponseNumber(0);
 
-            int count = set.subList(from, to).size();
+            int count = set.subListByScore(from, to).size();
             return new ResponseNumber(count);
         }
 

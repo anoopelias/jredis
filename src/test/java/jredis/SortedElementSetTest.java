@@ -11,7 +11,7 @@ public class SortedElementSetTest {
     
     @Test
     public void test_insert_sort() {
-        SortedElementSet elementSet = new SortedElementSet();
+        TreeElementSet elementSet = new TreeElementSet();
         elementSet.insert(new Element("HIJ", 1.4));
         elementSet.insert(new Element("DFG", 1.2));
         elementSet.insert(new Element("OPQ", 1.8));
@@ -41,7 +41,7 @@ public class SortedElementSetTest {
 
     @Test
     public void test_insert_same_key() {
-        SortedElementSet elementSet = new SortedElementSet();
+        TreeElementSet elementSet = new TreeElementSet();
         elementSet.insert(new Element("QWE", 2.0));
         elementSet.insert(new Element("ABC", 1.4));
         elementSet.insert(new Element("ABC", 1.6));
@@ -61,7 +61,7 @@ public class SortedElementSetTest {
 
     @Test
     public void test_insert_same_score() {
-        SortedElementSet elementSet = new SortedElementSet();
+        TreeElementSet elementSet = new TreeElementSet();
         elementSet.insert(new Element("HIJ", 1.4));
         elementSet.insert(new Element("DFG", 1.4));
         elementSet.insert(new Element("OPQ", 1.4));
@@ -89,9 +89,9 @@ public class SortedElementSetTest {
     
     @Test
     public void test_sublist() {
-        SortedElementSet elementSet = addAll();
+        TreeElementSet elementSet = addAll();
         
-        Iterator<Element> iterElem = elementSet.subList(1.5, 2.1).iterator();
+        Iterator<Element> iterElem = elementSet.subListByScore(1.5, 2.1).iterator();
         
         Element element = iterElem.next();
         assertEquals("KLM", element.getMember());
@@ -111,9 +111,9 @@ public class SortedElementSetTest {
 
     @Test
     public void test_sublist_from_inclusive() {
-        SortedElementSet elementSet = addAll();
+        TreeElementSet elementSet = addAll();
         
-        Iterator<Element> iterElem = elementSet.subList(1.6, 1.7).iterator();
+        Iterator<Element> iterElem = elementSet.subListByScore(1.6, 1.7).iterator();
         
         Element element = iterElem.next();
         assertEquals("KLM", element.getMember());
@@ -125,9 +125,9 @@ public class SortedElementSetTest {
 
     @Test
     public void test_sublist_to_inclusive() {
-        SortedElementSet elementSet = addAll();
+        TreeElementSet elementSet = addAll();
         
-        Iterator<Element> iterElem = elementSet.subList(2.1, 2.2).iterator();
+        Iterator<Element> iterElem = elementSet.subListByScore(2.1, 2.2).iterator();
         
         Element element = iterElem.next();
         assertEquals("VFR", element.getMember());
@@ -139,9 +139,9 @@ public class SortedElementSetTest {
 
     @Test
     public void test_sublist_from_infinity() {
-        SortedElementSet elementSet = addAll();
+        TreeElementSet elementSet = addAll();
         
-        Iterator<Element> iterElem = elementSet.subList(Double.NEGATIVE_INFINITY, 1.4).iterator();
+        Iterator<Element> iterElem = elementSet.subListByScore(Double.NEGATIVE_INFINITY, 1.4).iterator();
         
         Element element = iterElem.next();
         assertEquals("DFG", element.getMember());
@@ -157,9 +157,9 @@ public class SortedElementSetTest {
 
     @Test
     public void test_sublist_to_infinity() {
-        SortedElementSet elementSet = addAll();
+        TreeElementSet elementSet = addAll();
         
-        Iterator<Element> iterElem = elementSet.subList(2.0, Double.POSITIVE_INFINITY).iterator();
+        Iterator<Element> iterElem = elementSet.subListByScore(2.0, Double.POSITIVE_INFINITY).iterator();
         
         Element element = iterElem.next();
         assertEquals("QPM", element.getMember());
@@ -173,8 +173,8 @@ public class SortedElementSetTest {
 
     }
 
-    private SortedElementSet addAll() {
-        SortedElementSet elementSet = new SortedElementSet();
+    private TreeElementSet addAll() {
+        TreeElementSet elementSet = new TreeElementSet();
         elementSet.insert(new Element("HIJ", 1.4));
         elementSet.insert(new Element("QPM", 2.0));
         elementSet.insert(new Element("DFG", 1.2));

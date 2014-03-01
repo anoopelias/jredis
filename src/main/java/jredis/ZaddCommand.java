@@ -20,9 +20,9 @@ public class ZaddCommand implements Command<Integer> {
         boolean inserted;
         
         synchronized(DataMap.INSTANCE) {
-            SortedElementSet map = DataMap.INSTANCE.get(key, SortedElementSet.class);
+            ElementSet map = DataMap.INSTANCE.get(key, ElementSet.class);
             if(map == null) {
-                map = new SortedElementSet();
+                map = new TreeElementSet();
                 DataMap.INSTANCE.put(key, map);
             }
             

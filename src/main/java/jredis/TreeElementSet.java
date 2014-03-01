@@ -13,17 +13,12 @@ import java.util.TreeSet;
  * @author anoopelias
  * 
  */
-public class SortedElementSet implements Iterable<Element> {
+public class TreeElementSet implements ElementSet {
 
     private Map<String, Double> hashMap = new HashMap<>();
     private TreeSet<Element> sortedSet = new TreeSet<>();
 
-    /**
-     * Insert an element in to the set. Guaranteed O(log(N)) time.
-     * 
-     * @param element
-     * @return true if inserted, false if updated
-     */
+    @Override
     public boolean insert(Element element) {
 
         boolean updated = false;
@@ -52,24 +47,13 @@ public class SortedElementSet implements Iterable<Element> {
         return sortedSet.iterator();
     }
 
-    /**
-     * Size of the collection.
-     * 
-     * @return
-     */
+    @Override
     public int size() {
         return sortedSet.size();
     }
 
-    /**
-     * Sublist of elements at the given range of scores, both inclusive.
-     * 
-     * @param from
-     * @param to
-     * @return
-     */
-    public Set<Element> subList(Double from, Double to) {
-        
+    @Override
+    public Set<Element> subListByScore(Double from, Double to) {
         if(from > to)
             return Collections.emptySet();
         
@@ -77,6 +61,12 @@ public class SortedElementSet implements Iterable<Element> {
         Element toElement = new Element(null, to);
 
         return sortedSet.subSet(fromElement, true, toElement, true);
+    }
+
+    @Override
+    public Set<Element> subListByRank(Double from, Double to) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
