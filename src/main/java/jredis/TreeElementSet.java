@@ -14,7 +14,7 @@ import java.util.Map;
 public class TreeElementSet implements ElementSet {
 
     private Map<String, Double> hashMap = new HashMap<>();
-    private RedBlackBST<Element, Object> sortedSet = new RedBlackBST<>();
+    private RedBlackBST<Element> sortedSet = new RedBlackBST<>();
 
     @Override
     public boolean insert(Element element) {
@@ -35,7 +35,7 @@ public class TreeElementSet implements ElementSet {
          * sorted set.
          */
         hashMap.put(element.getMember(), element.getScore());
-        sortedSet.put(element, new Object());
+        sortedSet.put(element);
 
         return !updated;
     }

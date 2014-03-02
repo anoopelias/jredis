@@ -12,8 +12,8 @@ public class RedBlackBSTTest {
     
     @Test
     public void test_select_one_item() {
-        RedBlackBST<Integer, String> bst = new RedBlackBST<>();
-        bst.put(5, "A");
+        RedBlackBST<Integer> bst = new RedBlackBST<>();
+        bst.put(5);
         
         Iterator<Integer> iterator = bst.select(0, 0).iterator();
         assertEquals(new Integer(5), iterator.next());
@@ -47,10 +47,10 @@ public class RedBlackBSTTest {
 
     @Test
     public void test_select_three_item() {
-        RedBlackBST<Integer, String> bst = new RedBlackBST<>();
-        bst.put(6, "B");
-        bst.put(5, "A");
-        bst.put(7, "C");
+        RedBlackBST<Integer> bst = new RedBlackBST<>();
+        bst.put(6);
+        bst.put(5);
+        bst.put(7);
         
         Iterator<Integer> iterator = bst.select(0, 0).iterator();
         assertEquals(new Integer(5), iterator.next());
@@ -93,7 +93,7 @@ public class RedBlackBSTTest {
 
     @Test
     public void test_select() {
-        RedBlackBST<Integer, String> bst = addAll();
+        RedBlackBST<Integer> bst = addAll();
         
         Iterator<Integer> iterator = bst.select(3, 5).iterator();
         assertEquals(new Integer(4), iterator.next());
@@ -106,7 +106,7 @@ public class RedBlackBSTTest {
 
     @Test
     public void test_select_same() {
-        RedBlackBST<Integer, String> bst = addAll();
+        RedBlackBST<Integer> bst = addAll();
         
         Iterator<Integer> iterator = bst.select(3, 3).iterator();
         assertEquals(new Integer(4), iterator.next());
@@ -115,7 +115,7 @@ public class RedBlackBSTTest {
 
     @Test
     public void test_select_none() {
-        RedBlackBST<Integer, String> bst = addAll();
+        RedBlackBST<Integer> bst = addAll();
         
         Iterator<Integer> iterator = bst.select(5, 4).iterator();
         assertFalse(iterator.hasNext());
@@ -123,7 +123,7 @@ public class RedBlackBSTTest {
 
     @Test
     public void test_select_negative() {
-        RedBlackBST<Integer, String> bst = addAll();
+        RedBlackBST<Integer> bst = addAll();
         Iterator<Integer> iterator = bst.select(-1, 4).iterator();
         assertEquals(new Integer(1), iterator.next());
         assertEquals(new Integer(2), iterator.next());
@@ -133,17 +133,17 @@ public class RedBlackBSTTest {
         assertFalse(iterator.hasNext());
     }
 
-    private RedBlackBST<Integer, String> addAll() {
-        RedBlackBST<Integer, String> bst = new RedBlackBST<>();
+    private RedBlackBST<Integer> addAll() {
+        RedBlackBST<Integer> bst = new RedBlackBST<>();
         
-        bst.put(1, "A");
-        bst.put(2, "B");
-        bst.put(3, "C");
-        bst.put(4, "D");
-        bst.put(5, "E");
-        bst.put(6, "F");
-        bst.put(7, "G");
-        bst.put(8, "H");
+        bst.put(1);
+        bst.put(2);
+        bst.put(3);
+        bst.put(4);
+        bst.put(5);
+        bst.put(6);
+        bst.put(7);
+        bst.put(8);
         return bst;
     }
 
