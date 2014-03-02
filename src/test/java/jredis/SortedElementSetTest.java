@@ -8,7 +8,7 @@ import java.util.Iterator;
 import org.junit.Test;
 
 public class SortedElementSetTest {
-    
+
     @Test
     public void test_insert_sort() {
         TreeElementSet elementSet = new TreeElementSet();
@@ -16,9 +16,9 @@ public class SortedElementSetTest {
         elementSet.insert(new Element("DFG", 1.2));
         elementSet.insert(new Element("OPQ", 1.8));
         elementSet.insert(new Element("KLM", 1.6));
-        
+
         Iterator<Element> iterElem = elementSet.iterator();
-        
+
         Element element = iterElem.next();
         assertEquals("DFG", element.getMember());
         assertEquals(new Double(1.2), element.getScore());
@@ -26,7 +26,7 @@ public class SortedElementSetTest {
         element = iterElem.next();
         assertEquals("HIJ", element.getMember());
         assertEquals(new Double(1.4), element.getScore());
-        
+
         element = iterElem.next();
         assertEquals("KLM", element.getMember());
         assertEquals(new Double(1.6), element.getScore());
@@ -46,16 +46,16 @@ public class SortedElementSetTest {
         elementSet.insert(new Element("ABC", 1.4));
         elementSet.insert(new Element("ABC", 1.6));
         elementSet.insert(new Element("ABC", 1.8));
-        
+
         Iterator<Element> iterElem = elementSet.iterator();
         Element element = iterElem.next();
         assertEquals("ABC", element.getMember());
         assertEquals(new Double(1.8), element.getScore());
-        
+
         element = iterElem.next();
         assertEquals("QWE", element.getMember());
         assertEquals(new Double(2.0), element.getScore());
-        
+
         assertFalse(iterElem.hasNext());
     }
 
@@ -66,12 +66,12 @@ public class SortedElementSetTest {
         elementSet.insert(new Element("DFG", 1.4));
         elementSet.insert(new Element("OPQ", 1.4));
         elementSet.insert(new Element("KLM", 1.4));
-        
+
         Iterator<Element> iterElem = elementSet.iterator();
         Element element = iterElem.next();
         assertEquals("DFG", element.getMember());
         assertEquals(new Double(1.4), element.getScore());
-        
+
         element = iterElem.next();
         assertEquals("HIJ", element.getMember());
         assertEquals(new Double(1.4), element.getScore());
@@ -86,13 +86,14 @@ public class SortedElementSetTest {
 
         assertFalse(iterElem.hasNext());
     }
-    
+
     @Test
     public void test_sublist() {
         TreeElementSet elementSet = addAll();
-        
-        Iterator<Element> iterElem = elementSet.subListByScore(1.5, 2.1).iterator();
-        
+
+        Iterator<Element> iterElem = elementSet.subsetByScore(1.5, 2.1)
+                .iterator();
+
         Element element = iterElem.next();
         assertEquals("KLM", element.getMember());
         assertEquals(new Double(1.6), element.getScore());
@@ -104,7 +105,7 @@ public class SortedElementSetTest {
         element = iterElem.next();
         assertEquals("QPM", element.getMember());
         assertEquals(new Double(2.0), element.getScore());
-        
+
         assertFalse(iterElem.hasNext());
 
     }
@@ -112,9 +113,10 @@ public class SortedElementSetTest {
     @Test
     public void test_sublist_from_inclusive() {
         TreeElementSet elementSet = addAll();
-        
-        Iterator<Element> iterElem = elementSet.subListByScore(1.6, 1.7).iterator();
-        
+
+        Iterator<Element> iterElem = elementSet.subsetByScore(1.6, 1.7)
+                .iterator();
+
         Element element = iterElem.next();
         assertEquals("KLM", element.getMember());
         assertEquals(new Double(1.6), element.getScore());
@@ -126,9 +128,10 @@ public class SortedElementSetTest {
     @Test
     public void test_sublist_to_inclusive() {
         TreeElementSet elementSet = addAll();
-        
-        Iterator<Element> iterElem = elementSet.subListByScore(2.1, 2.2).iterator();
-        
+
+        Iterator<Element> iterElem = elementSet.subsetByScore(2.1, 2.2)
+                .iterator();
+
         Element element = iterElem.next();
         assertEquals("VFR", element.getMember());
         assertEquals(new Double(2.2), element.getScore());
@@ -140,9 +143,10 @@ public class SortedElementSetTest {
     @Test
     public void test_sublist_from_infinity() {
         TreeElementSet elementSet = addAll();
-        
-        Iterator<Element> iterElem = elementSet.subListByScore(Double.NEGATIVE_INFINITY, 1.4).iterator();
-        
+
+        Iterator<Element> iterElem = elementSet.subsetByScore(
+                Double.NEGATIVE_INFINITY, 1.4).iterator();
+
         Element element = iterElem.next();
         assertEquals("DFG", element.getMember());
         assertEquals(new Double(1.2), element.getScore());
@@ -158,9 +162,10 @@ public class SortedElementSetTest {
     @Test
     public void test_sublist_to_infinity() {
         TreeElementSet elementSet = addAll();
-        
-        Iterator<Element> iterElem = elementSet.subListByScore(2.0, Double.POSITIVE_INFINITY).iterator();
-        
+
+        Iterator<Element> iterElem = elementSet.subsetByScore(2.0,
+                Double.POSITIVE_INFINITY).iterator();
+
         Element element = iterElem.next();
         assertEquals("QPM", element.getMember());
         assertEquals(new Double(2.0), element.getScore());
@@ -168,6 +173,28 @@ public class SortedElementSetTest {
         element = iterElem.next();
         assertEquals("VFR", element.getMember());
         assertEquals(new Double(2.2), element.getScore());
+
+        assertFalse(iterElem.hasNext());
+
+    }
+
+    @Test
+    public void test_sublist_by_rank() {
+        TreeElementSet elementSet = addAll();
+
+        Iterator<Element> iterElem = elementSet.subsetByRank(2, 4).iterator();
+
+        Element element = iterElem.next();
+        assertEquals("KLM", element.getMember());
+        assertEquals(new Double(1.6), element.getScore());
+
+        element = iterElem.next();
+        assertEquals("OPQ", element.getMember());
+        assertEquals(new Double(1.8), element.getScore());
+
+        element = iterElem.next();
+        assertEquals("QPM", element.getMember());
+        assertEquals(new Double(2.0), element.getScore());
 
         assertFalse(iterElem.hasNext());
 

@@ -1,6 +1,5 @@
 package jredis;
 
-import java.util.Set;
 
 public interface ElementSet extends Iterable<Element> {
     
@@ -20,21 +19,30 @@ public interface ElementSet extends Iterable<Element> {
     public int size();
     
     /**
-     * Sublist of elements at the given range of scores, both inclusive.
+     * Subset count of elements at the given range of scores, both inclusive.
      * 
      * @param from
      * @param to
      * @return
      */
-    public Set<Element> subListByScore(Double from, Double to);
+    public int subsetSizeByScore(Double from, Double to);
+    
+    /**
+     * Subset elements at the given range of scores, both inclusive.
+     * 
+     * @param from
+     * @param to
+     * @return
+     */
+    public Iterable<Element> subsetByScore(Double from, Double to);
 
     /**
-     * Sublist of elements at the given range of rank, both inclusive.
+     * Subset of elements at the given range of rank, both inclusive.
      * 
      * @param from
      * @param to
      * @return
      */
-    public Set<Element> subListByRank(Double from, Double to);
+    public Iterable<Element> subsetByRank(int from, int to);
 
 }

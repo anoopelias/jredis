@@ -57,7 +57,7 @@ public class ZcountCommand implements Command<Integer> {
             if (set == null)
                 return new ResponseNumber(0);
 
-            int count = set.subListByScore(from, to).size();
+            int count = set.subsetSizeByScore(from, to);
             return new ResponseNumber(count);
         }
 

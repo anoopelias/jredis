@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * A data structure to keep the element data sorted by score (zset).
@@ -16,7 +14,7 @@ import java.util.TreeSet;
 public class TreeElementSet implements ElementSet {
 
     private Map<String, Double> hashMap = new HashMap<>();
-    private TreeSet<Element> sortedSet = new TreeSet<>();
+    private RedBlackBST<Element, Object> sortedSet = new RedBlackBST<>();
 
     @Override
     public boolean insert(Element element) {
@@ -28,7 +26,7 @@ public class TreeElementSet implements ElementSet {
 
             Element existingElement = new Element(element.getMember(),
                     currentScore);
-            sortedSet.remove(existingElement);
+            sortedSet.delete(existingElement);
             updated = true;
         }
 
@@ -37,14 +35,14 @@ public class TreeElementSet implements ElementSet {
          * sorted set.
          */
         hashMap.put(element.getMember(), element.getScore());
-        sortedSet.add(element);
+        sortedSet.put(element, new Object());
 
         return !updated;
     }
 
     @Override
     public Iterator<Element> iterator() {
-        return sortedSet.iterator();
+        return sortedSet.keys().iterator();
     }
 
     @Override
@@ -53,20 +51,24 @@ public class TreeElementSet implements ElementSet {
     }
 
     @Override
-    public Set<Element> subListByScore(Double from, Double to) {
+    public int subsetSizeByScore(Double from, Double to) {
         if(from > to)
-            return Collections.emptySet();
+            return 0;
         
-        Element fromElement = new Element(null, from);
-        Element toElement = new Element(null, to);
-
-        return sortedSet.subSet(fromElement, true, toElement, true);
+        return sortedSet.size(new Element(null, from), new Element(null, to));
     }
 
     @Override
-    public Set<Element> subListByRank(Double from, Double to) {
-        // TODO Auto-generated method stub
-        return null;
+    public Iterable<Element> subsetByScore(Double from, Double to) {
+        if(from > to)
+            return Collections.emptySet();
+        
+        return sortedSet.keys(new Element(null, from), new Element(null, to));
+    }
+
+    @Override
+    public Iterable<Element> subsetByRank(int from, int to) {
+        return sortedSet.select(from, to);
     }
 
 }
