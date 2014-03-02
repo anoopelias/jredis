@@ -2,6 +2,12 @@ package jredis;
 
 import jredis.exception.InvalidCommand;
 
+/**
+ * Handle the logic of ZRANGE.
+ * 
+ * @author anoopelias
+ *
+ */
 public class ZrangeCommand implements Command<ElementRange> {
 
     private String key;

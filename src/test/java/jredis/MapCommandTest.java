@@ -197,7 +197,6 @@ public class MapCommandTest {
 
     }
 
-    
     @Test
     public void test_range_with_scores() throws InvalidCommand {
         addAll();
@@ -208,7 +207,6 @@ public class MapCommandTest {
 
     }
 
-    
     private void addAll() throws InvalidCommand {
         new ZaddCommand(ADD_SIX).execute();
         new ZaddCommand(ADD_SEVEN).execute();
