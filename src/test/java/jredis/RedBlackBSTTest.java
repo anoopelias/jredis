@@ -133,17 +133,6 @@ public class RedBlackBSTTest {
         assertFalse(iterator.hasNext());
     }
 
-    @Test
-    public void test_select_debug() {
-        RedBlackBST<Integer, String> bst = addAll();
-        Iterator<Integer> iterator = bst.select(3, 5).iterator();
-        assertEquals(new Integer(4), iterator.next());
-        assertEquals(new Integer(5), iterator.next());
-        assertEquals(new Integer(6), iterator.next());
-        assertFalse(iterator.hasNext());
-    }
-
-    
     private RedBlackBST<Integer, String> addAll() {
         RedBlackBST<Integer, String> bst = new RedBlackBST<>();
         
