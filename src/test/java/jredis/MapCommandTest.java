@@ -22,8 +22,8 @@ public class MapCommandTest {
     private static String[] ADD_SEVEN = {"Nums", "7.0", "Seven" };
     private static String[] ADD_EIGHT = {"Nums", "8.0", "Eight" };
     private static String[] ADD_INFINITY = {"Nums", "inf", "Infinity" };
-    private static String[] ADD_NEGATIVE_INFINITY = {"Nums", "-inf", "Infinity" };
-    private static String[] ADD_POSITIVE_INFINITY = {"Nums", "+inf", "Infinity" };
+    private static String[] ADD_NEGATIVE_INFINITY = {"Nums", "-inf", "NegativeInfinity" };
+    private static String[] ADD_POSITIVE_INFINITY = {"Nums", "+inf", "PositiveInfinity" };
 
     private static String[] ADD_INTEGER = {"Integer", "12", "Tweleve" };
 
@@ -98,7 +98,7 @@ public class MapCommandTest {
         Iterator<Element> results = rangeCommand.execute().value().iterator();
         
         Element element = results.next();
-        assertEquals("Infinity", element.getMember());
+        assertEquals("PositiveInfinity", element.getMember());
 
     }
 
@@ -116,7 +116,7 @@ public class MapCommandTest {
         Iterator<Element> results = rangeCommand.execute().value().iterator();
         
         Element element = results.next();
-        assertEquals("Infinity", element.getMember());
+        assertEquals("NegativeInfinity", element.getMember());
 
     }
 
