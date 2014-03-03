@@ -107,7 +107,7 @@ public class MapCommandTest {
         Command<?> command = new ZaddCommand(ADD_NEGATIVE_INFINITY);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
-        String[] range = {"Nums", "5", "inf"};
+        String[] range = {"Nums", "-inf", "inf"};
         command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
