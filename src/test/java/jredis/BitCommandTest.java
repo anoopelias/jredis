@@ -135,7 +135,9 @@ public class BitCommandTest {
     }
 
     /*
-     * TODO: Out of range offset tests
+     * TODO: 
+     * 1. Out of range offset tests
+     * 2. Set and then Getbit.
      */
 
     

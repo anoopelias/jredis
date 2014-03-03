@@ -28,22 +28,9 @@ public class ZcountCommand implements Command<Integer> {
 
     private double parse(String arg) throws InvalidCommand {
         try {
-            return Double.parseDouble(arg);
-        } catch (NumberFormatException e) {
+            return Utils.parseDouble(arg);
             
-            if (arg.endsWith("inf")) {
-                
-                if (arg.length() == 3)
-                    return Double.POSITIVE_INFINITY;
-
-                if (arg.length() == 4) {
-                    if (arg.charAt(0) == '+')
-                        return Double.POSITIVE_INFINITY;
-                    if (arg.charAt(0) == '-')
-                        return Double.NEGATIVE_INFINITY;
-                }
-            }
-
+        } catch (NumberFormatException e) {
             throw new InvalidCommand("Unknown argument : " + arg);
 
         }

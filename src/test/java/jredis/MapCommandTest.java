@@ -21,6 +21,11 @@ public class MapCommandTest {
     private static String[] ADD_SIX = {"Nums", "6.0", "Six" };
     private static String[] ADD_SEVEN = {"Nums", "7.0", "Seven" };
     private static String[] ADD_EIGHT = {"Nums", "8.0", "Eight" };
+    private static String[] ADD_INFINITY = {"Nums", "inf", "Infinity" };
+    private static String[] ADD_NEGATIVE_INFINITY = {"Nums", "-inf", "Infinity" };
+    private static String[] ADD_POSITIVE_INFINITY = {"Nums", "+inf", "Infinity" };
+
+    private static String[] ADD_INTEGER = {"Integer", "12", "Tweleve" };
 
     private static String[] CARD = {"Nums" };
     private static String[] CARD_NONE = {"Strings" };
@@ -60,6 +65,61 @@ public class MapCommandTest {
         assertEquals(Integer.valueOf(0), command.execute().value());
         
     }
+
+    @Test
+    public void test_add_infinity() throws InvalidCommand {
+        Command<?> command = new ZaddCommand(ADD_INFINITY);
+        assertEquals(Integer.valueOf(1), command.execute().value());
+        
+        String[] range = {"Nums", "5", "+inf"};
+        command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(1), command.execute().value());
+        
+        String[] args = {"Nums", "0", "2"};
+        ZrangeCommand rangeCommand = new ZrangeCommand(args);
+        Iterator<Element> results = rangeCommand.execute().value().iterator();
+        
+        Element element = results.next();
+        assertEquals("Infinity", element.getMember());
+
+    }
+    
+    @Test
+    public void test_add_positive_infinity() throws InvalidCommand {
+        Command<?> command = new ZaddCommand(ADD_POSITIVE_INFINITY);
+        assertEquals(Integer.valueOf(1), command.execute().value());
+        
+        String[] range = {"Nums", "5", "inf"};
+        command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(1), command.execute().value());
+        
+        String[] args = {"Nums", "0", "2"};
+        ZrangeCommand rangeCommand = new ZrangeCommand(args);
+        Iterator<Element> results = rangeCommand.execute().value().iterator();
+        
+        Element element = results.next();
+        assertEquals("Infinity", element.getMember());
+
+    }
+
+    @Test
+    public void test_add_negative_infinity() throws InvalidCommand {
+        Command<?> command = new ZaddCommand(ADD_NEGATIVE_INFINITY);
+        assertEquals(Integer.valueOf(1), command.execute().value());
+        
+        String[] range = {"Nums", "5", "inf"};
+        command = new ZcountCommand(range);
+        assertEquals(Integer.valueOf(1), command.execute().value());
+        
+        String[] args = {"Nums", "0", "2"};
+        ZrangeCommand rangeCommand = new ZrangeCommand(args);
+        Iterator<Element> results = rangeCommand.execute().value().iterator();
+        
+        Element element = results.next();
+        assertEquals("Infinity", element.getMember());
+
+    }
+
 
     @Test
     public void test_count() throws InvalidCommand {
@@ -205,6 +265,21 @@ public class MapCommandTest {
         ZrangeCommand command = new ZrangeCommand(args);
         assertTrue(command.execute().value().isScored());
 
+    }
+
+    @Test
+    public void test_range_with__integer_scores() throws InvalidCommand {
+        new ZaddCommand(ADD_INTEGER).execute();
+        
+        String[] args = {"Integer", "0", "1", "WITHSCORES"};
+        ZrangeCommand command = new ZrangeCommand(args);
+        Iterator<Element> results = command.execute().value().iterator();
+        
+        Element element = results.next();
+        assertEquals("Tweleve", element.getMember());
+        assertEquals(new Double(12.0), element.getScore());
+        
+        assertFalse(results.hasNext());
     }
 
     private void addAll() throws InvalidCommand {
