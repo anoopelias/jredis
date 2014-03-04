@@ -6,7 +6,7 @@ import jredis.exception.InvalidCommand;
  * Handle the logic of ZRANGE.
  * 
  * @author anoopelias
- *
+ * 
  */
 public class ZrangeCommand implements Command<ElementRange> {
 
@@ -22,12 +22,24 @@ public class ZrangeCommand implements Command<ElementRange> {
      * @throws InvalidCommand
      */
     public ZrangeCommand(String[] args) throws InvalidCommand {
-        this.key = args[0];
-        this.start = Integer.parseInt(args[1]);
-        this.stop = Integer.parseInt(args[2]);
 
-        if (args.length == 4 && "WITHSCORES".equals(args[3]))
-            withScores = true;
+        if (!(args.length == 3 || args.length == 4))
+            throw new InvalidCommand("Invalid args");
+
+        try {
+            this.key = args[0];
+            this.start = Integer.parseInt(args[1]);
+            this.stop = Integer.parseInt(args[2]);
+
+        } catch (NumberFormatException e) {
+            throw new InvalidCommand("Unparsable integer");
+        }
+
+        if (args.length == 4)
+            if ("WITHSCORES".equals(args[3]))
+                withScores = true;
+            else
+                throw new InvalidCommand("Invalid fourth argument");
 
     }
 
@@ -37,17 +49,16 @@ public class ZrangeCommand implements Command<ElementRange> {
             ElementSet set = DataMap.INSTANCE.get(key, ElementSet.class);
             if (set == null)
                 return new ResponseElementRange();
-            
-            if(start < 0)
+
+            if (start < 0)
                 start += set.size();
-            
-            if(stop < 0)
+
+            if (stop < 0)
                 stop += set.size();
 
-            
-            Iterable<Element> rangeElements = set.subsetByRank(
-                    start, stop);
-            ElementRange elementRange = new ElementRange(rangeElements, withScores);
+            Iterable<Element> rangeElements = set.subsetByRank(start, stop);
+            ElementRange elementRange = new ElementRange(rangeElements,
+                    withScores);
             return new ResponseElementRange(elementRange);
         }
     }
