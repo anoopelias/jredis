@@ -9,6 +9,7 @@ public class ZaddCommandTest {
     private String[] NO_ARGS = {};
     private String[] ONE_ARG = {"Numbers"};
     private String[] TWO_ARGS = {"Numbers", "1.05"};
+    private String[] FOUR_ARGS = {"Numbers", "1.05", "One", "Two"};
     private String[] INTEGER_SCORE = {"Numbers", "1", "One"};
     private String[] NEGATIVE_SCORE = {"Numbers", "-1.5", "One"};
 
@@ -28,6 +29,11 @@ public class ZaddCommandTest {
     @Test(expected=InvalidCommand.class)
     public void test_two_args() throws InvalidCommand {
         new ZaddCommand(TWO_ARGS);
+    }
+
+    @Test(expected=InvalidCommand.class)
+    public void test_four_args() throws InvalidCommand {
+        new ZaddCommand(FOUR_ARGS);
     }
 
     @Test(expected=InvalidCommand.class)
