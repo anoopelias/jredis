@@ -21,6 +21,9 @@ public class ZcountCommand implements Command<Integer> {
      * @throws InvalidCommand
      */
     public ZcountCommand(String[] args) throws InvalidCommand {
+        if(args.length != 3)
+            throw new InvalidCommand("Invalid number of args");
+        
         key = args[0];
         from = parse(args[1]);
         to = parse(args[2]);
