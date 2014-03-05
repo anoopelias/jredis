@@ -37,9 +37,9 @@ public class ResponseElementRange implements Response<ElementRange> {
     }
 
     @Override
-    public byte[] getBytes() {
+    public void write(ResponseWriter writer) {
         // TODO Auto-generated method stub
-        return null;
+        
     }
 
 }

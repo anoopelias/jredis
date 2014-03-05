@@ -13,6 +13,8 @@ import java.io.OutputStream;
 public class ResponseWriter {
 
     private OutputStream out;
+    
+    private static byte[] CRLF = {'\r', '\n'};
 
     /**
      * Construct a writer using output stream.
@@ -24,13 +26,30 @@ public class ResponseWriter {
     }
 
     /**
-     * Write a response back to the client.
+     * Write a string back to the client.
      * 
      * @param output
      * @throws IOException 
      */
-    public void write(Response<?> response) throws IOException {
-        out.write(response.getBytes());
+    public void write(String value) throws IOException {
+        if(value == null)
+            out.write("$-1".getBytes());
+        else 
+            out.write(("+" + value).getBytes());
+        
+        out.write(CRLF);
+        out.flush();
+    }
+
+    /**
+     * Write a number back to the client.
+     * 
+     * @param output
+     * @throws IOException 
+     */
+    public void write(int number) throws IOException {
+        out.write((":" + number).getBytes());        
+        out.write(CRLF);
         out.flush();
     }
 

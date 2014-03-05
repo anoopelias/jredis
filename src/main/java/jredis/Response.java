@@ -1,5 +1,7 @@
 package jredis;
 
+import java.io.IOException;
+
 /**
  * Interface for response types.
  * 
@@ -17,10 +19,10 @@ public interface Response<T> {
     public T value();
 
     /**
-     * Convert the response to its protocol type.
+     * Write the response using writer.
      * 
-     * @return
+     * @param writer
      */
-    public byte[] getBytes(); 
+    public void write(ResponseWriter writer) throws IOException;
     
 }

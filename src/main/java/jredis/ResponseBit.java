@@ -1,15 +1,17 @@
 package jredis;
 
+import java.io.IOException;
+
 /**
  * Bit response type.
  * 
  * @author anoopelias
- *
+ * 
  */
 public class ResponseBit implements Response<Boolean> {
-    
+
     private Boolean bit;
-    
+
     /**
      * Construct a response of type bit with the value specified.
      * 
@@ -25,8 +27,8 @@ public class ResponseBit implements Response<Boolean> {
     }
 
     @Override
-    public byte[] getBytes() {
-        return (":" + (bit ? "1" : "0") + "\r\n").getBytes();
+    public void write(ResponseWriter writer) throws IOException {
+        writer.write(bit ? 1 : 0);
     }
 
 }

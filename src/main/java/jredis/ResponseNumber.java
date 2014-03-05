@@ -1,9 +1,11 @@
 package jredis;
 
+import java.io.IOException;
+
 public class ResponseNumber implements Response<Integer> {
-    
+
     private Integer number;
-    
+
     public ResponseNumber(Integer number) {
         this.number = number;
     }
@@ -14,8 +16,8 @@ public class ResponseNumber implements Response<Integer> {
     }
 
     @Override
-    public byte[] getBytes() {
-        return (":" + number + "\r\n").getBytes();
+    public void write(ResponseWriter writer) throws IOException {
+        writer.write(number.intValue());
     }
 
 }

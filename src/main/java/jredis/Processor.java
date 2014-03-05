@@ -42,7 +42,7 @@ public class Processor implements Callable<Object> {
     
             Command<?> c;
             while ((c = reader.next()) != null) {
-                writer.write(c.execute());
+                c.execute().write(writer);
             }
             clientSocket.close();
             

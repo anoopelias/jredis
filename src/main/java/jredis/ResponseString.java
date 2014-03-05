@@ -1,5 +1,7 @@
 package jredis;
 
+import java.io.IOException;
+
 /**
  * String response type.
  * 
@@ -33,11 +35,8 @@ public class ResponseString implements Response<String> {
     }
 
     @Override
-    public byte[] getBytes() {
-        if(value == null)
-            return "$-1\r\n".getBytes();
-        
-        return ("+" + value + "\r\n").getBytes();
+    public void write(ResponseWriter writer) throws IOException {
+        writer.write(value);
     }
 
 }
