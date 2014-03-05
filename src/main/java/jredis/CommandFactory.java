@@ -18,8 +18,27 @@ public class CommandFactory {
             c = new GetbitCommand(args);
         else if("SETBIT".equals(name))
             c = new SetbitCommand(args);
+        else if("ZADD".equals(name))
+            c = new ZaddCommand(args);
+        else if("ZCARD".equals(name))
+            c = new ZcardCommand(args);
+        else if("ZCOUNT".equals(name))
+            c = new ZcountCommand(args);
+        
+        if(Server.isDebug()) {
+            print(c, name, args);
+        }
+        
         return c;
 
+    }
+
+    private void print(Command<?> c, String name, String[] args) {
+        System.out.print("Command : " + c + " " + name + " ");
+        for(String arg : args) {
+            System.out.print(arg + " ");
+        }
+        System.out.println();
     }
 
 }

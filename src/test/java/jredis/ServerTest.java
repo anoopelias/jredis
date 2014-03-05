@@ -8,6 +8,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import jredis.nft.Timer;
 
@@ -67,14 +70,26 @@ public class ServerTest {
 
         assertEquals("Dorsey", jedis.get("Jack").trim());
         assertEquals("Musk", jedis2.get("Elon").trim());
-        
         assertNull(jedis.get("Filipe"));
         
-        byte[] key = "Keys".getBytes();
+        String key = "Keys";
         assertFalse(jedis.setbit(key, 10, true));
         assertTrue(jedis.getbit(key, 10));
         assertFalse(jedis.getbit(key, 20));
-
+        
+        key = "Numbers";
+        Map<Double, String> val = new HashMap<>();
+        val.put(5.0, "Five");
+        jedis2.zadd(key, val);
+        
+        val.clear();
+        val.put(8.0, "Eight");
+        jedis2.zadd(key, val);
+        
+        assertEquals(Long.valueOf(2), jedis2.zcard(key));
+        assertEquals(Long.valueOf(1), jedis2.zcount(key, 1.0, 6.0));
+//        Set<String> keys = jedis2.zrange(key, 0, 1);
+//        assertEquals(2, keys.size());
     }
 
 }
