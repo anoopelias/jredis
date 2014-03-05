@@ -13,8 +13,11 @@ import java.io.OutputStream;
 public class ResponseWriter {
 
     private OutputStream out;
-    
-    private static byte[] CRLF = {'\r', '\n'};
+
+    private static final byte DOLLAR = '$';
+    private static final byte PLUS = '+';
+    private static final byte[] CRLF = { '\r', '\n' };
+    private static final byte[] NULL_STRING = { DOLLAR, '-', '1' };
 
     /**
      * Construct a writer using output stream.
@@ -29,15 +32,35 @@ public class ResponseWriter {
      * Write a string back to the client.
      * 
      * @param output
-     * @throws IOException 
+     * @throws IOException
      */
     public void write(String value) throws IOException {
-        if(value == null)
-            out.write("$-1".getBytes());
-        else 
-            out.write(("+" + value).getBytes());
-        
+        if (value == null) {
+            out.write(NULL_STRING);
+            out.write(CRLF);
+        } else {
+            byte[] bValue = value.getBytes();
+            out.write(DOLLAR);
+            out.write(String.valueOf(bValue.length).getBytes());
+            out.write(CRLF);
+            out.write(bValue);
+            out.write(CRLF);
+        }
+
+        out.flush();
+    }
+
+    /**
+     * Write a string back to the client.
+     * 
+     * @param output
+     * @throws IOException
+     */
+    public void writeOk() throws IOException {
+        out.write(PLUS);
+        out.write(ResponseOk.OK.getBytes());
         out.write(CRLF);
+
         out.flush();
     }
 
@@ -45,10 +68,10 @@ public class ResponseWriter {
      * Write a number back to the client.
      * 
      * @param output
-     * @throws IOException 
+     * @throws IOException
      */
     public void write(int number) throws IOException {
-        out.write((":" + number).getBytes());        
+        out.write((":" + number).getBytes());
         out.write(CRLF);
         out.flush();
     }

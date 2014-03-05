@@ -83,8 +83,8 @@ public class SetCommand implements Command<String> {
                 return new ResponseString();
 
             DataMap.INSTANCE.put(key, stringValue);
-            return new ResponseString("OK");
         }
+        return new ResponseOk();
     }
 
     private TimedString createValue() {
