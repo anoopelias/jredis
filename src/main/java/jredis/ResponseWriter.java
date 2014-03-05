@@ -42,8 +42,12 @@ public class ResponseWriter {
         
         Set<Element> elements = elementRange.getElements();
         
+        long outputSize = elements.size();
+        if(elementRange.isScored())
+            outputSize *= 2;
+        
         out.write(STAR);
-        out.write(String.valueOf(elements.size()).getBytes());
+        out.write(String.valueOf(outputSize).getBytes());
         out.write(CRLF);
         
         for(Element element : elements) {

@@ -66,7 +66,7 @@ public class ServerTest {
     @Test
     public void test_server_request() throws UnknownHostException, IOException {
         Jedis jedis = new Jedis(HOST, PORT);
-        Jedis jedis2 = new Jedis(HOST, PORT);
+        Jedis jedis2 = new Jedis(HOST, PORT, 200000);
         assertEquals("OK", jedis.set("Jack", "Dorsey").trim());
         assertEquals("OK", jedis2.set("Elon", "Musk").trim());
 
@@ -103,8 +103,7 @@ public class ServerTest {
         assertEquals("Five", iterKeys.next());
         assertEquals("Eight", iterKeys.next());
 
-        Set<Tuple> tuples = jedis2.zrangeWithScores(key, 0, 5);
-        // FIXME: This should be 2.
+        Set<Tuple> tuples = jedis2.zrangeWithScores(key, 0, 0);
         assertEquals(1, tuples.size());
         Iterator<Tuple> iterTuples = tuples.iterator();
         
