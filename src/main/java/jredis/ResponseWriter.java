@@ -16,6 +16,8 @@ public class ResponseWriter {
 
     private static final byte DOLLAR = '$';
     private static final byte PLUS = '+';
+    private static final byte COLON = ':';
+    
     private static final byte[] CRLF = { '\r', '\n' };
     private static final byte[] NULL_STRING = { DOLLAR, '-', '1' };
 
@@ -71,7 +73,8 @@ public class ResponseWriter {
      * @throws IOException
      */
     public void write(int number) throws IOException {
-        out.write((":" + number).getBytes());
+        out.write(COLON);
+        out.write(String.valueOf(number).getBytes());
         out.write(CRLF);
         out.flush();
     }
