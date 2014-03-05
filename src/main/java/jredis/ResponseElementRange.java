@@ -1,5 +1,6 @@
 package jredis;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 /**
@@ -37,9 +38,8 @@ public class ResponseElementRange implements Response<ElementRange> {
     }
 
     @Override
-    public void write(ResponseWriter writer) {
-        // TODO Auto-generated method stub
-        
+    public void write(ResponseWriter writer) throws IOException {
+        writer.write(value());
     }
 
 }

@@ -1,6 +1,7 @@
 package jredis;
 
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Data structure to hold the response to a range request.
@@ -8,10 +9,10 @@ import java.util.Iterator;
  * @author anoopelias
  * 
  */
-public class ElementRange implements Iterable<Element> {
+public class ElementRange {
 
     private boolean scored;
-    private Iterable<Element> elements;
+    private Set<Element> elements;
 
     /**
      * Construct and element range response.
@@ -19,7 +20,7 @@ public class ElementRange implements Iterable<Element> {
      * @param elements
      * @param hasScores
      */
-    public ElementRange(Iterable<Element> elements, boolean scored) {
+    public ElementRange(Set<Element> elements, boolean scored) {
         this.elements = elements;
         this.scored = scored;
     }
@@ -33,9 +34,8 @@ public class ElementRange implements Iterable<Element> {
         return scored;
     }
 
-    @Override
-    public Iterator<Element> iterator() {
-        return elements.iterator();
+    public Set<Element> getElements() {
+        return elements;
     }
     
     

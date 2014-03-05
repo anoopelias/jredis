@@ -24,6 +24,8 @@ public class CommandFactory {
             c = new ZcardCommand(args);
         else if("ZCOUNT".equals(name))
             c = new ZcountCommand(args);
+        else if("ZRANGE".equals(name))
+            c = new ZrangeCommand(args);
         
         if(Server.isDebug()) {
             print(c, name, args);

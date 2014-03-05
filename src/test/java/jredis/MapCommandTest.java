@@ -77,7 +77,7 @@ public class MapCommandTest {
         
         String[] args = {"Nums", "0", "2"};
         ZrangeCommand rangeCommand = new ZrangeCommand(args);
-        Iterator<Element> results = rangeCommand.execute().value().iterator();
+        Iterator<Element> results = rangeCommand.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("Infinity", element.getMember());
@@ -95,7 +95,7 @@ public class MapCommandTest {
         
         String[] args = {"Nums", "0", "2"};
         ZrangeCommand rangeCommand = new ZrangeCommand(args);
-        Iterator<Element> results = rangeCommand.execute().value().iterator();
+        Iterator<Element> results = rangeCommand.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("PositiveInfinity", element.getMember());
@@ -113,7 +113,7 @@ public class MapCommandTest {
         
         String[] args = {"Nums", "0", "2"};
         ZrangeCommand rangeCommand = new ZrangeCommand(args);
-        Iterator<Element> results = rangeCommand.execute().value().iterator();
+        Iterator<Element> results = rangeCommand.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("NegativeInfinity", element.getMember());
@@ -185,7 +185,7 @@ public class MapCommandTest {
         
         String[] args = {"Nums", "3", "5"};
         ZrangeCommand command = new ZrangeCommand(args);
-        Iterator<Element> results = command.execute().value().iterator();
+        Iterator<Element> results = command.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("Four", element.getMember());
@@ -203,7 +203,7 @@ public class MapCommandTest {
         
         String[] args = {"Nums", "-3", "5"};
         ZrangeCommand command = new ZrangeCommand(args);
-        Iterator<Element> results = command.execute().value().iterator();
+        Iterator<Element> results = command.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("Six", element.getMember());
@@ -219,7 +219,7 @@ public class MapCommandTest {
         
         String[] args = {"Nums", "1", "-5"};
         ZrangeCommand command = new ZrangeCommand(args);
-        Iterator<Element> results = command.execute().value().iterator();
+        Iterator<Element> results = command.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("Two", element.getMember());
@@ -235,7 +235,7 @@ public class MapCommandTest {
         
         String[] args = {"Nums", "3", "3"};
         ZrangeCommand command = new ZrangeCommand(args);
-        Iterator<Element> results = command.execute().value().iterator();
+        Iterator<Element> results = command.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("Four", element.getMember());
@@ -249,7 +249,7 @@ public class MapCommandTest {
         
         String[] args = {"Nums", "-2", "-2"};
         ZrangeCommand command = new ZrangeCommand(args);
-        Iterator<Element> results = command.execute().value().iterator();
+        Iterator<Element> results = command.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("Seven", element.getMember());
@@ -273,7 +273,7 @@ public class MapCommandTest {
         
         String[] args = {"Integer", "0", "1", "WITHSCORES"};
         ZrangeCommand command = new ZrangeCommand(args);
-        Iterator<Element> results = command.execute().value().iterator();
+        Iterator<Element> results = command.execute().value().getElements().iterator();
         
         Element element = results.next();
         assertEquals("Tweleve", element.getMember());

@@ -1,8 +1,10 @@
 package jredis;
 
 import java.util.ArrayDeque;
+import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * Reference : http://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html
@@ -429,14 +431,14 @@ public class RedBlackBST<Item extends Comparable<Item>> {
     }
 
     // Keys of rank from lo to hi
-    public Iterable<Item> select(int lo, int hi) {
-        Queue<Item> queue = new ArrayDeque<>();
+    public Set<Item> select(int lo, int hi) {
+        Set<Item> queue = new LinkedHashSet<>();
         select(root, queue, lo, hi);
         return queue;
     }
 
     // the range of rank k in the subtree rooted at x
-    private void select(Node x, Queue<Item> queue, int lo, int hi) {
+    private void select(Node x, Set<Item> queue, int lo, int hi) {
         if(x == null) return;
         
         int rank = size(x.left);

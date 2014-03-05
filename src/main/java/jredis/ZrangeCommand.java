@@ -1,5 +1,7 @@
 package jredis;
 
+import java.util.Set;
+
 import jredis.exception.InvalidCommand;
 
 /**
@@ -36,7 +38,7 @@ public class ZrangeCommand implements Command<ElementRange> {
         }
 
         if (args.length == 4)
-            if ("WITHSCORES".equals(args[3]))
+            if ("WITHSCORES".equalsIgnoreCase(args[3]))
                 withScores = true;
             else
                 throw new InvalidCommand("Invalid fourth argument");
@@ -56,7 +58,7 @@ public class ZrangeCommand implements Command<ElementRange> {
             if (stop < 0)
                 stop += set.size();
 
-            Iterable<Element> rangeElements = set.subsetByRank(start, stop);
+            Set<Element> rangeElements = set.subsetByRank(start, stop);
             ElementRange elementRange = new ElementRange(rangeElements,
                     withScores);
             return new ResponseElementRange(elementRange);

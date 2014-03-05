@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import jredis.nft.Timer;
 
@@ -17,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Tuple;
 
 public class ServerTest {
 
@@ -87,8 +90,27 @@ public class ServerTest {
         
         assertEquals(Long.valueOf(2), jedis2.zcard(key));
         assertEquals(Long.valueOf(1), jedis2.zcount(key, 1.0, 6.0));
-//        Set<String> keys = jedis2.zrange(key, 0, 1);
-//        assertEquals(2, keys.size());
+        
+        Set<String> keys = jedis2.zrange(key, 0, 5);
+        assertEquals(2, keys.size());
+        Iterator<String> iterKeys = keys.iterator();
+        assertEquals("Five", iterKeys.next());
+        assertEquals("Eight", iterKeys.next());
+
+        keys = jedis2.zrange(key, 0, 5);
+        assertEquals(2, keys.size());
+        iterKeys = keys.iterator();
+        assertEquals("Five", iterKeys.next());
+        assertEquals("Eight", iterKeys.next());
+
+        Set<Tuple> tuples = jedis2.zrangeWithScores(key, 0, 5);
+        // FIXME: This should be 2.
+        assertEquals(1, tuples.size());
+        Iterator<Tuple> iterTuples = tuples.iterator();
+        
+        Tuple tuple = iterTuples.next();
+        assertEquals("Five", tuple.getElement());
+        assertEquals(5.0, tuple.getScore(), 0.0);
     }
 
 }

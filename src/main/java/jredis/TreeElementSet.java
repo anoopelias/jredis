@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A data structure to keep the element data sorted by score (zset).
@@ -67,7 +68,7 @@ public class TreeElementSet implements ElementSet {
     }
 
     @Override
-    public Iterable<Element> subsetByRank(int from, int to) {
+    public Set<Element> subsetByRank(int from, int to) {
         return sortedSet.select(from, to);
     }
 

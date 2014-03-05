@@ -6,19 +6,20 @@ import org.junit.Test;
 
 public class ZrangeCommandTest {
     
-    private String[] NO_ARGS = {};
-    private String[] ONE_ARG = {"Numbers"};
-    private String[] TWO_ARGS = {"Numbers", "1"};
-    private String[] THREE_ARGS = {"Numbers", "4", "9"};
+    private static final String[] NO_ARGS = {};
+    private static final String[] ONE_ARG = {"Numbers"};
+    private static final String[] TWO_ARGS = {"Numbers", "1"};
+    private static final String[] THREE_ARGS = {"Numbers", "4", "9"};
 
-    private String[] FOUR_ARGS = {"Numbers", "4", "9", "WITHSCORES"};
-    private String[] INVALID_WITHSCORES = {"Numbers", "4", "9", "with scores"};
+    private static final String[] FOUR_ARGS = {"Numbers", "4", "9", "WITHSCORES"};
+    private static final String[] LOWER_CASE_WITHSCORES = {"Numbers", "4", "9", "withscores"};
+    private static final String[] INVALID_WITHSCORES = {"Numbers", "4", "9", "with scores"};
 
-    private String[] STRING_START = {"Numbers", "KLM", "9"};
-    private String[] FLOAT_START = {"Numbers", "4.05", "9"};
+    private static final String[] STRING_START = {"Numbers", "KLM", "9"};
+    private static final String[] FLOAT_START = {"Numbers", "4.05", "9"};
 
-    private String[] STRING_STOP = {"Numbers", "2", "QWE"};
-    private String[] FLOAT_STOP = {"Numbers", "4", "6.49"};
+    private static final String[] STRING_STOP = {"Numbers", "2", "QWE"};
+    private static final String[] FLOAT_STOP = {"Numbers", "4", "6.49"};
 
     @Test(expected = InvalidCommand.class)
     public void test_no_args() throws InvalidCommand {
@@ -43,6 +44,11 @@ public class ZrangeCommandTest {
     @Test
     public void test_four_args() throws InvalidCommand {
         new ZrangeCommand(FOUR_ARGS).execute();
+    }
+
+    @Test
+    public void test_lower_withscores() throws InvalidCommand {
+        new ZrangeCommand(LOWER_CASE_WITHSCORES).execute();
     }
 
     @Test(expected = InvalidCommand.class)

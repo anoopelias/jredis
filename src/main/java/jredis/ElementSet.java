@@ -1,5 +1,7 @@
 package jredis;
 
+import java.util.Set;
+
 
 public interface ElementSet extends Iterable<Element> {
     
@@ -43,6 +45,6 @@ public interface ElementSet extends Iterable<Element> {
      * @param to
      * @return
      */
-    public Iterable<Element> subsetByRank(int from, int to);
+    public Set<Element> subsetByRank(int from, int to);
 
 }
