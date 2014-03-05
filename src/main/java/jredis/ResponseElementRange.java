@@ -37,7 +37,7 @@ public class ResponseElementRange implements Response<ElementRange> {
     }
 
     @Override
-    public String encode() {
+    public byte[] getBytes() {
         // TODO Auto-generated method stub
         return null;
     }

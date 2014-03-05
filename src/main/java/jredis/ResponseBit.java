@@ -25,8 +25,8 @@ public class ResponseBit implements Response<Boolean> {
     }
 
     @Override
-    public String encode() {
-        return ":" + (bit ? "1" : "0");
+    public byte[] getBytes() {
+        return (":" + (bit ? "1" : "0") + "\r\n").getBytes();
     }
 
 }

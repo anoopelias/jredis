@@ -14,8 +14,8 @@ public class ResponseNumber implements Response<Integer> {
     }
 
     @Override
-    public String encode() {
-        return ":" + number;
+    public byte[] getBytes() {
+        return (":" + number + "\r\n").getBytes();
     }
 
 }

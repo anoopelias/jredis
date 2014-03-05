@@ -1,17 +1,18 @@
 package jredis;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 
 /**
  * Response writer to handle response protocol.
  * 
  * @author anoopelias
- *
+ * 
  */
 public class ResponseWriter {
 
-    private PrintWriter out;
+    private OutputStream out;
 
     /**
      * Construct a writer using output stream.
@@ -19,16 +20,18 @@ public class ResponseWriter {
      * @param os
      */
     public ResponseWriter(OutputStream os) {
-        out = new PrintWriter(os, true);
+        out = new BufferedOutputStream(os);
     }
 
     /**
      * Write a response back to the client.
      * 
      * @param output
+     * @throws IOException 
      */
-    public void write(Response<?> response) {
-        out.println(response.encode() + "\r");
+    public void write(Response<?> response) throws IOException {
+        out.write(response.getBytes());
+        out.flush();
     }
 
 }

@@ -33,11 +33,11 @@ public class ResponseString implements Response<String> {
     }
 
     @Override
-    public String encode() {
+    public byte[] getBytes() {
         if(value == null)
-            return "$-1";
+            return "$-1\r\n".getBytes();
         
-        return "+" + value;
+        return ("+" + value + "\r\n").getBytes();
     }
 
 }
