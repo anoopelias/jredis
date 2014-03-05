@@ -14,7 +14,7 @@ public class ResponseNumber implements Response<Integer> {
     }
 
     @Override
-    public String toProtocolString() {
+    public String encode() {
         return ":" + number;
     }
 

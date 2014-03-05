@@ -28,7 +28,7 @@ public class ResponseWriter {
      * @param output
      */
     public void write(Response<?> response) {
-        out.println(response.toProtocolString() + "\r");
+        out.println(response.encode() + "\r");
     }
 
 }

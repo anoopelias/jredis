@@ -21,6 +21,6 @@ public interface Response<T> {
      * 
      * @return
      */
-    public String toProtocolString(); 
+    public String encode(); 
     
 }

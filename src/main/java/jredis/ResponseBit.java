@@ -25,7 +25,7 @@ public class ResponseBit implements Response<Boolean> {
     }
 
     @Override
-    public String toProtocolString() {
+    public String encode() {
         return ":" + (bit ? "1" : "0");
     }
 

@@ -37,7 +37,7 @@ public class ResponseElementRange implements Response<ElementRange> {
     }
 
     @Override
-    public String toProtocolString() {
+    public String encode() {
         // TODO Auto-generated method stub
         return null;
     }
