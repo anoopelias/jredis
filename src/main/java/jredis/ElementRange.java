@@ -1,6 +1,5 @@
 package jredis;
 
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -13,15 +12,25 @@ public class ElementRange {
 
     private boolean scored;
     private Set<Element> elements;
+    
+    /**
+     * Construct and element range.
+     * 
+     * @param elements
+     * @param hasScores
+     */
+    public ElementRange(Set<Element> elements) {
+        this.elements = elements;
+    }
 
     /**
-     * Construct and element range response.
+     * Construct and element range if it is scored.
      * 
      * @param elements
      * @param hasScores
      */
     public ElementRange(Set<Element> elements, boolean scored) {
-        this.elements = elements;
+        this(elements);
         this.scored = scored;
     }
 
@@ -34,6 +43,11 @@ public class ElementRange {
         return scored;
     }
 
+    /**
+     * Get the element in the range in order.
+     * 
+     * @return
+     */
     public Set<Element> getElements() {
         return elements;
     }

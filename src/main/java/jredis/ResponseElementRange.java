@@ -18,6 +18,7 @@ public class ResponseElementRange implements Response<ElementRange> {
      * 
      */
     public ResponseElementRange() {
+        this.elementRange = new ElementRange(new HashSet<Element>());
     }
 
     /**
@@ -31,15 +32,12 @@ public class ResponseElementRange implements Response<ElementRange> {
 
     @Override
     public ElementRange value() {
-        if(elementRange == null)
-            return new ElementRange(new HashSet<Element>(), false);
-        
         return elementRange;
     }
 
     @Override
     public void write(ResponseWriter writer) throws IOException {
-        writer.write(value());
+        writer.write(elementRange);
     }
 
 }
