@@ -74,8 +74,6 @@ public class CommandReaderTest {
     }
 
     /* TODO : InvalidCommand test cases
-     * 1. GET with two args
-     * 2. SET with only one arg
      * 3. Commands which doesn't start with a *
      * 4. Commands which do not belong to any specified commands
      * 5. Commands where there is not enough arguments as specified initially. (For eg. the stream finishes earlier)
