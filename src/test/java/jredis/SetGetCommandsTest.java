@@ -7,7 +7,7 @@ import jredis.exception.InvalidCommand;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SetGetCommandTest {
+public class SetGetCommandsTest {
     
     public static String[] SET = {"Rahul", "Dravid"};
     public static String[] GET = {"Rahul"};

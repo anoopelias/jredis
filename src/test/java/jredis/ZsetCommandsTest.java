@@ -11,7 +11,7 @@ import jredis.exception.InvalidCommand;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MapCommandTest {
+public class ZsetCommandsTest {
     
     private static String[] ADD_ONE = {"Nums", "1.0", "One" };
     private static String[] ADD_TWO = {"Nums", "2.0", "Two" };

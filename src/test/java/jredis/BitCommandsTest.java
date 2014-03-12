@@ -7,7 +7,7 @@ import jredis.exception.InvalidCommand;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BitCommandTest {
+public class BitCommandsTest {
     private static String[] SETBIT = {"Keys", "7", "1"};
     private static String[] GETBIT = {"Keys", "7"};
 
