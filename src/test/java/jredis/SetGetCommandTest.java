@@ -16,7 +16,6 @@ public class SetGetCommandTest {
     public static String[] SET_NX_NX = {"Rahul", "Gandhi", "NX", "NX"};
     public static String[] SET_XX = {"Rahul", "Gandhi", "XX"};
     public static String[] SET_NX_XX = {"Rahul", "Gandhi", "NX", "XX"};
-    public static String[] SET_NX_KX = {"Rahul", "Gandhi", "NX", "KX"};
 
     public static String[] SET_PX = {"Rahul", "Dravid", "PX", "100"};
     public static String[] SET_EX = {"Rahul", "Dravid", "EX", "2"};
@@ -41,18 +40,6 @@ public class SetGetCommandTest {
         
         command = new GetCommand(GET);
         assertEquals("Dravid",  command.execute().value());
-    }
-
-    @Test(expected = InvalidCommand.class)
-    public void test_get_invalid_params() throws InvalidCommand {
-        Command<String> command = new GetCommand(SET);
-        command.execute().value();
-    }
-
-    @Test(expected = InvalidCommand.class)
-    public void test_put_invalid_params() throws InvalidCommand {
-        Command<String> command = new SetCommand(GET);
-        command.execute().value();
     }
 
     @Test
@@ -124,12 +111,6 @@ public class SetGetCommandTest {
         assertEquals("Dravid",  command.execute().value());
     }
 
-    @Test(expected = InvalidCommand.class)
-    public void test_set_unknown_argument() throws InvalidCommand {
-        Command<String> command = new GetCommand(SET_NX_KX);
-        command.execute().value();
-    }
-
     @Test
     public void test_setpx() throws InvalidCommand, InterruptedException {
         Command<String> command = new SetCommand(SET_PX);
@@ -173,30 +154,6 @@ public class SetGetCommandTest {
         assertNull(command.execute().value());
     }
 
-    @Test(expected = InvalidCommand.class)
-    public void test_get_px_no_time() throws InvalidCommand {
-        Command<String> command = new SetCommand(SET_PX_NO_TIME);
-        command.execute().value();
-    }
-
-    @Test(expected = InvalidCommand.class)
-    public void test_get_ex_no_time() throws InvalidCommand {
-        Command<String> command = new SetCommand(SET_EX_NO_TIME);
-        command.execute().value();
-    }
-
-    @Test(expected = InvalidCommand.class)
-    public void test_get_px_invalid_time() throws InvalidCommand {
-        Command<String> command = new SetCommand(SET_PX_INVALID_TIME);
-        command.execute().value();
-    }
-
-    @Test(expected = InvalidCommand.class)
-    public void test_get_ex_invalid_time() throws InvalidCommand {
-        Command<String> command = new SetCommand(SET_EX_INVALID_TIME);
-        command.execute().value();
-    }
-    
     @Test
     public void test_setPx_combination() throws InvalidCommand, InterruptedException {
         Command<String> command = new SetCommand(SET);
