@@ -1,15 +1,17 @@
 package jredis;
 
+import static jredis.TestUtil.COLON;
+import static jredis.TestUtil.CRLF;
+import static jredis.TestUtil.DOLLAR;
+import static jredis.TestUtil.MINUS;
+import static jredis.TestUtil.OK;
+import static jredis.TestUtil.mockSocket;
+import static jredis.TestUtil.toCommand;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
 
 import org.junit.Before;
@@ -17,12 +19,6 @@ import org.junit.Test;
 
 public class ProcessorTest {
 
-    private static final char STAR = '*';
-    private static final char DOLLAR = '$';
-    private static final char MINUS = '-';
-    private static final char COLON = ':';
-    private static final String OK = "+OK";
-    private static String CRLF = "\r\n";
 
     private static String[] CMD_SET = { "SET", "Elon", "Musk" };
     private static String[] CMD_GET = { "GET", "Elon" };
@@ -53,8 +49,9 @@ public class ProcessorTest {
     private static String[] CMD_ZRANGE = { "ZRANGE", "Numbers", "1", "5" };
 
     private static String[] CMD_ZADD_INVALID = { "ZADD", "Elon", "1.0", "One" };
-    private static String[] CMD_ZCARD_INVALID = { "ZCARD", "Elon"};
-    private static String[] CMD_ZCOUNT_INVALID = { "ZCOUNT", "Elon", "1.5", "3.5"};
+    private static String[] CMD_ZCARD_INVALID = { "ZCARD", "Elon" };
+    private static String[] CMD_ZCOUNT_INVALID = { "ZCOUNT", "Elon", "1.5",
+            "3.5" };
     private static String[] CMD_ZRANGE_INVALID = { "ZRANGE", "Elon", "1", "5" };
 
     @Before
@@ -233,7 +230,7 @@ public class ProcessorTest {
 
         Processor processor = new Processor(socket, 2L);
         processor.call();
-        
+
         String[] output = os.toString().split(CRLF);
         assertEquals(4, output.length);
 
@@ -243,30 +240,4 @@ public class ProcessorTest {
         assertEquals("Musk", output[3]);
     }
 
-    private Socket mockSocket(String command, OutputStream os)
-            throws IOException {
-
-        Socket socket = mock(Socket.class);
-        ByteArrayInputStream is = new ByteArrayInputStream(command.getBytes());
-
-        when(socket.getInputStream()).thenReturn(is);
-        when(socket.getOutputStream()).thenReturn(os);
-        return socket;
-    }
-
-    public static String toCommand(String[] args) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(STAR);
-        sb.append(args.length);
-        sb.append(CRLF);
-        for (String arg : args) {
-            sb.append(DOLLAR);
-            sb.append(arg.getBytes().length);
-            sb.append(CRLF);
-            sb.append(arg);
-            sb.append(CRLF);
-        }
-
-        return sb.toString();
-    }
 }
