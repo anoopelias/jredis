@@ -54,18 +54,20 @@ public class CommandReaderTest {
     }
 
     /*
-     * TODO : InvalidCommand test cases 3. Commands which doesn't start with a *
-     * 4. Commands which do not belong to any specified commands 5. Commands
-     * where there is not enough arguments as specified initially. (For eg. the
-     * stream finishes earlier) 6. Commands which ends on just \n and not on
-     * \r\n 7. Commands which specify an invalid byte size of an arg 8. Commands
-     * with byte size which do not start in $ 9. Commands with inconsistent
-     * number of bytes as the command itself has specified
+     * TODO : InvalidCommand test cases 
+     * 3. Commands which doesn't start with a *
+     * 4. Commands which do not belong to any specified commands 
+     * 5. Commands where there is not enough arguments as specified initially. (For eg. the
+     * stream finishes earlier) 
+     * 6. Commands which ends on just \n and not on \r\n 
+     * 7. Commands which specify an invalid byte size of an arg 
+     * 8. Commands with byte size which do not start in $ 
+     * 9. Commands with inconsistent number of bytes as the command itself has specified
      */
 
     /*
-     * TODO: Some more functional issues to cover. 1. CommandReader recovery in
-     * case of an error. 2. CommandReader with new line inside keys and values
+     * TODO: Some more functional issues to cover. 
+     * 1. CommandReader recovery in case of an error. 
      */
 
 }
