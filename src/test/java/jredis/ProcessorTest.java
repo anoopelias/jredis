@@ -42,16 +42,17 @@ public class ProcessorTest {
     private static String[] CMD_GETBIT_INVALID = { "GETBIT", "Elon", "5" };
     private static String[] CMD_SETBIT_INVALID = { "SETBIT", "Elon", "5", "1" };
 
-    private static String[] CMD_ZADD_ONE = { "ZADD", "Numbers",  "1.0", "One" };
+    private static String[] CMD_ZADD_ONE = { "ZADD", "Numbers", "1.0", "One" };
     private static String[] CMD_ZADD_TWO = { "ZADD", "Numbers", "2.0", "Two" };
-    private static String[] CMD_ZADD_THREE = { "ZADD", "Numbers", "3.0", "Three" };
+    private static String[] CMD_ZADD_THREE = { "ZADD", "Numbers", "3.0",
+            "Three" };
     private static String[] CMD_ZADD_FOUR = { "ZADD", "Numbers", "4.0", "Four" };
 
-    private static String[] CMD_ZCARD = { "ZCARD", "Numbers"};
-    private static String[] CMD_ZCOUNT = { "ZCOUNT", "Numbers", "1.5", "3.5"};
-    private static String[] CMD_ZRANGE = { "ZRANGE", "Numbers", "1", "5"};
+    private static String[] CMD_ZCARD = { "ZCARD", "Numbers" };
+    private static String[] CMD_ZCOUNT = { "ZCOUNT", "Numbers", "1.5", "3.5" };
+    private static String[] CMD_ZRANGE = { "ZRANGE", "Numbers", "1", "5" };
 
-    private static String[] CMD_ZADD_INVALID = { "ZADD", "Elon",  "1.0", "One" };
+    private static String[] CMD_ZADD_INVALID = { "ZADD", "Elon", "1.0", "One" };
 
     @Before
     public void setup() {
@@ -139,28 +140,28 @@ public class ProcessorTest {
         commands.append(toCommand(CMD_ZADD_TWO));
         commands.append(toCommand(CMD_ZADD_FOUR));
         commands.append(toCommand(CMD_ZADD_ONE));
-        
+
         commands.append(toCommand(CMD_ZCARD));
         commands.append(toCommand(CMD_ZCOUNT));
         commands.append(toCommand(CMD_ZRANGE));
-        
+
         Socket socket = mockSocket(commands.toString(), os);
 
         Processor processor = new Processor(socket, 2L);
         processor.call();
 
-        String[] output = os.toString().split("\r\n");
-        
+        String[] output = os.toString().split(CRLF);
+
         assertEquals(13, output.length);
-        
+
         assertEquals(":1", output[0]);
         assertEquals(":1", output[1]);
         assertEquals(":1", output[2]);
         assertEquals(":1", output[3]);
-        
+
         assertEquals(":4", output[4]);
         assertEquals(":2", output[5]);
-        
+
         assertEquals("*3", output[6]);
         assertEquals("$3", output[7]);
         assertEquals("Two", output[8]);
@@ -172,7 +173,7 @@ public class ProcessorTest {
         assertEquals("Four", output[12]);
 
     }
-    
+
     @Test
     public void test_zadd_invalid() throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -184,11 +185,24 @@ public class ProcessorTest {
 
         assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
     }
-    
-    /*
-     * TODO : One invalid command followed by one valid command.
-     * 
-     */
+
+    @Test
+    public void test_recovery() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_GET_INVALID)
+                + toCommand(CMD_SET) + toCommand(CMD_GET), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+        
+        String[] output = os.toString().split(CRLF);
+        assertEquals(4, output.length);
+
+        assertTrue(output[0].startsWith("" + MINUS + "ERR "));
+        assertEquals(OK, output[1]);
+        assertEquals("$4", output[2]);
+        assertEquals("Musk", output[3]);
+    }
 
     private Socket mockSocket(String command, OutputStream os)
             throws IOException {
