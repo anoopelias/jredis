@@ -26,7 +26,7 @@ public class ResponseWriter {
     private static final byte[] CRLF = { '\r', '\n' };
     private static final byte[] NULL_STRING = { DOLLAR, MINUS, '1' };
 
-    private static final byte[] ERROR = "ERR ".getBytes();
+    private static final byte[] ERROR = toBytes("ERR ");
 
     /**
      * Construct a writer using output stream.
@@ -52,7 +52,7 @@ public class ResponseWriter {
             outputSize *= 2;
 
         out.write(STAR);
-        out.write(String.valueOf(outputSize).getBytes());
+        out.write(toBytes(outputSize));
         out.write(CRLF);
 
         for (Element element : elements) {
@@ -76,7 +76,7 @@ public class ResponseWriter {
         out.write(MINUS);
         out.write(ERROR);
         if (e.getMessage() != null) {
-            out.write(e.getMessage().getBytes());
+            out.write(toBytes(e.getMessage()));
             out.write(CRLF);
         }
         out.flush();
@@ -98,9 +98,9 @@ public class ResponseWriter {
             out.write(NULL_STRING);
             out.write(CRLF);
         } else {
-            byte[] bValue = value.getBytes();
+            byte[] bValue = toBytes(value);
             out.write(DOLLAR);
-            out.write(String.valueOf(bValue.length).getBytes());
+            out.write(toBytes(bValue.length));
             out.write(CRLF);
             out.write(bValue);
             out.write(CRLF);
@@ -115,7 +115,7 @@ public class ResponseWriter {
      */
     public void writeOk() throws IOException {
         out.write(PLUS);
-        out.write(ResponseOk.OK.getBytes());
+        out.write(toBytes(ResponseOk.OK));
         out.write(CRLF);
 
         out.flush();
@@ -129,9 +129,22 @@ public class ResponseWriter {
      */
     public void write(int number) throws IOException {
         out.write(COLON);
-        out.write(String.valueOf(number).getBytes());
+        out.write(toBytes(number));
         out.write(CRLF);
         out.flush();
+    }
+    
+    
+    private static byte[] toBytes(String s) {
+        return s.getBytes();
+    }
+
+    private static byte[] toBytes(int number) {
+        return toBytes(String.valueOf(number));
+    }
+
+    private static byte[] toBytes(long number) {
+        return toBytes(String.valueOf(number));
     }
 
 }
