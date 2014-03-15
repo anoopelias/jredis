@@ -1,5 +1,7 @@
 package jredis;
 
+import java.io.UnsupportedEncodingException;
+
 
 /**
  * Utility methods
@@ -10,9 +12,22 @@ package jredis;
 public class Utils {
     
     // So that the class won't get instantiated.
-    private Utils() {
+    public Utils() {
         
     }
+    
+    public static final byte DOLLAR = '$';
+    public static final byte PLUS = '+';
+    public static final byte COLON = ':';
+    public static final byte STAR = '*';
+    public static final byte MINUS = '-';
+
+    public static final byte[] CRLF = { '\r', '\n' };
+    public static final byte[] NULL_STRING = { DOLLAR, MINUS, '1' };
+
+    public static final byte[] ERROR = toBytes("ERR ");
+
+    public static final String CHARSET = "UTF-8";
     
     /**
      * Parse a float value to String.
@@ -41,6 +56,42 @@ public class Utils {
             throw e;
 
         }
+    }
+    
+    /**
+     * Convert string to bytes.
+     * 
+     * @param s
+     * @return
+     */
+    public static byte[] toBytes(String s) {
+        try {
+            return s.getBytes(CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            if (Server.isDebug())
+                e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Convert integer to bytes.
+     * 
+     * @param number
+     * @return
+     */
+    public static byte[] toBytes(int number) {
+        return toBytes(String.valueOf(number));
+    }
+
+    /**
+     * Convert long to bytes.
+     * 
+     * @param number
+     * @return
+     */
+    public static byte[] toBytes(long number) {
+        return toBytes(String.valueOf(number));
     }
 
 }

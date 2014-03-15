@@ -1,9 +1,18 @@
 package jredis;
 
+import static jredis.Utils.COLON;
+import static jredis.Utils.CRLF;
+import static jredis.Utils.DOLLAR;
+import static jredis.Utils.ERROR;
+import static jredis.Utils.MINUS;
+import static jredis.Utils.NULL_STRING;
+import static jredis.Utils.PLUS;
+import static jredis.Utils.STAR;
+import static jredis.Utils.toBytes;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 import jredis.exception.InvalidCommand;
@@ -17,19 +26,6 @@ import jredis.exception.InvalidCommand;
 public class ResponseWriter {
 
     private OutputStream out;
-
-    private static final byte DOLLAR = '$';
-    private static final byte PLUS = '+';
-    private static final byte COLON = ':';
-    private static final byte STAR = '*';
-    private static final byte MINUS = '-';
-
-    private static final byte[] CRLF = { '\r', '\n' };
-    private static final byte[] NULL_STRING = { DOLLAR, MINUS, '1' };
-
-    private static final byte[] ERROR = toBytes("ERR ");
-
-    private static final String CHARSET = "UTF-8";
 
     /**
      * Construct a writer using output stream.
@@ -135,24 +131,6 @@ public class ResponseWriter {
         out.write(toBytes(number));
         out.write(CRLF);
         out.flush();
-    }
-
-    private static byte[] toBytes(String s) {
-        try {
-            return s.getBytes(CHARSET);
-        } catch (UnsupportedEncodingException e) {
-            if (Server.isDebug())
-                e.printStackTrace();
-            return null;
-        }
-    }
-
-    private static byte[] toBytes(int number) {
-        return toBytes(String.valueOf(number));
-    }
-
-    private static byte[] toBytes(long number) {
-        return toBytes(String.valueOf(number));
     }
 
 }
