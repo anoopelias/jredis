@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class ProcessorTest {
@@ -37,6 +38,14 @@ public class ProcessorTest {
     private static String[] CMD_GETBIT = { "GETBIT", "Alpha", "5" };
     private static String CMD_BIT_RESP = "" + COLON + "0" + CRLF + COLON + "1"
             + CRLF;
+
+    private static String[] CMD_GETBIT_INVALID = { "GETBIT", "Elon", "5" };
+    private static String[] CMD_SETBIT_INVALID = { "SETBIT", "Elon", "5", "1" };
+    
+    @Before
+    public void setup() {
+        DataMap.INSTANCE.clear();
+    }
 
     @Test
     public void test_set_get() throws Exception {
@@ -88,8 +97,27 @@ public class ProcessorTest {
     }
 
     @Test
+    public void test_getbit_invalid() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_SET)
+                + toCommand(CMD_GETBIT_INVALID), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
+    }
+
+    @Test
     public void test_setbit_invalid() throws Exception {
-        
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_SET)
+                + toCommand(CMD_SETBIT_INVALID), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
     }
 
     private Socket mockSocket(String command, OutputStream os)

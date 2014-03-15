@@ -2,6 +2,7 @@ package jredis;
 
 import jredis.exception.InvalidCommand;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class SetCommandTest {
@@ -35,6 +36,11 @@ public class SetCommandTest {
 
     private String[] PX_XX_INVALID = {"Numbers", "1.05", "PX", "XX", "1000"};
     private String[] EX_NX_INVALID = {"Numbers", "1.05", "NX", "10", "EX"};
+    
+    @Before
+    public void setup() {
+        DataMap.INSTANCE.clear();
+    }
 
     @Test(expected=InvalidCommand.class)
     public void test_no_args() throws InvalidCommand {

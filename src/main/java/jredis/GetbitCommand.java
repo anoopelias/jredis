@@ -40,7 +40,7 @@ public class GetbitCommand implements Command<Boolean> {
 
     @Override
     public Response<Boolean> execute() throws InvalidCommand {
-        BitString bitString = DataMap.INSTANCE.get(key, BitString.class);
+        BitString bitString = BitHelper.get(key);
         
         return new ResponseBit((bitString == null) ? false
                 : bitString.get(offset));

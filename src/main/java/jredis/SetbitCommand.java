@@ -48,7 +48,7 @@ public class SetbitCommand implements Command<Boolean> {
     @Override
     public Response<Boolean> execute() throws InvalidCommand {
         synchronized (DataMap.INSTANCE) {
-            BitString bitString = DataMap.INSTANCE.get(key, BitString.class);
+            BitString bitString = BitHelper.get(key);
             if (bitString == null) {
                 bitString = new BitString();
                 DataMap.INSTANCE.put(key, bitString);
