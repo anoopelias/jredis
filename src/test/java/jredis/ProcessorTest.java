@@ -17,14 +17,17 @@ public class ProcessorTest {
 
     private static final char STAR = '*';
     private static final char DOLLAR = '$';
+    private static final char MINUS = '-';
     private static final String OK = "+OK";
     private static String CRLF = "\r\n";
 
     private static String[] CMD_SET = { "SET", "Elon", "Musk" };
     private static String[] CMD_GET = { "GET", "Elon" };
-
     private static String CMD_RESP = OK + CRLF + DOLLAR + "4" + CRLF + "Musk"
             + CRLF;
+
+    private static String[] CMD_GET_NIL = { "GET", "Jeff" };
+    private static String CMD_RESP_NIL = "" + DOLLAR + MINUS + "1" + CRLF;
 
     @Test
     public void test_set_get() throws Exception {
@@ -39,6 +42,17 @@ public class ProcessorTest {
         verify(socket).close();
 
         assertEquals(CMD_RESP, os.toString());
+    }
+
+    @Test
+    public void test_get_nil() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_GET_NIL), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertEquals(CMD_RESP_NIL, os.toString());
     }
 
     private Socket mockSocket(String command, OutputStream os)
