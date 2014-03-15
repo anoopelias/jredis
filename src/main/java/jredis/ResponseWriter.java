@@ -19,9 +19,12 @@ public class ResponseWriter {
     private static final byte PLUS = '+';
     private static final byte COLON = ':';
     private static final byte STAR = '*';
-    
+    private static final byte MINUS = '-';
+
     private static final byte[] CRLF = { '\r', '\n' };
-    private static final byte[] NULL_STRING = { DOLLAR, '-', '1' };
+    private static final byte[] NULL_STRING = { DOLLAR, MINUS, '1' };
+
+    private static final byte[] ERROR = "ERR ".getBytes();
 
     /**
      * Construct a writer using output stream.
@@ -31,7 +34,7 @@ public class ResponseWriter {
     public ResponseWriter(OutputStream os) {
         out = new BufferedOutputStream(os);
     }
-    
+
     /**
      * Write a element range back to client.
      * 
@@ -39,27 +42,41 @@ public class ResponseWriter {
      * @throws IOException
      */
     public void write(ElementRange elementRange) throws IOException {
-        
+
         Set<Element> elements = elementRange.getElements();
-        
+
         long outputSize = elements.size();
-        if(elementRange.isScored())
+        if (elementRange.isScored())
             outputSize *= 2;
-        
+
         out.write(STAR);
         out.write(String.valueOf(outputSize).getBytes());
         out.write(CRLF);
-        
-        for(Element element : elements) {
+
+        for (Element element : elements) {
             writeString(element.getMember());
-            
-            if(elementRange.isScored())
+
+            if (elementRange.isScored())
                 writeString(String.valueOf(element.getScore()));
         }
-        
+
         out.flush();
     }
 
+    /**
+     * Write an error back to the client.
+     * 
+     * @param output
+     * @throws IOException
+     */
+    public void writeError(String message) throws IOException {
+
+        out.write(MINUS);
+        out.write(ERROR);
+        if (message != null)
+            out.write(message.getBytes());
+        out.flush();
+    }
 
     /**
      * Write a string back to the client.

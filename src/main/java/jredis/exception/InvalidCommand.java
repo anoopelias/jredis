@@ -1,5 +1,9 @@
 package jredis.exception;
 
+import java.io.IOException;
+
+import jredis.ResponseWriter;
+
 public class InvalidCommand extends Exception {
 
     /**
@@ -11,6 +15,8 @@ public class InvalidCommand extends Exception {
         super(message);
     }
     
-    
+    public void write(ResponseWriter writer) throws IOException {
+        writer.writeError(this.getMessage());
+    }
 
 }

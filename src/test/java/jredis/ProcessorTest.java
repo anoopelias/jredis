@@ -1,6 +1,7 @@
 package jredis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,6 +19,7 @@ public class ProcessorTest {
     private static final char STAR = '*';
     private static final char DOLLAR = '$';
     private static final char MINUS = '-';
+    private static final char COLON = ':';
     private static final String OK = "+OK";
     private static String CRLF = "\r\n";
 
@@ -26,8 +28,14 @@ public class ProcessorTest {
     private static String CMD_RESP = OK + CRLF + DOLLAR + "4" + CRLF + "Musk"
             + CRLF;
 
+    private static String[] CMD_GET_INVALID = { "GET", "Elon", "Musk" };
+
     private static String[] CMD_GET_NIL = { "GET", "Jeff" };
     private static String CMD_RESP_NIL = "" + DOLLAR + MINUS + "1" + CRLF;
+
+    private static String[] CMD_SETBIT = { "SETBIT", "Alpha", "5", "1" };
+    private static String[] CMD_GETBIT = { "GETBIT", "Alpha", "5" };
+    private static String CMD_BIT_RESP = "" + COLON + "0" + CRLF + COLON + "1" + CRLF;
 
     @Test
     public void test_set_get() throws Exception {
@@ -53,6 +61,28 @@ public class ProcessorTest {
         processor.call();
 
         assertEquals(CMD_RESP_NIL, os.toString());
+    }
+
+    @Test
+    public void test_get_invalid() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_GET_INVALID), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertTrue(os.toString().startsWith("" + MINUS + "ERR "));
+    }
+
+    @Test
+    public void test_setbit_getbit() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_SETBIT) + toCommand(CMD_GETBIT), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertEquals(CMD_BIT_RESP, os.toString());
     }
 
     private Socket mockSocket(String command, OutputStream os)
