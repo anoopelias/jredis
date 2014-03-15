@@ -3,6 +3,7 @@ package jredis;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 import jredis.exception.InvalidCommand;
@@ -27,6 +28,8 @@ public class ResponseWriter {
     private static final byte[] NULL_STRING = { DOLLAR, MINUS, '1' };
 
     private static final byte[] ERROR = toBytes("ERR ");
+
+    private static final String CHARSET = "UTF-8";
 
     /**
      * Construct a writer using output stream.
@@ -133,10 +136,15 @@ public class ResponseWriter {
         out.write(CRLF);
         out.flush();
     }
-    
-    
+
     private static byte[] toBytes(String s) {
-        return s.getBytes();
+        try {
+            return s.getBytes(CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            if (Server.isDebug())
+                e.printStackTrace();
+            return null;
+        }
     }
 
     private static byte[] toBytes(int number) {
