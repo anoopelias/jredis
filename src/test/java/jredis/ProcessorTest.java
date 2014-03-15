@@ -51,6 +51,8 @@ public class ProcessorTest {
     private static String[] CMD_ZCOUNT = { "ZCOUNT", "Numbers", "1.5", "3.5"};
     private static String[] CMD_ZRANGE = { "ZRANGE", "Numbers", "1", "5"};
 
+    private static String[] CMD_ZADD_INVALID = { "ZADD", "Elon",  "1.0", "One" };
+
     @Before
     public void setup() {
         DataMap.INSTANCE.clear();
@@ -169,6 +171,18 @@ public class ProcessorTest {
         assertEquals("$4", output[11]);
         assertEquals("Four", output[12]);
 
+    }
+    
+    @Test
+    public void test_zadd_invalid() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_SET)
+                + toCommand(CMD_ZADD_INVALID), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
     }
     
     /*

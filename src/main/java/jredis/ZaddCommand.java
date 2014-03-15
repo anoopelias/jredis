@@ -27,7 +27,7 @@ public class ZaddCommand implements Command<Integer> {
         boolean inserted;
 
         synchronized (DataMap.INSTANCE) {
-            ElementSet map = DataMap.INSTANCE.get(key, ElementSet.class);
+            ElementSet map = ZsetHelper.get(key);
             if (map == null) {
                 map = new TreeElementSet();
                 DataMap.INSTANCE.put(key, map);
