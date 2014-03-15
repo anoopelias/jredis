@@ -35,7 +35,8 @@ public class ProcessorTest {
 
     private static String[] CMD_SETBIT = { "SETBIT", "Alpha", "5", "1" };
     private static String[] CMD_GETBIT = { "GETBIT", "Alpha", "5" };
-    private static String CMD_BIT_RESP = "" + COLON + "0" + CRLF + COLON + "1" + CRLF;
+    private static String CMD_BIT_RESP = "" + COLON + "0" + CRLF + COLON + "1"
+            + CRLF;
 
     @Test
     public void test_set_get() throws Exception {
@@ -77,12 +78,18 @@ public class ProcessorTest {
     @Test
     public void test_setbit_getbit() throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        Socket socket = mockSocket(toCommand(CMD_SETBIT) + toCommand(CMD_GETBIT), os);
+        Socket socket = mockSocket(toCommand(CMD_SETBIT)
+                + toCommand(CMD_GETBIT), os);
 
         Processor processor = new Processor(socket, 2L);
         processor.call();
 
         assertEquals(CMD_BIT_RESP, os.toString());
+    }
+
+    @Test
+    public void test_setbit_invalid() throws Exception {
+        
     }
 
     private Socket mockSocket(String command, OutputStream os)

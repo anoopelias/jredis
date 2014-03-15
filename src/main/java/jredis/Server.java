@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
  * 2. In Redis, A SET with both PX and EX options at the same time will invalidate the SET
  * operation. While jRedis will use the last specified option.
  * 
- * 3. Error messages in jRedis is not consistent with that in Redis.
+ * 3. Error messages/types in jRedis is not consistent with that in Redis.
  * 
  * @author anoopelias
  * 

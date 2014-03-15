@@ -19,6 +19,7 @@ public class SetGetCommandsTest {
 
     public static String[] SET_PX = {"Rahul", "Dravid", "PX", "100"};
     public static String[] SET_EX = {"Rahul", "Dravid", "EX", "2"};
+    public static String[] SET_EX_PX_COMBINATION = {"Rahul", "Dravid", "EX", "100", "PX", "100"};
 
     public static String[] SET_PX_NO_TIME = {"Rahul", "Dravid", "PX"};
     public static String[] SET_EX_NO_TIME = {"Rahul", "Dravid", "EX"};
@@ -173,6 +174,18 @@ public class SetGetCommandsTest {
         assertEquals("OK",  command.execute().value());
 
         assertEquals("Gandhi",  getCommand.execute().value());
+        Thread.sleep(101);
+        assertNull(getCommand.execute().value());
+    }
+
+    @Test
+    public void test_setExPx_combination() throws InvalidCommand, InterruptedException {
+        Command<String> command = new SetCommand(SET_EX_PX_COMBINATION);
+        assertEquals("OK",  command.execute().value());
+
+        Command<String> getCommand = new GetCommand(GET);
+        assertEquals("Dravid",  getCommand.execute().value());
+
         Thread.sleep(101);
         assertNull(getCommand.execute().value());
     }
