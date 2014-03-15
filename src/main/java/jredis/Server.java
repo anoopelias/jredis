@@ -8,14 +8,24 @@ import java.util.concurrent.Executors;
 /**
  * The server class.
  * 
+ * Known mismatches in behavior of Redis with jRedis. 
+ * 
+ * 1. In Redis, SET store the string in bit format. Now a GETBIT will return the 
+ * corresponding bits in original string. Contrary to this, a SET / GETBIT combination 
+ * will throw an error in jRedis.
+ * 
+ * 2. In Redis, A SET with both PX and EX options at the same time will invalidate the SET
+ * operation. While jRedis will use the last specified option.
+ * 
+ * 3. Error messages in jRedis is not consistent with that in Redis.
  * 
  * @author anoopelias
  * 
  */
 public class Server {
-    
+
     private ExecutorService service = Executors.newFixedThreadPool(5);
-    
+
     private long reqId;
 
     /**
@@ -43,19 +53,19 @@ public class Server {
 
         } catch (Throwable e) {
             System.out.println("Fatal issue with server. Stopping server.");
-            if(Server.isDebug())
+            if (Server.isDebug())
                 e.printStackTrace();
         }
     }
-    
+
     /**
      * Check if the server is in debug mode.
      * 
      * @return
      */
     public static boolean isDebug() {
-        
-        //TODO: Get some jvm args to set this.
+
+        // TODO: Get some jvm args to set this.
         return true;
     }
 
