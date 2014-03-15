@@ -57,17 +57,18 @@ public class Processor implements Callable<Object> {
                      * the client and wait for next command.
                      */
 
-                    e.write(writer);
+                    writer.write(e);
                 }
             }
             clientSocket.close();
 
         } catch (IOException e) {
-            System.out.println("Some I/O problem with request :" + reqId
-                    + " Ending the request.");
 
-            if (Server.isDebug())
+            if (Server.isDebug()) {
+                System.out.println("Some I/O problem with request :" + reqId
+                        + " Ending the request.");
                 e.printStackTrace();
+            }
         }
 
         return null;

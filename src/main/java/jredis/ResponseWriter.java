@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
+import jredis.exception.InvalidCommand;
+
 /**
  * Response writer to handle response protocol.
  * 
@@ -69,13 +71,14 @@ public class ResponseWriter {
      * @param output
      * @throws IOException
      */
-    public void writeError(String message) throws IOException {
+    public void write(InvalidCommand e) throws IOException {
 
         out.write(MINUS);
         out.write(ERROR);
-        if (message != null)
-            out.write(message.getBytes());
-        out.write(CRLF);
+        if (e.getMessage() != null) {
+            out.write(e.getMessage().getBytes());
+            out.write(CRLF);
+        }
         out.flush();
     }
 
