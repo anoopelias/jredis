@@ -14,7 +14,7 @@ public class ZaddCommand implements Command<Integer> {
         
         try {
             key = args[0];
-            score = Utils.parseDouble(args[1]);
+            score = Protocol.parseDouble(args[1]);
             value = args[2];
         } catch (NumberFormatException e) {
             throw new InvalidCommand("Unparsable score");

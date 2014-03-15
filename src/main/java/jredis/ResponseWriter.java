@@ -1,14 +1,14 @@
 package jredis;
 
-import static jredis.Utils.COLON;
-import static jredis.Utils.CRLF;
-import static jredis.Utils.DOLLAR;
-import static jredis.Utils.ERROR;
-import static jredis.Utils.MINUS;
-import static jredis.Utils.NULL_STRING;
-import static jredis.Utils.PLUS;
-import static jredis.Utils.STAR;
-import static jredis.Utils.toBytes;
+import static jredis.Protocol.COLON;
+import static jredis.Protocol.CRLF;
+import static jredis.Protocol.DOLLAR;
+import static jredis.Protocol.ERROR;
+import static jredis.Protocol.MINUS;
+import static jredis.Protocol.NULL_STRING;
+import static jredis.Protocol.PLUS;
+import static jredis.Protocol.STAR;
+import static jredis.Protocol.toBytes;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;

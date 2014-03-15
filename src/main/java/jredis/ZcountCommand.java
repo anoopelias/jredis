@@ -31,7 +31,7 @@ public class ZcountCommand implements Command<Integer> {
 
     private double parse(String arg) throws InvalidCommand {
         try {
-            return Utils.parseDouble(arg);
+            return Protocol.parseDouble(arg);
             
         } catch (NumberFormatException e) {
             throw new InvalidCommand("Unknown argument : " + arg);

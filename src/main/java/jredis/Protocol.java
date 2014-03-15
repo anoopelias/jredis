@@ -9,10 +9,10 @@ import java.io.UnsupportedEncodingException;
  * @author anoopelias
  *
  */
-public class Utils {
+public class Protocol {
     
     // So that the class won't get instantiated.
-    public Utils() {
+    public Protocol() {
         
     }
     
