@@ -48,7 +48,7 @@ public class ZrangeCommand implements Command<ElementRange> {
     @Override
     public Response<ElementRange> execute() throws InvalidCommand {
         synchronized (DataMap.INSTANCE) {
-            ElementSet set = DataMap.INSTANCE.get(key, ElementSet.class);
+            ElementSet set = ZsetHelper.get(key);
             if (set == null)
                 return new ResponseElementRange();
 

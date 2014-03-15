@@ -16,7 +16,7 @@ public class ZcardCommand implements Command<Integer> {
     @Override
     public Response<Integer> execute() throws InvalidCommand {
         synchronized (DataMap.INSTANCE) {
-            ElementSet map = DataMap.INSTANCE.get(key, ElementSet.class);
+            ElementSet map = ZsetHelper.get(key);
             return new ResponseNumber((map == null) ? 0 : map.size());
         }
     }

@@ -53,6 +53,9 @@ public class ProcessorTest {
     private static String[] CMD_ZRANGE = { "ZRANGE", "Numbers", "1", "5" };
 
     private static String[] CMD_ZADD_INVALID = { "ZADD", "Elon", "1.0", "One" };
+    private static String[] CMD_ZCARD_INVALID = { "ZCARD", "Elon"};
+    private static String[] CMD_ZCOUNT_INVALID = { "ZCOUNT", "Elon", "1.5", "3.5"};
+    private static String[] CMD_ZRANGE_INVALID = { "ZRANGE", "Elon", "1", "5" };
 
     @Before
     public void setup() {
@@ -187,7 +190,43 @@ public class ProcessorTest {
     }
 
     @Test
-    public void test_recovery() throws Exception {
+    public void test_zcard_invalid() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_SET)
+                + toCommand(CMD_ZCARD_INVALID), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
+    }
+
+    @Test
+    public void test_zcount_invalid() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_SET)
+                + toCommand(CMD_ZCOUNT_INVALID), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
+    }
+
+    @Test
+    public void test_zrange_invalid() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_SET)
+                + toCommand(CMD_ZRANGE_INVALID), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
+    }
+
+    @Test
+    public void test_recovery_after_error() throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Socket socket = mockSocket(toCommand(CMD_GET_INVALID)
                 + toCommand(CMD_SET) + toCommand(CMD_GET), os);
