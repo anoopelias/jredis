@@ -41,7 +41,16 @@ public class ProcessorTest {
 
     private static String[] CMD_GETBIT_INVALID = { "GETBIT", "Elon", "5" };
     private static String[] CMD_SETBIT_INVALID = { "SETBIT", "Elon", "5", "1" };
-    
+
+    private static String[] CMD_ZADD_ONE = { "ZADD", "Numbers",  "1.0", "One" };
+    private static String[] CMD_ZADD_TWO = { "ZADD", "Numbers", "2.0", "Two" };
+    private static String[] CMD_ZADD_THREE = { "ZADD", "Numbers", "3.0", "Three" };
+    private static String[] CMD_ZADD_FOUR = { "ZADD", "Numbers", "4.0", "Four" };
+
+    private static String[] CMD_ZCARD = { "ZCARD", "Numbers"};
+    private static String[] CMD_ZCOUNT = { "ZCOUNT", "Numbers", "1.5", "3.5"};
+    private static String[] CMD_ZRANGE = { "ZRANGE", "Numbers", "1", "5"};
+
     @Before
     public void setup() {
         DataMap.INSTANCE.clear();
@@ -119,6 +128,53 @@ public class ProcessorTest {
 
         assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
     }
+
+    @Test
+    public void test_zset() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        StringBuilder commands = new StringBuilder();
+        commands.append(toCommand(CMD_ZADD_THREE));
+        commands.append(toCommand(CMD_ZADD_TWO));
+        commands.append(toCommand(CMD_ZADD_FOUR));
+        commands.append(toCommand(CMD_ZADD_ONE));
+        
+        commands.append(toCommand(CMD_ZCARD));
+        commands.append(toCommand(CMD_ZCOUNT));
+        commands.append(toCommand(CMD_ZRANGE));
+        
+        Socket socket = mockSocket(commands.toString(), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        String[] output = os.toString().split("\r\n");
+        
+        assertEquals(13, output.length);
+        
+        assertEquals(":1", output[0]);
+        assertEquals(":1", output[1]);
+        assertEquals(":1", output[2]);
+        assertEquals(":1", output[3]);
+        
+        assertEquals(":4", output[4]);
+        assertEquals(":2", output[5]);
+        
+        assertEquals("*3", output[6]);
+        assertEquals("$3", output[7]);
+        assertEquals("Two", output[8]);
+
+        assertEquals("$5", output[9]);
+        assertEquals("Three", output[10]);
+
+        assertEquals("$4", output[11]);
+        assertEquals("Four", output[12]);
+
+    }
+    
+    /*
+     * TODO : One invalid command followed by one valid command.
+     * 
+     */
 
     private Socket mockSocket(String command, OutputStream os)
             throws IOException {

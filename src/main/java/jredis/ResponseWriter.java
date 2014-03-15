@@ -75,6 +75,7 @@ public class ResponseWriter {
         out.write(ERROR);
         if (message != null)
             out.write(message.getBytes());
+        out.write(CRLF);
         out.flush();
     }
 
