@@ -22,10 +22,22 @@ public class CommandReader {
 
     private BufferedInputStream stream = null;
 
+    /**
+     * Construct a command reader from input stream.
+     * 
+     * @param is
+     * @throws InvalidCommand
+     */
     public CommandReader(InputStream is) throws InvalidCommand {
         this.stream = new BufferedInputStream(is);
     }
 
+    /**
+     * Return the next command. 'null' if its over.
+     * 
+     * @return
+     * @throws InvalidCommand
+     */
     public Command<?> next() throws InvalidCommand {
 
         try {
@@ -34,7 +46,7 @@ public class CommandReader {
                 return null;
 
             String[] command = command(len());
-            
+
             String type = command[0];
             String[] args = Arrays.copyOfRange(command, 1, command.length);
 
@@ -48,6 +60,12 @@ public class CommandReader {
 
     }
 
+    /**
+     * Check if the stream is already closed.
+     * 
+     * @return
+     * @throws IOException
+     */
     private boolean hasNext() throws IOException {
         stream.mark(1);
         if (stream.read() == -1)
@@ -56,7 +74,27 @@ public class CommandReader {
         stream.reset();
         return true;
     }
+    
+    /**
+     * Read the length of the args from the command stream.
+     * 
+     * @return
+     * @throws InvalidCommand
+     * @throws IOException
+     */
+    private int len() throws InvalidCommand, IOException {
+        ch(STAR);
+        return num();
+    }
 
+    /**
+     * Get all the command params.
+     * 
+     * @param len
+     * @return
+     * @throws IOException
+     * @throws InvalidCommand
+     */
     private String[] command(int len) throws IOException, InvalidCommand {
         String[] command = new String[len];
         for (int i = 0; i < len; i++)
@@ -65,6 +103,13 @@ public class CommandReader {
         return command;
     }
 
+    /**
+     * Read an argument.
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidCommand
+     */
     private String arg() throws IOException, InvalidCommand {
         ch(DOLLAR);
         byte[] b = new byte[num()];
@@ -75,16 +120,24 @@ public class CommandReader {
         return new String(b);
     }
 
+    /**
+     * Check if the next two chars belong to CRLF.
+     * 
+     * @throws IOException
+     * @throws InvalidCommand
+     */
     private void crlf() throws IOException, InvalidCommand {
         ch(CR);
         ch(LF);
     }
 
-    private int len() throws InvalidCommand, IOException {
-        ch(STAR);
-        return num();
-    }
-
+    /**
+     * Read a number from stream ending with CRLF.
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidCommand
+     */
     private int num() throws IOException, InvalidCommand {
         char c;
         StringBuilder len = new StringBuilder();
@@ -95,6 +148,13 @@ public class CommandReader {
         return Integer.parseInt(len.toString());
     }
 
+    /**
+     * Check if the next character in the stream is the one provided.
+     * 
+     * @param ch
+     * @throws IOException
+     * @throws InvalidCommand
+     */
     private void ch(byte ch) throws IOException, InvalidCommand {
         if (stream.read() != ch)
             throw new InvalidCommand("Disagreement to Command Protocol");
