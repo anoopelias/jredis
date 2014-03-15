@@ -5,7 +5,9 @@ import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
 /**
@@ -22,6 +24,8 @@ public class TestUtil {
     public static final char COLON = ':';
     public static String CRLF = "\r\n";
     public static final String OK = "+OK";
+    
+    private static final String CHARSET = "UTF-8";
 
 
     /**
@@ -37,11 +41,26 @@ public class TestUtil {
             throws IOException {
 
         Socket socket = mock(Socket.class);
-        ByteArrayInputStream is = new ByteArrayInputStream(command.getBytes());
+        InputStream is = toInputStream(command);
 
         when(socket.getInputStream()).thenReturn(is);
         when(socket.getOutputStream()).thenReturn(os);
         return socket;
+    }
+    
+    /**
+     * Convert a String to input stream.
+     * 
+     * @param command
+     * @return
+     */
+    public static InputStream toInputStream(String command) {
+        try {
+            return new ByteArrayInputStream(command.getBytes(CHARSET));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
