@@ -26,6 +26,8 @@ public class CommandFactory {
             c = new ZcountCommand(args);
         else if("ZRANGE".equals(name))
             c = new ZrangeCommand(args);
+        else
+            throw new InvalidCommand("Cannot find command type");
         
         if(Server.isDebug()) {
             print(c, name, args);
