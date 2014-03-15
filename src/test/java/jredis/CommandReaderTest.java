@@ -1,75 +1,55 @@
 package jredis;
 
-import static org.junit.Assert.assertEquals;
+import static jredis.TestUtil.toInputStream;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-
 import jredis.exception.InvalidCommand;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class CommandReaderTest {
 
-    private static String CMD_GET = "*2\r\n$3\r\nGET\r\n$4\r\nJeff\r\n";
-    private static String CMD_GET_ELON = "*2\r\n$3\r\nGET\r\n$4\r\nElon\r\n";
-    private static String CMD_SET = "*3\r\n$3\r\nSET\r\n$4\r\nElon\r\n$4\r\nMusk\r\n";
     private static String CMD_INVALID_ARG_COUNT = "*k\r\n";
+
+    private static String[] CMD_GET = { "GET", "Jeff" };
+    private static String[] CMD_SET = { "SET", "Elon", "Musk" };
     private static String CMD_NONE = "";
+    
+    @Before
+    public void setup() {
+        DataMap.INSTANCE.clear();
+    }
+
 
     @Test
-    public void test_read_get() throws UnsupportedEncodingException,
-            InvalidCommand {
-        
-        CommandReader reader = new CommandReader(new ByteArrayInputStream(
-                CMD_GET.getBytes("UTF-8")));
+    public void test_read_get() throws InvalidCommand {
+        CommandReader reader = new CommandReader(toInputStream(CMD_GET));
         Command<?> c = reader.next();
         assertTrue(c instanceof GetCommand);
         assertNull(reader.next());
     }
 
     @Test
-    public void test_read_set() throws UnsupportedEncodingException,
-            InvalidCommand {
-        
-        CommandReader reader = new CommandReader(new ByteArrayInputStream(
-                CMD_SET.getBytes("UTF-8")));
+    public void test_read_set() throws InvalidCommand {
+
+        CommandReader reader = new CommandReader(toInputStream(CMD_SET));
         Command<?> c = reader.next();
         assertTrue(c instanceof SetCommand);
         assertNull(reader.next());
     }
 
     @Test
-    public void test_set_get() throws UnsupportedEncodingException,
-            InvalidCommand {
-        
-        CommandReader reader = new CommandReader(new ByteArrayInputStream(
-                CMD_SET.getBytes("UTF-8")));
-        Command<?> c = reader.next();
-        assertEquals("OK", c.execute().value());
-        
-        reader = new CommandReader(new ByteArrayInputStream(
-                CMD_GET_ELON.getBytes("UTF-8")));
-        c = reader.next();
-        assertEquals("Musk", c.execute().value());
-    }
+    public void test_read_none() throws InvalidCommand {
 
-    @Test
-    public void test_read_none() throws UnsupportedEncodingException,
-            InvalidCommand {
-        
-        CommandReader reader = new CommandReader(new ByteArrayInputStream(
-                CMD_NONE.getBytes("UTF-8")));
+        CommandReader reader = new CommandReader(toInputStream(CMD_NONE));
         assertNull(reader.next());
     }
 
     @Test(expected = InvalidCommand.class)
-    public void test_invalid_arg_count() throws UnsupportedEncodingException,
-            InvalidCommand {
-        CommandReader reader = new CommandReader(new ByteArrayInputStream(
-                CMD_INVALID_ARG_COUNT.getBytes("UTF-8")));
+    public void test_invalid_arg_count() throws InvalidCommand {
+        CommandReader reader = new CommandReader(
+                toInputStream(CMD_INVALID_ARG_COUNT));
         reader.next();
     }
 

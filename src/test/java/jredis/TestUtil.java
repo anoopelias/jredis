@@ -47,7 +47,17 @@ public class TestUtil {
         when(socket.getOutputStream()).thenReturn(os);
         return socket;
     }
-    
+
+    /**
+     * Convert a command string array to input stream.
+     * 
+     * @param command
+     * @return
+     */
+    public static InputStream toInputStream(String[] command) {
+        return toInputStream(toCommand(command));
+    }
+
     /**
      * Convert a String to input stream.
      * 

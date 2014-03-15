@@ -8,6 +8,12 @@ import java.util.Arrays;
 
 import jredis.exception.InvalidCommand;
 
+/**
+ * Read a command according to the protocol and return the command object.
+ * 
+ * @author anoopelias
+ * 
+ */
 public class CommandReader {
 
     private BufferedReader reader = null;
@@ -19,14 +25,15 @@ public class CommandReader {
     public Command<?> next() throws InvalidCommand {
 
         try {
-            int argLen;
-            
-            if ((argLen = readArgLen()) == -1)
-                return null;
-            
-            String[] args = readArgs(argLen);
+            int len;
 
-            return CommandFactory.INSTANCE.createCommand(args[0], Arrays.copyOfRange(args, 1, args.length));
+            if ((len = len()) == -1)
+                return null;
+
+            String[] args = args(len);
+
+            return CommandFactory.INSTANCE.createCommand(args[0],
+                    Arrays.copyOfRange(args, 1, args.length));
 
         } catch (IOException e) {
             throw new InvalidCommand("IO Exception during reading the command");
@@ -34,9 +41,9 @@ public class CommandReader {
 
     }
 
-    private String[] readArgs(int argLen) throws IOException {
-        String[] args = new String[argLen];
-        for (int i = 0; i < argLen; i++) {
+    private String[] args(int len) throws IOException {
+        String[] args = new String[len];
+        for (int i = 0; i < len; i++) {
             // Byte size of the arg
             reader.readLine();
 
@@ -46,7 +53,7 @@ public class CommandReader {
         return args;
     }
 
-    private int readArgLen() throws InvalidCommand, IOException {
+    private int len() throws InvalidCommand, IOException {
 
         String str = reader.readLine();
 
