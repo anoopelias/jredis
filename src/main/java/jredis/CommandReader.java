@@ -1,9 +1,13 @@
 package jredis;
 
-import java.io.BufferedReader;
+import static jredis.Utils.CR;
+import static jredis.Utils.DOLLAR;
+import static jredis.Utils.LF;
+import static jredis.Utils.STAR;
+
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import jredis.exception.InvalidCommand;
@@ -16,58 +20,84 @@ import jredis.exception.InvalidCommand;
  */
 public class CommandReader {
 
-    private BufferedReader reader = null;
+    private BufferedInputStream stream = null;
 
     public CommandReader(InputStream is) throws InvalidCommand {
-        this.reader = new BufferedReader(new InputStreamReader(is));
+        this.stream = new BufferedInputStream(is);
     }
 
     public Command<?> next() throws InvalidCommand {
 
         try {
-            int len;
 
-            if ((len = len()) == -1)
+            if (!hasNext())
                 return null;
 
-            String[] args = args(len);
+            String[] command = command(len());
+            
+            String type = command[0];
+            String[] args = Arrays.copyOfRange(command, 1, command.length);
 
-            return CommandFactory.INSTANCE.createCommand(args[0],
-                    Arrays.copyOfRange(args, 1, args.length));
+            return CommandFactory.INSTANCE.createCommand(type, args);
 
         } catch (IOException e) {
             throw new InvalidCommand("IO Exception during reading the command");
+        } catch (NumberFormatException e) {
+            throw new InvalidCommand("Number expected");
         }
 
     }
 
-    private String[] args(int len) throws IOException {
-        String[] args = new String[len];
-        for (int i = 0; i < len; i++) {
-            // Byte size of the arg
-            reader.readLine();
+    private boolean hasNext() throws IOException {
+        stream.mark(1);
+        if (stream.read() == -1)
+            return false;
 
-            // Actual value of the arg
-            args[i] = reader.readLine();
-        }
-        return args;
+        stream.reset();
+        return true;
+    }
+
+    private String[] command(int len) throws IOException, InvalidCommand {
+        String[] command = new String[len];
+        for (int i = 0; i < len; i++)
+            command[i] = arg();
+
+        return command;
+    }
+
+    private String arg() throws IOException, InvalidCommand {
+        ch(DOLLAR);
+        byte[] b = new byte[num()];
+
+        stream.read(b);
+        crlf();
+
+        return new String(b);
+    }
+
+    private void crlf() throws IOException, InvalidCommand {
+        ch(CR);
+        ch(LF);
     }
 
     private int len() throws InvalidCommand, IOException {
+        ch(STAR);
+        return num();
+    }
 
-        String str = reader.readLine();
+    private int num() throws IOException, InvalidCommand {
+        char c;
+        StringBuilder len = new StringBuilder();
+        while ((c = (char) stream.read()) != CR)
+            len.append(c);
 
-        if (str == null)
-            return -1;
+        ch(LF);
+        return Integer.parseInt(len.toString());
+    }
 
-        if (str.charAt(0) != '*')
+    private void ch(byte ch) throws IOException, InvalidCommand {
+        if (stream.read() != ch)
             throw new InvalidCommand("Disagreement to Command Protocol");
-
-        if (!Character.isDigit(str.charAt(1)))
-            throw new InvalidCommand("Disagreement to Command Protocol");
-
-        return Character.getNumericValue(str.charAt(1));
-
     }
 
 }

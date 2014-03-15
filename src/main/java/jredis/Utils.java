@@ -21,8 +21,10 @@ public class Utils {
     public static final byte COLON = ':';
     public static final byte STAR = '*';
     public static final byte MINUS = '-';
+    public static final byte CR = '\r';
+    public static final byte LF = '\n';
 
-    public static final byte[] CRLF = { '\r', '\n' };
+    public static final byte[] CRLF = { CR , LF };
     public static final byte[] NULL_STRING = { DOLLAR, MINUS, '1' };
 
     public static final byte[] ERROR = toBytes("ERR ");
