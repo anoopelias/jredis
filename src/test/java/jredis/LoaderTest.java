@@ -12,7 +12,7 @@ import org.junit.Test;
 public class LoaderTest {
 
     /**
-     * Represents the below value, REDIS0006 FE 00
+     * Represents the value, 'REDIS0006' FE 00
      */
     private static final byte[] INIT = { 0x52, 0x45, 0x44, 0x49, 0x53, 0x30,
             0x30, 0x30, 0x36, (byte) 0xfe, 0x00 };
@@ -42,16 +42,18 @@ public class LoaderTest {
     }
 
     private InputStream toStream(byte[] keyValue) {
-        int len = INIT.length + keyValue.length + 1;
+        int len = INIT.length + keyValue.length + END.length;
         byte[] stream = new byte[len];
 
         for (int i = 0; i < INIT.length; i++)
             stream[i] = INIT[i];
 
-        for (int i = INIT.length; i < len - 1; i++)
+        for (int i = INIT.length; i < INIT.length + keyValue.length; i++)
             stream[i] = keyValue[i - INIT.length];
 
-        stream[len - 1] = (byte) 0xff;
+        for (int i = INIT.length + keyValue.length; i < len; i++)
+            stream[i] = END[i - (INIT.length + keyValue.length)];
+
         return new ByteArrayInputStream(stream);
     }
     
