@@ -20,7 +20,12 @@ public class TimedString {
         this.value = value;
         this.expiryTime = expiry + System.currentTimeMillis();
     }
-    
+
+    public TimedString(String value, long expiryTime) {
+        this.value = value;
+        this.expiryTime = expiryTime;
+    }
+
     /**
      * Get the value.
      * 

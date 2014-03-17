@@ -3,6 +3,7 @@ package jredis;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import jredis.exception.InvalidFileFormat;
 
@@ -21,10 +22,9 @@ public class Loader {
     /**
      * Initialization structure of the file.
      * 
-     * Version 6, database 00 is supported at the moment. 
+     * Version 6, database 00 is supported at the moment.
      * 
-     * 'REDIS0006'
-     * 0xFE 0x00
+     * 'REDIS0006' 0xFE 0x00
      * 
      */
     private static final byte[] INIT = { 0x52, 0x45, 0x44, 0x49, 0x53, 0x30,
@@ -45,15 +45,16 @@ public class Loader {
     public void load() throws InvalidFileFormat {
         try {
             verifyInit();
-            
-            while(hasNext())
+
+            while (hasNext())
                 loadValue();
-            
+
         } catch (IOException e) {
             throw new InvalidFileFormat("Error reading file", e);
         }
 
     }
+
     /**
      * Check if the end of file has reached.
      * 
@@ -69,7 +70,6 @@ public class Loader {
         return true;
     }
 
-    
     /**
      * Verify the the file starts in the correct format.
      * 
@@ -93,14 +93,54 @@ public class Loader {
      */
     private void loadValue() throws IOException, InvalidFileFormat {
         int type = stream.read();
-        if(type != 0)
+
+        long time = -1;
+        
+        if(type == 0xfc) {
+            time = readTime();
+            type = stream.read();
+        }
+
+        if (type != 0)
             throw new InvalidFileFormat("Type not supported");
-        
-        
+
         String key = readString();
-        TimedString value = new TimedString(readString());
-        
+        TimedString value = readValue(time);
+
         DataMap.INSTANCE.put(key, value);
+
+    }
+
+    /**
+     * Read a value and assign the given time to it.
+     * 
+     * @param time
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    private TimedString readValue(long time) throws IOException,
+            InvalidFileFormat {
+        String valString = readString();
+        
+        TimedString value;
+        if(time != -1)
+            value = new TimedString(valString, time);
+        else
+            value = new TimedString(valString);
+        return value;
+    }
+
+    /**
+     * Read 8 byte unix time in milliseconds from stream. 
+     * 
+     * @return
+     * @throws IOException
+     */
+    private long readTime() throws IOException {
+        byte[] bTime = new byte[8];
+        stream.read(bTime);
+        return ByteBuffer.wrap(reverse(bTime)).getLong();
     }
 
     /**
@@ -115,6 +155,21 @@ public class Loader {
         byte[] b = new byte[stream.read()];
         stream.read(b);
         return new String(b, Protocol.CHARSET);
+    }
+
+    /**
+     * Reverse a byte array.
+     * 
+     * @param b
+     */
+    public static byte[] reverse(byte[] b) {
+        for (int i = 0; i < b.length / 2; i++) {
+            byte temp = b[i];
+            b[i] = b[b.length - i - 1];
+            b[b.length - i - 1] = temp;
+        }
+
+        return b;
     }
 
 }

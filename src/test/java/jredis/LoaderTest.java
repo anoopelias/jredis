@@ -1,10 +1,12 @@
 package jredis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import jredis.exception.InvalidFileFormat;
 
@@ -44,25 +46,49 @@ public class LoaderTest {
         assertTrue(val.isValid());
     }
 
-    private InputStream toStream(byte[] keyValue) {
-        int len = INIT.length + keyValue.length + END.length;
-        byte[] stream = new byte[len];
+    @Test
+    public void test_loader_mil_timed_string() throws InvalidFileFormat, InterruptedException {
+        new Loader(toTimedStream(STRING, 100)).load();
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertEquals("FINNES", val.value());
+        assertTrue(val.isValid());
+        
+        Thread.sleep(101);
+        assertFalse(val.isValid());
+    }
 
-        for (int i = 0; i < INIT.length; i++)
-            stream[i] = INIT[i];
-
-        for (int i = INIT.length; i < INIT.length + keyValue.length; i++)
-            stream[i] = keyValue[i - INIT.length];
-
-        for (int i = INIT.length + keyValue.length; i < len; i++)
-            stream[i] = END[i - (INIT.length + keyValue.length)];
-
+    private InputStream toTimedStream(byte[] keyValue, long mils) {
+        byte[] num = numToBytes(System.currentTimeMillis() + mils);
+        byte[] stream = combine(combine(combine(INIT, num), keyValue), END);
         return new ByteArrayInputStream(stream);
     }
-    
+
+    private byte[] numToBytes(long time) {
+        ByteBuffer bb = ByteBuffer.allocate(9);
+        bb.putLong(time);
+        bb.put((byte) 0xfc);
+        byte[] num = Loader.reverse(bb.array());
+        return combine(num, new byte[9 - num.length]);
+    }
+
+    private InputStream toStream(byte[] keyValue) {
+        return new ByteArrayInputStream(combine(combine(INIT, keyValue), END));
+    }
+
+    private byte[] combine(byte[] b1, byte[] b2) {
+        byte[] ret = new byte[b1.length + b2.length];
+
+        for (int i = 0; i < b1.length; i++)
+            ret[i] = b1[i];
+
+        for (int i = b1.length; i < ret.length; i++)
+            ret[i] = b2[i - b1.length];
+
+        return ret;
+    }
+
     /*
      * TODO : CRC check.
-     * 
      */
 
 }
