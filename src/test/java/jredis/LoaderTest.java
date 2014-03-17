@@ -1,6 +1,7 @@
 package jredis;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -38,7 +39,9 @@ public class LoaderTest {
     @Test
     public void test_loader_string() throws InvalidFileFormat {
         new Loader(toStream(STRING)).load();
-        assertEquals("FINNES", DataMap.INSTANCE.get("RALPH", String.class));
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertEquals("FINNES", val.value());
+        assertTrue(val.isValid());
     }
 
     private InputStream toStream(byte[] keyValue) {
