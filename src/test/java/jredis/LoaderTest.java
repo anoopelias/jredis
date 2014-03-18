@@ -11,6 +11,7 @@ import java.nio.ByteBuffer;
 
 import jredis.exception.InvalidFileFormat;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class LoaderTest {
@@ -27,6 +28,11 @@ public class LoaderTest {
             0x06, 'F', 'I', 'N', 'N', 'E', 'S' };
 
     private static final byte[] END = { (byte) 0xff };
+    
+    @Before
+    public void setup() {
+        DataMap.INSTANCE.clear();
+    }
 
     @Test
     public void test_loader_init() throws InvalidFileFormat {

@@ -102,7 +102,7 @@ public class Loader {
         }
 
         if (type != 0)
-            throw new InvalidFileFormat("Type not supported");
+            throw new InvalidFileFormat("Unsupported content");
 
         String key = readString();
         TimedString value = readValue(time);
