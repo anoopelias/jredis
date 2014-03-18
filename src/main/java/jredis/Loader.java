@@ -60,10 +60,11 @@ public class Loader {
      * 
      * @return
      * @throws IOException
+     * @throws InvalidFileFormat 
      */
-    private boolean hasNext() throws IOException {
+    private boolean hasNext() throws IOException, InvalidFileFormat {
         stream.mark(1);
-        if (stream.read() == 0xff)
+        if (read() == 0xff)
             return false;
 
         stream.reset();
@@ -92,7 +93,7 @@ public class Loader {
      * @throws InvalidFileFormat
      */
     private void loadValue() throws IOException, InvalidFileFormat {
-        int type = stream.read();
+        int type = read();
 
         long time = -1;
 
@@ -102,7 +103,7 @@ public class Loader {
          */
         if (type == 0xfc) {
             time = readTime();
-            type = stream.read();
+            type = read();
         }
 
         if (type != 0)
@@ -156,9 +157,39 @@ public class Loader {
      * @throws InvalidFileFormat
      */
     private String readString() throws IOException, InvalidFileFormat {
-        byte[] b = new byte[stream.read()];
+        int init = read();
+        byte type = (byte) (init & 0x40);
+
+        int size;
+        switch (type) {
+        case 0x00:
+            size = init;
+            break;
+        case 0x40:
+            size = (init & 0x2f) + read();
+            break;
+        default:
+            throw new InvalidFileFormat("Unknown length format");
+        }
+
+        byte[] b = new byte[size];
         stream.read(b);
         return new String(b, Protocol.CHARSET);
+    }
+
+    /**
+     * Read a byte. Throws error on EOF.
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    private int read() throws IOException, InvalidFileFormat {
+        int ret = stream.read();
+        if(ret == -1)
+            throw new InvalidFileFormat("Premature end of file");
+        
+        return ret;
     }
 
 }

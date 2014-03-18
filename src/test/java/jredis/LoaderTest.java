@@ -25,8 +25,18 @@ public class LoaderTest {
     private static final byte[] INIT_INVALID = { 0x52, 0x45, 0x44, 0x49, 0x53,
             0x30, 0x30, 0x30, 0x36, (byte) 0xfd, 0x00 };
 
-    private static final byte[] STRING = { 0x00, 0x05, 'R', 'A', 'L', 'P', 'H',
-            0x06, 'F', 'I', 'N', 'N', 'E', 'S' };
+    private static final byte[] STRING_INIT = { 0x00, 0x05, 'R', 'A', 'L', 'P',
+            'H' };
+
+    private static final byte[] STRING_VAL = { 0x06, 'F', 'I', 'N', 'N', 'E',
+            'S' };
+
+    private static final String LONG_STRING = "Ralph Nathaniel Twisleton-Wykeham-Fiennes "
+            + "(/ˈreɪf ˈfaɪnz/;[2] born 22 December 1962), is an English actor. "
+            + "A noted Shakespeare interpreter, he first achieved success onstage "
+            + "at the Royal National Theatre. (Source : Wikipedia)";
+
+    private static final byte[] LONG_STRING_SIZE = { 0x40, (byte) 0xe5 };
 
     private static final byte[] END = { (byte) 0xff };
 
@@ -48,10 +58,52 @@ public class LoaderTest {
 
     @Test
     public void test_loader_string() throws InvalidFileFormat {
-        new Loader(toStream(STRING)).load();
+        new Loader(toStream(c(STRING_INIT, STRING_VAL))).load();
         TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
         assertEquals("FINNES", val.value());
         assertTrue(val.isValid());
+    }
+
+    @Test(expected = InvalidFileFormat.class)
+    public void test_loader_only_init() throws InvalidFileFormat {
+        InputStream is = new ByteArrayInputStream(INIT);
+        new Loader(is).load();
+    }
+
+    @Test(expected = InvalidFileFormat.class)
+    public void test_loader_only_string_init() throws InvalidFileFormat {
+        InputStream is = new ByteArrayInputStream(c(INIT, STRING_INIT));
+        new Loader(is).load();
+    }
+
+    @Test(expected = InvalidFileFormat.class)
+    public void test_loader_no_eof() throws InvalidFileFormat {
+        InputStream is = new ByteArrayInputStream(c(INIT, STRING_INIT,
+                STRING_VAL));
+        new Loader(is).load();
+    }
+
+    @Test(expected = InvalidFileFormat.class)
+    public void test_loader_no_length() throws InvalidFileFormat {
+        InputStream is = new ByteArrayInputStream(c(INIT, STRING_INIT,
+                END));
+        new Loader(is).load();
+    }
+
+    @Test(expected = InvalidFileFormat.class)
+    public void test_loader_invalid_length() throws InvalidFileFormat {
+        byte[] invalidLength = {0x40}; 
+        InputStream is = new ByteArrayInputStream(c(INIT, STRING_INIT,invalidLength));
+        new Loader(is).load();
+    }
+
+    @Test
+    public void test_loader_string_greater_than_63_bytes()
+            throws InvalidFileFormat {
+        new Loader(toStream(c(STRING_INIT, LONG_STRING_SIZE,
+                LONG_STRING.getBytes()))).load();
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertEquals(LONG_STRING, val.value());
     }
 
     @Test
@@ -66,7 +118,7 @@ public class LoaderTest {
     @Test
     public void test_loader_mil_timed_string() throws InvalidFileFormat,
             InterruptedException {
-        new Loader(toTimedStream(STRING, 100)).load();
+        new Loader(toTimedStream(c(STRING_INIT, STRING_VAL), 100)).load();
         TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
         assertEquals("FINNES", val.value());
         assertTrue(val.isValid());
@@ -75,10 +127,17 @@ public class LoaderTest {
         assertFalse(val.isValid());
     }
 
+    @Test(expected = InvalidFileFormat.class)
+    public void test_loader_no_type_after_time() throws InvalidFileFormat {
+        byte[] time = numToBytes(System.currentTimeMillis() + 100);
+        InputStream is = new ByteArrayInputStream(c(INIT, time, END));
+        new Loader(is).load();
+    }
+
     @Test
     public void test_loader_invalid_timed_string() throws InvalidFileFormat,
             InterruptedException {
-        InputStream stream = toTimedStream(STRING, 100);
+        InputStream stream = toTimedStream(c(STRING_INIT, STRING_VAL), 100);
         Thread.sleep(101);
 
         new Loader(stream).load();
@@ -95,8 +154,8 @@ public class LoaderTest {
 
         /*
          * Timer would have timed out already. This is a negative test case.
-         * Difficult to get a positive test case here. At least this proves, the file
-         * can be read without errors.
+         * Difficult to get a positive test case here. At least this proves, the
+         * file can be read without errors.
          */
         assertNull(val);
 
@@ -107,7 +166,7 @@ public class LoaderTest {
 
     private InputStream toTimedStream(byte[] keyValue, long mils) {
         byte[] num = numToBytes(System.currentTimeMillis() + mils);
-        byte[] stream = combine(combine(combine(INIT, num), keyValue), END);
+        byte[] stream = c(INIT, num, keyValue, END);
         return new ByteArrayInputStream(stream);
     }
 
@@ -116,21 +175,25 @@ public class LoaderTest {
         bb.putLong(time);
         bb.put((byte) 0xfc);
         byte[] num = reverse(bb.array());
-        return combine(num, new byte[9 - num.length]);
+        return c(num, new byte[9 - num.length]);
     }
 
     private InputStream toStream(byte[] keyValue) {
-        return new ByteArrayInputStream(combine(combine(INIT, keyValue), END));
+        return new ByteArrayInputStream(c(INIT, keyValue, END));
     }
 
-    private byte[] combine(byte[] b1, byte[] b2) {
-        byte[] ret = new byte[b1.length + b2.length];
+    private byte[] c(byte[]... byt) {
+        int size = 0;
+        for (byte[] by : byt)
+            size += by.length;
 
-        for (int i = 0; i < b1.length; i++)
-            ret[i] = b1[i];
-
-        for (int i = b1.length; i < ret.length; i++)
-            ret[i] = b2[i - b1.length];
+        byte[] ret = new byte[size];
+        int index = 0;
+        for (int i = 0; i < byt.length; i++) {
+            for (int j = 0; j < byt[i].length; j++) {
+                ret[index++] = byt[i][j];
+            }
+        }
 
         return ret;
     }
