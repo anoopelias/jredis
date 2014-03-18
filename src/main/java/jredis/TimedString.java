@@ -16,11 +16,6 @@ public class TimedString {
         this.value = value;
     }
 
-    public TimedString(String value, Long expiry) {
-        this.value = value;
-        this.expiryTime = expiry + System.currentTimeMillis();
-    }
-
     public TimedString(String value, long expiryTime) {
         this.value = value;
         this.expiryTime = expiryTime;

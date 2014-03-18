@@ -91,7 +91,7 @@ public class SetCommand implements Command<String> {
 
         TimedString stringValue = null;
         if (expiry != null)
-            stringValue = new TimedString(value, expiry);
+            stringValue = new TimedString(value, expiry + System.currentTimeMillis());
         else
             stringValue = new TimedString(value);
 
