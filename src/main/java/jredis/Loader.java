@@ -95,8 +95,12 @@ public class Loader {
         int type = stream.read();
 
         long time = -1;
-        
-        if(type == 0xfc) {
+
+        /*
+         * We are not supporting 0xfd as we are using only mills to save
+         * timestamp. (So does Redis, it seems)
+         */
+        if (type == 0xfc) {
             time = readTime();
             type = stream.read();
         }
@@ -107,7 +111,7 @@ public class Loader {
         String key = readString();
         TimedString value = readValue(time);
 
-        if(value.isValid())
+        if (value.isValid())
             DataMap.INSTANCE.put(key, value);
     }
 
@@ -122,9 +126,9 @@ public class Loader {
     private TimedString readValue(long time) throws IOException,
             InvalidFileFormat {
         String valString = readString();
-        
+
         TimedString value;
-        if(time != -1)
+        if (time != -1)
             value = new TimedString(valString, time);
         else
             value = new TimedString(valString);
@@ -132,7 +136,7 @@ public class Loader {
     }
 
     /**
-     * Read 8 byte unix time in milliseconds from stream. 
+     * Read 8 byte unix time in milliseconds from stream.
      * 
      * @return
      * @throws IOException
