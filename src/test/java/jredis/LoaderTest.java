@@ -2,6 +2,7 @@ package jredis;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -55,6 +56,16 @@ public class LoaderTest {
         
         Thread.sleep(101);
         assertFalse(val.isValid());
+    }
+
+    @Test
+    public void test_loader_invalid_timed_string() throws InvalidFileFormat, InterruptedException {
+        InputStream stream = toTimedStream(STRING, 100);
+        Thread.sleep(101);
+        
+        new Loader(stream).load();
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertNull(val);
     }
 
     private InputStream toTimedStream(byte[] keyValue, long mils) {

@@ -107,8 +107,8 @@ public class Loader {
         String key = readString();
         TimedString value = readValue(time);
 
-        DataMap.INSTANCE.put(key, value);
-
+        if(value.isValid())
+            DataMap.INSTANCE.put(key, value);
     }
 
     /**
