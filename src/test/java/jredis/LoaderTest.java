@@ -2,6 +2,7 @@ package jredis;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -28,7 +29,7 @@ public class LoaderTest {
             0x06, 'F', 'I', 'N', 'N', 'E', 'S' };
 
     private static final byte[] END = { (byte) 0xff };
-    
+
     @Before
     public void setup() {
         DataMap.INSTANCE.clear();
@@ -54,24 +55,54 @@ public class LoaderTest {
     }
 
     @Test
-    public void test_loader_mil_timed_string() throws InvalidFileFormat, InterruptedException {
+    public void test_loader_file() throws InvalidFileFormat {
+        InputStream stream = this.getClass().getClassLoader()
+                .getResourceAsStream("dump.rdb");
+        new Loader(stream).load();
+        TimedString val = DataMap.INSTANCE.get("Anoop", TimedString.class);
+        assertEquals("Elias", val.value());
+    }
+
+    @Test
+    public void test_loader_mil_timed_string() throws InvalidFileFormat,
+            InterruptedException {
         new Loader(toTimedStream(STRING, 100)).load();
         TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
         assertEquals("FINNES", val.value());
         assertTrue(val.isValid());
-        
+
         Thread.sleep(101);
         assertFalse(val.isValid());
     }
 
     @Test
-    public void test_loader_invalid_timed_string() throws InvalidFileFormat, InterruptedException {
+    public void test_loader_invalid_timed_string() throws InvalidFileFormat,
+            InterruptedException {
         InputStream stream = toTimedStream(STRING, 100);
         Thread.sleep(101);
-        
+
         new Loader(stream).load();
         TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
         assertNull(val);
+    }
+
+    @Test
+    public void test_loader_timer_file() throws InvalidFileFormat {
+        InputStream stream = this.getClass().getClassLoader()
+                .getResourceAsStream("dump_timer.rdb");
+        new Loader(stream).load();
+        TimedString val = DataMap.INSTANCE.get("John", TimedString.class);
+
+        /*
+         * Timer would have timed out already. This is a negative test case.
+         * Difficult to get a positive test case here. At least this proves, the file
+         * can be read without errors.
+         */
+        assertNull(val);
+
+        // An untimed key already there in the file.
+        val = DataMap.INSTANCE.get("Anoop", TimedString.class);
+        assertNotNull(val);
     }
 
     private InputStream toTimedStream(byte[] keyValue, long mils) {
@@ -103,7 +134,7 @@ public class LoaderTest {
 
         return ret;
     }
-    
+
     /**
      * Reverse a byte array.
      * 
@@ -118,8 +149,6 @@ public class LoaderTest {
 
         return b;
     }
-
-
 
     /*
      * TODO : CRC check.
