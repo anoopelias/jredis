@@ -1,6 +1,7 @@
 package jredis;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteOrder;
 
 
 /**
@@ -30,6 +31,7 @@ public class Protocol {
     public static final byte[] ERROR = toBytes("ERR ");
 
     public static final String CHARSET = "UTF-8";
+    public static final ByteOrder ENDIAN = ByteOrder.LITTLE_ENDIAN;
     
     /**
      * Parse a float value to String.

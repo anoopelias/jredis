@@ -144,7 +144,7 @@ public class Loader {
     private long readTime() throws IOException {
         byte[] bTime = new byte[8];
         stream.read(bTime);
-        return ByteBuffer.wrap(reverse(bTime)).getLong();
+        return ByteBuffer.wrap(bTime).order(Protocol.ENDIAN).getLong();
     }
 
     /**
@@ -159,21 +159,6 @@ public class Loader {
         byte[] b = new byte[stream.read()];
         stream.read(b);
         return new String(b, Protocol.CHARSET);
-    }
-
-    /**
-     * Reverse a byte array.
-     * 
-     * @param b
-     */
-    public static byte[] reverse(byte[] b) {
-        for (int i = 0; i < b.length / 2; i++) {
-            byte temp = b[i];
-            b[i] = b[b.length - i - 1];
-            b[b.length - i - 1] = temp;
-        }
-
-        return b;
     }
 
 }

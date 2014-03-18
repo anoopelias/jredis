@@ -84,7 +84,7 @@ public class LoaderTest {
         ByteBuffer bb = ByteBuffer.allocate(9);
         bb.putLong(time);
         bb.put((byte) 0xfc);
-        byte[] num = Loader.reverse(bb.array());
+        byte[] num = reverse(bb.array());
         return combine(num, new byte[9 - num.length]);
     }
 
@@ -103,6 +103,23 @@ public class LoaderTest {
 
         return ret;
     }
+    
+    /**
+     * Reverse a byte array.
+     * 
+     * @param b
+     */
+    public static byte[] reverse(byte[] b) {
+        for (int i = 0; i < b.length / 2; i++) {
+            byte temp = b[i];
+            b[i] = b[b.length - i - 1];
+            b[b.length - i - 1] = temp;
+        }
+
+        return b;
+    }
+
+
 
     /*
      * TODO : CRC check.
