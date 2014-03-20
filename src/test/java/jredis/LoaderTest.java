@@ -36,7 +36,7 @@ public class LoaderTest {
             + "A noted Shakespeare interpreter, he first achieved success onstage "
             + "at the Royal National Theatre. (Source : Wikipedia)";
 
-    private static final byte[] LONG_STRING_SIZE = { 0x50, (byte) 0xe5 };
+    private static final byte[] LONG_STRING_SIZE = { 0x40, (byte) 0xe5 };
     private static final byte[] LONGEST_STRING_SIZE = { (byte) 0x80, 0x00,
             0x00, 0x59, 0x74 };
 

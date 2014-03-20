@@ -93,7 +93,7 @@ public class Loader {
      * @throws InvalidFileFormat
      */
     private void loadValue() throws IOException, InvalidFileFormat {
-        int type = read();
+        int valueType = read();
 
         long time = -1;
 
@@ -101,12 +101,12 @@ public class Loader {
          * We are not supporting 0xfd as we are using only mills to save
          * timestamp. (So does Redis, it seems)
          */
-        if (type == 0xfc) {
+        if (valueType == 0xfc) {
             time = readTime();
-            type = read();
+            valueType = read();
         }
 
-        if (type != 0)
+        if (valueType != 0) // Currently reads only String type.
             throw new InvalidFileFormat("Unsupported content");
 
         String key = readString();
@@ -158,24 +158,24 @@ public class Loader {
      */
     private String readString() throws IOException, InvalidFileFormat {
         int init = read();
-        byte type = (byte) (init & 0xd0);
+        byte lengthType = (byte) (init & 0xc0); // First two bits of init represents the length encoding type.
 
-        int size;
-        switch (type) {
-        case 0x00:
-            size = init;
+        int length;
+        switch (lengthType) {
+        case 0x00: // 1 byte
+            length = init;
             break;
-        case 0x50:
-            size = readSmallInt(init & 0x4f);
+        case 0x40: // 2 byte
+            length = readSmallInt(init & 0x3f); // The last 6 bits give the msb
             break;
-        case (byte) 0x80:
-            size = readInt();
+        case (byte) 0x80: // 5 byte
+            length = readInt();
             break;
         default:
             throw new InvalidFileFormat("Unknown length format");
         }
 
-        byte[] b = new byte[size];
+        byte[] b = new byte[length];
         stream.read(b);
         return new String(b, Protocol.CHARSET);
     }
