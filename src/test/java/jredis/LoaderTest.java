@@ -36,7 +36,9 @@ public class LoaderTest {
             + "A noted Shakespeare interpreter, he first achieved success onstage "
             + "at the Royal National Theatre. (Source : Wikipedia)";
 
-    private static final byte[] LONG_STRING_SIZE = { 0x40, (byte) 0xe5 };
+    private static final byte[] LONG_STRING_SIZE = { 0x50, (byte) 0xe5 };
+    private static final byte[] LONGEST_STRING_SIZE = { (byte) 0x80, 0x00,
+            0x00, 0x59, 0x74 };
 
     private static final byte[] END = { (byte) 0xff };
 
@@ -85,15 +87,15 @@ public class LoaderTest {
 
     @Test(expected = InvalidFileFormat.class)
     public void test_loader_no_length() throws InvalidFileFormat {
-        InputStream is = new ByteArrayInputStream(c(INIT, STRING_INIT,
-                END));
+        InputStream is = new ByteArrayInputStream(c(INIT, STRING_INIT, END));
         new Loader(is).load();
     }
 
     @Test(expected = InvalidFileFormat.class)
     public void test_loader_invalid_length() throws InvalidFileFormat {
-        byte[] invalidLength = {0x40}; 
-        InputStream is = new ByteArrayInputStream(c(INIT, STRING_INIT,invalidLength));
+        byte[] invalidLength = { 0x40 };
+        InputStream is = new ByteArrayInputStream(c(INIT, STRING_INIT,
+                invalidLength));
         new Loader(is).load();
     }
 
@@ -104,6 +106,19 @@ public class LoaderTest {
                 LONG_STRING.getBytes()))).load();
         TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
         assertEquals(LONG_STRING, val.value());
+    }
+
+    @Test
+    public void test_loader_string_greater_than_16383_bytes()
+            throws InvalidFileFormat {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 100; i++)
+            sb.append(LONG_STRING);
+
+        new Loader(toStream(c(STRING_INIT, LONGEST_STRING_SIZE, sb.toString()
+                .getBytes()))).load();
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertEquals(sb.toString(), val.value());
     }
 
     @Test

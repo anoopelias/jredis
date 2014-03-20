@@ -19,6 +19,8 @@ import java.util.concurrent.Executors;
  * 
  * 3. Error messages/types in jRedis is not consistent with that in Redis.
  * 
+ * 4. Loading/Saving data saved using LZF compression.
+ * 
  * @author anoopelias
  * 
  */
