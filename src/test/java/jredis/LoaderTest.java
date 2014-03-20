@@ -127,16 +127,42 @@ public class LoaderTest {
     }
 
     @Test
+    public void test_loader_file_long_string()
+            throws InvalidFileFormat {
+        InputStream stream = this.getClass().getClassLoader()
+                .getResourceAsStream("dump_long.rdb");
+        new Loader(stream).load();
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertEquals(LONG_STRING, val.value());
+    }
+
+    @Test
+    public void test_loader_file_longest_string()
+            throws InvalidFileFormat {
+        InputStream stream = this.getClass().getClassLoader()
+                .getResourceAsStream("dump_longest.rdb");
+        new Loader(stream).load();
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertEquals(longestString(), val.value());
+    }
+
+
+    @Test
     public void test_loader_string_greater_than_16383_bytes()
             throws InvalidFileFormat {
+        String longest = longestString();
+
+        new Loader(toStream(c(STRING_INIT, LONGEST_STRING_SIZE, longest
+                .getBytes()))).load();
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertEquals(longest.toString(), val.value());
+    }
+
+    private String longestString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 100; i++)
             sb.append(LONG_STRING);
-
-        new Loader(toStream(c(STRING_INIT, LONGEST_STRING_SIZE, sb.toString()
-                .getBytes()))).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
-        assertEquals(sb.toString(), val.value());
+        return sb.toString();
     }
 
     @Test
