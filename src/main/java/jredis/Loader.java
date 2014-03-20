@@ -181,7 +181,7 @@ public class Loader {
     }
 
     private int readSmallInt(int msb) throws IOException, InvalidFileFormat {
-        return msb + read();
+        return (msb * 256) + read();
     }
 
     private int readInt() throws IOException {

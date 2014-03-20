@@ -36,7 +36,16 @@ public class LoaderTest {
             + "A noted Shakespeare interpreter, he first achieved success onstage "
             + "at the Royal National Theatre. (Source : Wikipedia)";
 
+    private static final String LONGER_STRING = LONG_STRING + "Fiennes' portrayal of Nazi war criminal Amon "
+            + "Goeth in Schindler's List (1993) earned him a nomination for the Academy "
+            + "Award for Best Supporting Actor and the Golden Globe Award for "
+            + "Best Supporting Actor, and won the BAFTA Award for Best Actor in a "
+            + "Supporting Role. His performance as Count Almásy in The English Patient "
+            + "(1996) garnered him a second Academy Award nomination, for Best Actor, "
+            + "as well as BAFTA and Golden Globe nominations.";
+
     private static final byte[] LONG_STRING_SIZE = { 0x40, (byte) 0xe5 };
+    private static final byte[] LONGER_STRING_SIZE = { 0x42, (byte) 0x9b };
     private static final byte[] LONGEST_STRING_SIZE = { (byte) 0x80, 0x00,
             0x00, 0x59, 0x74 };
 
@@ -106,6 +115,15 @@ public class LoaderTest {
                 LONG_STRING.getBytes()))).load();
         TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
         assertEquals(LONG_STRING, val.value());
+    }
+
+    @Test
+    public void test_loader_string_greater_than_256_bytes()
+            throws InvalidFileFormat {
+        new Loader(toStream(c(STRING_INIT, LONGER_STRING_SIZE,
+                LONGER_STRING.getBytes()))).load();
+        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        assertEquals(LONGER_STRING, val.value());
     }
 
     @Test
