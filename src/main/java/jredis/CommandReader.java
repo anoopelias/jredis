@@ -4,7 +4,6 @@ import static jredis.Protocol.CR;
 import static jredis.Protocol.DOLLAR;
 import static jredis.Protocol.LF;
 import static jredis.Protocol.STAR;
-import static jredis.Protocol.CHARSET;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
