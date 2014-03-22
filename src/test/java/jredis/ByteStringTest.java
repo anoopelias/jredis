@@ -53,7 +53,7 @@ public class ByteStringTest {
     public void test_setbit_small_offset() throws UnsupportedEncodingException {
         ByteString byteString = new ByteString(BYTE);
         assertEquals(0,byteString.getBit(0));
-        byteString.setBit(0, 1);
+        byteString.setBit(0, true);
         assertEquals(1,byteString.getBit(0));
     }
 

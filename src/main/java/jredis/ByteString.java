@@ -61,11 +61,11 @@ public class ByteString {
      * @param offset
      * @return the original value of this bit before setting it.
      */
-    public int setBit(int offset, int bit) {
+    public int setBit(int offset, boolean bit) {
         int bytePos = offset / BYTE_SIZE;
         int bitPos = offset % BYTE_SIZE;
 
-        return setBitValue(bytePos, bitPos, bit == 1);
+        return setBitValue(bytePos, bitPos, bit);
     }
 
     /**
