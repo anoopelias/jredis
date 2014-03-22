@@ -98,6 +98,12 @@ public class ByteString {
         return ret;
     }
 
+    /**
+     * Get position from lsb side.
+     * 
+     * @param bitPos
+     * @return
+     */
     private int lsb(int bitPos) {
         return BYTE_SIZE - (bitPos + 1);
     }
