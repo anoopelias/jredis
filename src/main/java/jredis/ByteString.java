@@ -74,6 +74,8 @@ public class ByteString {
     }
 
     /**
+     * Check if a bit inside a byte is set.
+     * 
      * Ref :
      * http://stackoverflow.com/questions/1034473/java-iterate-bits-in-byte
      * -array

@@ -88,13 +88,13 @@ public class ByteStringTest {
 
         assertFalse(byteString.setBit(10, false));
         assertFalse(byteString.getBit(10));
-        
+
         assertFalse(byteString.setBit(10, true));
         assertTrue(byteString.getBit(10));
-        
+
         assertTrue(byteString.setBit(10, false));
         assertFalse(byteString.getBit(10));
-        
+
         assertTrue(byteString.setBit(22, false));
         assertFalse(byteString.getBit(22));
 
@@ -111,17 +111,21 @@ public class ByteStringTest {
         ByteString byteString = new ByteString(BYTE);
         byteString.setBit(545, true);
         assertTrue(byteString.getBit(545));
-        
+
         // Anything near to it should be false.
-        for(int i=500; i<545; i++)
+        for (int i = 500; i < 545; i++)
             assertFalse(byteString.getBit(i));
     }
 
     @Test
     public void test_setbit_max_offset() throws UnsupportedEncodingException {
         ByteString byteString = new ByteString(BYTE);
+
         byteString.setBit(Integer.MAX_VALUE, true);
         assertTrue(byteString.getBit(Integer.MAX_VALUE));
+
+        byteString.setBit(Integer.MAX_VALUE, false);
+        assertFalse(byteString.getBit(Integer.MAX_VALUE));
     }
 
 }
