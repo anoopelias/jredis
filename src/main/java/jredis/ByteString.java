@@ -46,16 +46,26 @@ public class ByteString {
      * @return bit value (0 or 1). 0 if offset is bigger than current size.
      */
     public int getBit(int offset) {
-        if (value == null)
-            return 0;
-
         int bytePos = offset / BYTE_SIZE;
         int bitPos = offset % BYTE_SIZE;
 
         if (value.length < bytePos)
             return 0;
 
-        return isBitSet(value[bytePos], bitPos);
+        return isBitSet(bytePos, bitPos);
+    }
+
+    /**
+     * Set bit value at offset.
+     * 
+     * @param offset
+     * @return the original value of this bit before setting it.
+     */
+    public int setBit(int offset, int bit) {
+        int bytePos = offset / BYTE_SIZE;
+        int bitPos = offset % BYTE_SIZE;
+
+        return setBitValue(bytePos, bitPos, bit == 1);
     }
 
     /**
@@ -67,8 +77,29 @@ public class ByteString {
      * @param bit
      * @return
      */
-    private static int isBitSet(byte b, int bit) {
-        return (b & (1 << BYTE_SIZE - (bit + 1))) != 0 ? 1 : 0;
+    private int isBitSet(int bytePos, int bitPos) {
+        return (value[bytePos] & (1 << lsb(bitPos))) != 0 ? 1 : 0;
+    }
+
+    /**
+     * 
+     * @param b
+     * @param bytePos
+     * @return
+     */
+    private int setBitValue(int bytePos, int bitPos, boolean bit) {
+        int ret = isBitSet(bytePos, bitPos);
+        int lsb = lsb(bitPos);
+        byte curr = value[bytePos];
+
+        value[bytePos] = (byte) (bit ? (curr | (1 << lsb))
+                : (curr & ~(1 << lsb)));
+
+        return ret;
+    }
+
+    private int lsb(int bitPos) {
+        return BYTE_SIZE - (bitPos + 1);
     }
 
     /*

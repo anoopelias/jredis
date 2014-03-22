@@ -44,6 +44,17 @@ public class ByteStringTest {
             sb.append(byteString.getBit(i));
         
         assertEquals(BIT, sb.toString());
+        
+        // Verify beyond init range as well.
+        assertEquals(0, byteString.getBit(10000));
+    }
+
+    @Test
+    public void test_setbit_small_offset() throws UnsupportedEncodingException {
+        ByteString byteString = new ByteString(BYTE);
+        assertEquals(0,byteString.getBit(0));
+        byteString.setBit(0, 1);
+        assertEquals(1,byteString.getBit(0));
     }
 
 }
