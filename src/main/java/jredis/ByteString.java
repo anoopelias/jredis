@@ -1,5 +1,7 @@
 package jredis;
 
+import java.util.Arrays;
+
 /**
  * ByteString data structure to handle both string and bit string.
  * 
@@ -45,12 +47,12 @@ public class ByteString {
      * @param offset
      * @return bit value (0 or 1). 0 if offset is bigger than current size.
      */
-    public int getBit(int offset) {
+    public boolean getBit(int offset) {
         int bytePos = offset / BYTE_SIZE;
         int bitPos = offset % BYTE_SIZE;
 
         if (value.length < bytePos)
-            return 0;
+            return false;
 
         return isBitSet(bytePos, bitPos);
     }
@@ -61,11 +63,14 @@ public class ByteString {
      * @param offset
      * @return the original value of this bit before setting it.
      */
-    public int setBit(int offset, boolean bit) {
+    public boolean setBit(int offset, boolean bit) {
+        boolean ret = getBit(offset);
+        
         int bytePos = offset / BYTE_SIZE;
         int bitPos = offset % BYTE_SIZE;
-
-        return setBitValue(bytePos, bitPos, bit);
+        setBitValue(bytePos, bitPos, bit);
+        
+        return ret;
     }
 
     /**
@@ -77,8 +82,8 @@ public class ByteString {
      * @param bit
      * @return
      */
-    private int isBitSet(int bytePos, int bitPos) {
-        return (value[bytePos] & (1 << lsb(bitPos))) != 0 ? 1 : 0;
+    private boolean isBitSet(int bytePos, int bitPos) {
+        return (value[bytePos] & (1 << lsb(bitPos))) != 0;
     }
 
     /**
@@ -87,15 +92,23 @@ public class ByteString {
      * @param bytePos
      * @return
      */
-    private int setBitValue(int bytePos, int bitPos, boolean bit) {
-        int ret = isBitSet(bytePos, bitPos);
+    private void setBitValue(int bytePos, int bitPos, boolean bit) {
         int lsb = lsb(bitPos);
+        if(bytePos >= value.length)
+            expand(bytePos);
+        
         byte curr = value[bytePos];
-
         value[bytePos] = (byte) (bit ? (curr | (1 << lsb))
                 : (curr & ~(1 << lsb)));
-
-        return ret;
+    }
+    
+    /**
+     * Expand the size of the value to accommodate minSize.
+     * 
+     * @param minSize
+     */
+    private void expand(int minSize) {
+        value = Arrays.copyOf(value, Integer.highestOneBit(minSize) * 2);
     }
 
     /**
