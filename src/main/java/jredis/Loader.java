@@ -180,16 +180,28 @@ public class Loader {
         return Protocol.toString(b);
     }
 
+    /**
+     * Read a byte and join it with msb provided.
+     * 
+     * @param msb
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
     private int readSmallInt(int msb) throws IOException, InvalidFileFormat {
         return (msb * 256) + read();
     }
 
+    /**
+     * Read a 4 byte integer, Big Endian.
+     * 
+     * @return
+     * @throws IOException
+     */
     private int readInt() throws IOException {
-        int size;
         byte[] by = new byte[4];
         stream.read(by);
-        size = ByteBuffer.wrap(by).getInt();
-        return size;
+        return ByteBuffer.wrap(by).getInt();
     }
 
     /**
