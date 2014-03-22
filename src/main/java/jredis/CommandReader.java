@@ -118,7 +118,7 @@ public class CommandReader {
         stream.read(b);
         crlf();
 
-        return new String(b, CHARSET);
+        return Protocol.toString(b);
     }
 
     /**

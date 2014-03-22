@@ -177,7 +177,7 @@ public class Loader {
 
         byte[] b = new byte[length];
         stream.read(b);
-        return new String(b, Protocol.CHARSET);
+        return Protocol.toString(b);
     }
 
     private int readSmallInt(int msb) throws IOException, InvalidFileFormat {

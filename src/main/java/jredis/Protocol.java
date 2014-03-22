@@ -98,4 +98,20 @@ public class Protocol {
         return toBytes(String.valueOf(number));
     }
 
+    /**
+     * Convert bytes to string.
+     * 
+     * @param number
+     * @return
+     */
+    public static String toString(byte[] bytes) {
+        try {
+            return new String(bytes, CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            if (Server.isDebug())
+                e.printStackTrace();
+            return null;
+        }
+    }
+
 }
