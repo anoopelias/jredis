@@ -115,6 +115,9 @@ public class ByteStringTest {
         // Anything near to it should be false.
         for (int i = 500; i < 545; i++)
             assertFalse(byteString.getBit(i));
+        
+        for (int i = 546; i < 600; i++)
+            assertFalse(byteString.getBit(i));
     }
 
     @Test
