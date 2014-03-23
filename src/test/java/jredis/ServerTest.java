@@ -68,19 +68,23 @@ public class ServerTest {
     public void test_server_request() throws UnknownHostException, IOException {
         Jedis jedis = new Jedis(HOST, PORT);
         Jedis jedis2 = new Jedis(HOST, PORT, 200000);
-        assertEquals("OK", jedis.set("Jack", "Dorsey").trim());
-        assertEquals("OK", jedis2.set("Elon", "Musk").trim());
+        
+        keyTests(jedis, jedis2);
+        bitTests(jedis);
+        zTests(jedis2);
+        setStringBitCombinationTests(jedis);
+    }
 
-        assertEquals("Dorsey", jedis.get("Jack").trim());
-        assertEquals("Musk", jedis2.get("Elon").trim());
-        assertNull(jedis.get("Filipe"));
-        
-        String key = "Keys";
-        assertFalse(jedis.setbit(key, 10, true));
-        assertTrue(jedis.getbit(key, 10));
-        assertFalse(jedis.getbit(key, 20));
-        
-        key = "Numbers";
+    private void setStringBitCombinationTests(Jedis jedis) {
+        jedis.set("Jack", "Nicholson");
+        assertEquals("Nicholson", jedis.get("Jack"));
+        jedis.setbit("Jack", 74, true);
+        jedis.setbit("Jack", 75, true);
+        assertEquals("Nicholson0", jedis.get("Jack"));
+    }
+
+    private void zTests(Jedis jedis2) {
+        String key = "Numbers";
         Map<Double, String> val = new HashMap<>();
         val.put(5.0, "Five");
         jedis2.zadd(key, val);
@@ -111,6 +115,22 @@ public class ServerTest {
         Tuple tuple = iterTuples.next();
         assertEquals("Five", tuple.getElement());
         assertEquals(5.0, tuple.getScore(), 0.0);
+    }
+
+    private void bitTests(Jedis jedis) {
+        String key = "Keys";
+        assertFalse(jedis.setbit(key, 10, true));
+        assertTrue(jedis.getbit(key, 10));
+        assertFalse(jedis.getbit(key, 20));
+    }
+
+    private void keyTests(Jedis jedis, Jedis jedis2) {
+        assertEquals("OK", jedis.set("Jack", "Dorsey").trim());
+        assertEquals("OK", jedis2.set("Elon", "Musk").trim());
+
+        assertEquals("Dorsey", jedis.get("Jack").trim());
+        assertEquals("Musk", jedis2.get("Elon").trim());
+        assertNull(jedis.get("Filipe"));
     }
 
 }

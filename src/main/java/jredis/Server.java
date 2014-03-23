@@ -10,16 +10,12 @@ import java.util.concurrent.Executors;
  * 
  * Known mismatches in behavior of Redis with jRedis. 
  * 
- * 1. In Redis, SET store the string in bit format. Now a GETBIT will return the 
- * corresponding bits in original string. Contrary to this, a SET / GETBIT combination 
- * will throw an error in jRedis.
- * 
- * 2. In Redis, A SET with both PX and EX options at the same time will invalidate the SET
+ * 1. In Redis, A SET with both PX and EX options at the same time will invalidate the SET
  * operation. While jRedis will use the last specified option.
  * 
- * 3. Error messages/types in jRedis is not consistent with that in Redis.
+ * 2. Error messages/types in jRedis is not consistent with that in Redis.
  * 
- * 4. Loading/Saving data saved using LZF compression.
+ * 3. Loading/Saving data saved using LZF compression.
  * 
  * @author anoopelias
  * 
