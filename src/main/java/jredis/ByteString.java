@@ -16,7 +16,7 @@ public class ByteString {
     private int length;
 
     /**
-     * Bit constructor.
+     * Default constructor.
      * 
      * @param value
      */
