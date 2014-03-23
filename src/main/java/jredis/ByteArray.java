@@ -46,6 +46,9 @@ public class ByteArray {
      * @throws IllegalArgumentException if length is greater than current length.
      */
     public ByteArray subArray(int length) throws IllegalArgumentException {
+        if(length > this.length)
+            throw new IllegalArgumentException("SubArray size is bigger than original array");
+        
         return new ByteArray(content, length);
     }
     
