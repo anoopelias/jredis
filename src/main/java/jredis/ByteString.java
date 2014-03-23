@@ -13,6 +13,7 @@ public class ByteString {
     private static final int BYTE_SIZE = 8;
     private static final int INIT_SIZE = 256;
     private byte[] value;
+    private int length;
 
     /**
      * Bit constructor.
@@ -21,6 +22,7 @@ public class ByteString {
      */
     public ByteString() {
         this.value = new byte[INIT_SIZE];
+        length = 0;
     }
 
     /**
@@ -30,6 +32,7 @@ public class ByteString {
      */
     public ByteString(String value) {
         this.value = Protocol.toBytes(value);
+        length = this.value.length;
     }
 
     /**
@@ -39,6 +42,7 @@ public class ByteString {
      */
     public ByteString(byte[] value) {
         this.value = value;
+        length = value.length;
     }
 
     /**
@@ -51,7 +55,7 @@ public class ByteString {
         int bytePos = offset / BYTE_SIZE;
         int bitPos = offset % BYTE_SIZE;
 
-        if (value.length < bytePos)
+        if (value.length <= bytePos)
             return false;
 
         return isBitSet(bytePos, bitPos);
@@ -100,8 +104,13 @@ public class ByteString {
             expand(bytePos);
         
         byte curr = value[bytePos];
+        
         value[bytePos] = (byte) (bit ? (curr | (1 << lsb))
                 : (curr & ~(1 << lsb)));
+        
+        // Increase the length if required.
+        if(length < (bytePos + 1))
+            length = bytePos + 1;
     }
     
     /**
@@ -122,17 +131,15 @@ public class ByteString {
     private int lsb(int bitPos) {
         return BYTE_SIZE - (bitPos + 1);
     }
-
-    /*
-     * (non-Javadoc)
+    
+    
+    /**
+     * Get the value in terms of byte array.
      * 
-     * @see java.lang.Object#toString()
+     * @return
      */
-    public String toString() {
-        if (value == null)
-            return null;
-
-        return Protocol.toString(value);
+    public ByteArray toByteArray() {
+        return new ByteArray(value, length);
     }
 
 }

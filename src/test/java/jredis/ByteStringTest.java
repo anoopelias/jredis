@@ -10,21 +10,39 @@ import org.junit.Test;
 
 public class ByteStringTest {
 
+    private static final String SOME_STRING = "Mathew Perry";
     private static final byte[] BYTE = { 0x50, 0x51, 0x52, 0x53, 0x54, 0x55,
             0x56, 0x57, 0x58, 0x59 };
     private static final String BIT = "01010000010100010101001001010011010101000101010101010110010101110101100001011001";
 
+    private static final String BYTE_128_STRING = "Lorem ipsum dolor sit amet risus nunc "
+            + "nulla ipsum. Ut mattis et. Pellentesque ipsum varius quam aenean dolor "
+            + "sem dictumst velit.";
+
     @Test
     public void test_string() {
-        ByteString byteString = new ByteString("Mathew Perry");
-        assertEquals("Mathew Perry", byteString.toString());
+        ByteString byteString = new ByteString(SOME_STRING);
+        assertEquals(12, byteString.toByteArray().length());
+        assertEquals(SOME_STRING, byteString.toByteArray().toString());
     }
 
     @Test
     public void test_bytes() throws UnsupportedEncodingException {
         ByteString byteString = new ByteString(
-                "Mathew Perry".getBytes(Protocol.CHARSET));
-        assertEquals("Mathew Perry", byteString.toString());
+                SOME_STRING.getBytes(Protocol.CHARSET));
+        assertEquals(SOME_STRING, byteString.toByteArray().toString());
+    }
+
+    @Test
+    public void test_get_byte_array_default() throws UnsupportedEncodingException {
+        ByteString byteString = new ByteString();
+        assertEquals(0, byteString.toByteArray().length());
+    }
+
+    @Test
+    public void test_get_byte_array_bytes() throws UnsupportedEncodingException {
+        ByteString byteString = new ByteString(BYTE);
+        assertEquals(10, byteString.toByteArray().length());
     }
 
     @Test
@@ -50,6 +68,17 @@ public class ByteStringTest {
 
         // Verify beyond init range as well.
         assertFalse(byteString.getBit(10000));
+    }
+
+    @Test
+    public void test_getbit_larger_offset() {
+        byte[] input = { 0x32 };
+        ByteString byteString = new ByteString(input);
+
+        assertTrue(byteString.getBit(6));
+        assertFalse(byteString.getBit(7));
+        assertFalse(byteString.getBit(8));
+        assertFalse(byteString.getBit(9));
     }
 
     @Test
@@ -115,7 +144,7 @@ public class ByteStringTest {
         // Anything near to it should be false.
         for (int i = 500; i < 545; i++)
             assertFalse(byteString.getBit(i));
-        
+
         for (int i = 546; i < 600; i++)
             assertFalse(byteString.getBit(i));
     }
@@ -131,12 +160,32 @@ public class ByteStringTest {
         byteString.setBit(Integer.MAX_VALUE, false);
         assertFalse(byteString.getBit(Integer.MAX_VALUE));
     }
-    
+
     @Test
-    public void test_setbit_large_offset2() throws UnsupportedEncodingException {
-        
+    public void test_get_byte_array() throws UnsupportedEncodingException {
+        ByteString byteString = new ByteString(SOME_STRING);
+
+        assertEquals(12, byteString.toByteArray().length());
+        assertEquals(SOME_STRING, byteString.toByteArray().toString());
     }
 
+    @Test
+    public void test_setbit_get_byte_array()
+            throws UnsupportedEncodingException {
+        ByteString byteString = new ByteString(BYTE_128_STRING);
+
+        int pos = 8 * 128 + 1;
+        byteString.setBit(pos++, true);
+        assertEquals(129, byteString.toByteArray().length());
+
+        for(int i=0; i<6; i++) {
+            byteString.setBit(pos++, true);
+        }
+
+        assertEquals(129, byteString.toByteArray().length());
+        byteString.setBit(pos++, true);
         
+        assertEquals(130, byteString.toByteArray().length());
+    }
 
 }

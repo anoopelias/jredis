@@ -17,16 +17,15 @@ import java.net.Socket;
  * 
  */
 public class TestUtil {
-    
+
     public static final char STAR = '*';
     public static final char DOLLAR = '$';
     public static final char MINUS = '-';
     public static final char COLON = ':';
     public static String CRLF = "\r\n";
     public static final String OK = "+OK";
-    
-    private static final String CHARSET = "UTF-8";
 
+    private static final String CHARSET = "UTF-8";
 
     /**
      * Create a mock socket which will send the specified command string and
@@ -93,6 +92,17 @@ public class TestUtil {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Get bytes from a string.
+     * 
+     * @param s
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    public static byte[] toBytes(String s) throws UnsupportedEncodingException {
+        return s.getBytes(Protocol.CHARSET);
     }
 
 }

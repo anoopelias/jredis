@@ -3,20 +3,19 @@ package jredis;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteOrder;
 
-
 /**
  * Utility methods
  * 
  * @author anoopelias
- *
+ * 
  */
 public class Protocol {
-    
+
     // So that the class won't get instantiated.
     public Protocol() {
-        
+
     }
-    
+
     public static final byte DOLLAR = '$';
     public static final byte PLUS = '+';
     public static final byte COLON = ':';
@@ -25,14 +24,14 @@ public class Protocol {
     public static final byte CR = '\r';
     public static final byte LF = '\n';
 
-    public static final byte[] CRLF = { CR , LF };
+    public static final byte[] CRLF = { CR, LF };
     public static final byte[] NULL_STRING = { DOLLAR, MINUS, '1' };
 
     public static final byte[] ERROR = toBytes("ERR ");
 
     public static final String CHARSET = "UTF-8";
     public static final ByteOrder ENDIAN = ByteOrder.LITTLE_ENDIAN;
-    
+
     /**
      * Parse a float value to String.
      * 
@@ -43,9 +42,9 @@ public class Protocol {
         try {
             return Double.parseDouble(d);
         } catch (NumberFormatException e) {
-            
+
             if (d.endsWith("inf")) {
-                
+
                 if (d.length() == 3)
                     return Double.POSITIVE_INFINITY;
 
@@ -61,7 +60,7 @@ public class Protocol {
 
         }
     }
-    
+
     /**
      * Convert string to bytes.
      * 
@@ -105,9 +104,22 @@ public class Protocol {
      * @return
      */
     public static String toString(byte[] bytes) {
+        return toString(bytes, 0, bytes.length);
+    }
+
+    /**
+     * Convert bytes to string.
+     * 
+     * @param bytes
+     * @param offset
+     * @param length
+     * @return
+     */
+    public static String toString(byte[] bytes, int offset, int length) {
         try {
-            return new String(bytes, CHARSET);
+            return new String(bytes, offset, length, CHARSET);
         } catch (UnsupportedEncodingException e) {
+            // This shouldn't happen, we have hardcoded charset.
             if (Server.isDebug())
                 e.printStackTrace();
             return null;
