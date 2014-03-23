@@ -15,7 +15,7 @@ import jredis.exception.InvalidFileFormat;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LoaderTest {
+public class LoaderByteStringTest {
 
     /**
      * Represents the value, 'REDIS0006' FE 00
