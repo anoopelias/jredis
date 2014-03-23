@@ -124,11 +124,19 @@ public class ByteStringTest {
     public void test_setbit_max_offset() throws UnsupportedEncodingException {
         ByteString byteString = new ByteString(BYTE);
 
+        // This will take more memory than usual.
         byteString.setBit(Integer.MAX_VALUE, true);
         assertTrue(byteString.getBit(Integer.MAX_VALUE));
 
         byteString.setBit(Integer.MAX_VALUE, false);
         assertFalse(byteString.getBit(Integer.MAX_VALUE));
     }
+    
+    @Test
+    public void test_setbit_large_offset2() throws UnsupportedEncodingException {
+        
+    }
+
+        
 
 }

@@ -2,10 +2,24 @@ package jredis;
 
 import jredis.exception.InvalidCommand;
 
+/**
+ * A simple factory to instantiate commands.
+ * 
+ * @author anoopelias
+ *
+ */
 public class CommandFactory {
     
     public static CommandFactory INSTANCE = new CommandFactory();
     
+    /**
+     * Creates a command based on input.
+     * 
+     * @param name
+     * @param args
+     * @return
+     * @throws InvalidCommand
+     */
     public Command<?> createCommand(String name, String[] args) throws InvalidCommand {
         
         Command<?> c = null;
