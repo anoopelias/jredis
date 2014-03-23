@@ -189,11 +189,32 @@ public class SetGetCommandsTest {
         Thread.sleep(101);
         assertNull(getCommand.execute().value());
     }
-    
+
+    @Test(expected=InvalidCommand.class)
+    public void test_set_nx_with_key_as_zset() throws InvalidCommand {
+        String[] addArgs = {"Numbers", "1.0", "One"};
+        Command<?> command = new ZaddCommand(addArgs);
+        assertEquals(1, command.execute().value());
+        
+        String[] setArgs = {"Numbers", "MyNumber", "NX"};
+        command = new SetCommand(setArgs);
+        assertNull(command.execute().value());
+
+        String[] cardArgs = {"Numbers"};
+        command = new ZcardCommand(cardArgs);
+        assertEquals(1, command.execute().value());
+
+        String[] setArgs2 = {"Numbers", "MyNumber", "XX"};
+        command = new SetCommand(setArgs2);
+        assertEquals("OK", command.execute().value());
+
+        command = new ZcardCommand(cardArgs);
+        assertEquals(1, command.execute().value());
+    }
+
     /*
      * TODO: Some missing test cases
      * 1. With class cast.
-     * 2. NX with original object set as another type such as ElementSet.
      * 
      */
 

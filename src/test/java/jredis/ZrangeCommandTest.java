@@ -2,6 +2,7 @@ package jredis;
 
 import jredis.exception.InvalidCommand;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class ZrangeCommandTest {
@@ -20,6 +21,11 @@ public class ZrangeCommandTest {
 
     private static final String[] STRING_STOP = {"Numbers", "2", "QWE"};
     private static final String[] FLOAT_STOP = {"Numbers", "4", "6.49"};
+    
+    @Before
+    public void setup() {
+        DataMap.INSTANCE.clear();
+    }
 
     @Test(expected = InvalidCommand.class)
     public void test_no_args() throws InvalidCommand {
