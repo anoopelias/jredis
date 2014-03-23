@@ -23,14 +23,14 @@ public class ByteStringTest {
     public void test_string() {
         ByteString byteString = new ByteString(SOME_STRING);
         assertEquals(12, byteString.toByteArray().length());
-        assertEquals(SOME_STRING, byteString.toByteArray().toString());
+        assertEquals(SOME_STRING, byteString.toString());
     }
 
     @Test
     public void test_bytes() throws UnsupportedEncodingException {
         ByteString byteString = new ByteString(
                 SOME_STRING.getBytes(Protocol.CHARSET));
-        assertEquals(SOME_STRING, byteString.toByteArray().toString());
+        assertEquals(SOME_STRING, byteString.toString());
     }
 
     @Test
@@ -166,7 +166,7 @@ public class ByteStringTest {
         ByteString byteString = new ByteString(SOME_STRING);
 
         assertEquals(12, byteString.toByteArray().length());
-        assertEquals(SOME_STRING, byteString.toByteArray().toString());
+        assertEquals(SOME_STRING, byteString.toString());
     }
 
     @Test

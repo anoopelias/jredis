@@ -71,7 +71,7 @@ public class LoaderTest {
     public void test_loader_string() throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, STRING_VAL))).load();
         TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
-        assertEquals("FINNES", val.value().toByteArray().toString());
+        assertEquals("FINNES", val.value().toString());
         assertTrue(val.isValid());
     }
 
@@ -114,7 +114,7 @@ public class LoaderTest {
         new Loader(toStream(c(STRING_INIT, LONG_STRING_SIZE,
                 LONG_STRING.getBytes()))).load();
         TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
-        assertEquals(LONG_STRING, val.value().toByteArray().toString());
+        assertEquals(LONG_STRING, val.value().toString());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class LoaderTest {
         new Loader(toStream(c(STRING_INIT, LONGER_STRING_SIZE,
                 LONGER_STRING.getBytes()))).load();
         TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
-        assertEquals(LONGER_STRING, val.value().toByteArray().toString());
+        assertEquals(LONGER_STRING, val.value().toString());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class LoaderTest {
                 .getResourceAsStream("dump_long.rdb");
         new Loader(stream).load();
         TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
-        assertEquals(LONG_STRING, val.value().toByteArray().toString());
+        assertEquals(LONG_STRING, val.value().toString());
     }
 
     @Test
@@ -143,7 +143,7 @@ public class LoaderTest {
                 .getResourceAsStream("dump_longest.rdb");
         new Loader(stream).load();
         TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
-        assertEquals(longestString(), val.value().toByteArray().toString());
+        assertEquals(longestString(), val.value().toString());
     }
 
 
@@ -155,7 +155,7 @@ public class LoaderTest {
         new Loader(toStream(c(STRING_INIT, LONGEST_STRING_SIZE, longest
                 .getBytes()))).load();
         TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
-        assertEquals(longest.toString(), val.value().toByteArray().toString());
+        assertEquals(longest.toString(), val.value().toString());
     }
 
     private String longestString() {
@@ -171,7 +171,7 @@ public class LoaderTest {
                 .getResourceAsStream("dump.rdb");
         new Loader(stream).load();
         TimedByteString val = DataMap.INSTANCE.get("Anoop", TimedByteString.class);
-        assertEquals("Elias", val.value().toByteArray().toString());
+        assertEquals("Elias", val.value().toString());
     }
 
     @Test
@@ -179,7 +179,7 @@ public class LoaderTest {
             InterruptedException {
         new Loader(toTimedStream(c(STRING_INIT, STRING_VAL), 100)).load();
         TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
-        assertEquals("FINNES", val.value().toByteArray().toString());
+        assertEquals("FINNES", val.value().toString());
         assertTrue(val.isValid());
 
         Thread.sleep(101);

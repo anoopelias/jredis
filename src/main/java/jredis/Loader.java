@@ -109,7 +109,7 @@ public class Loader {
         if (valueType != 0) // Currently reads only String type.
             throw new InvalidFileFormat("Unsupported content");
 
-        String key = readString().toByteArray().toString();
+        String key = readString().toString();
         TimedByteString value = readValue(time);
 
         if (value.isValid())

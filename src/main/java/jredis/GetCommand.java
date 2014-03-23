@@ -33,7 +33,7 @@ public class GetCommand implements Command<String> {
             if(value == null)
                 return new ResponseString();
             
-            return new ResponseString(value.toByteArray().toString());
+            return new ResponseString(value.toString());
         }
         
     }
