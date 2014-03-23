@@ -212,6 +212,18 @@ public class SetGetCommandsTest {
         assertEquals(1, command.execute().value());
     }
 
+    @Test(expected=InvalidCommand.class)
+    public void test_get_with_key_as_zset() throws InvalidCommand {
+        String[] addArgs = {"Numbers", "1.0", "One"};
+        Command<?> command = new ZaddCommand(addArgs);
+        assertEquals(1, command.execute().value());
+        
+        String[] getArgs = {"Numbers", "MyNumber"};
+        command = new GetCommand(getArgs);
+        command.execute().value();
+        
+    }
+
     /*
      * TODO: Some missing test cases
      * 1. With class cast.
