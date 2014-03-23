@@ -36,6 +36,12 @@ public class SetCommand implements Command<String> {
         setOptions(Arrays.copyOfRange(args, 2, args.length));
     }
 
+    /**
+     * Read all the options from the input.
+     * 
+     * @param options
+     * @throws InvalidCommand
+     */
     private void setOptions(String[] options) throws InvalidCommand {
         for (int i = 0; i < options.length; i++) {
 
@@ -56,6 +62,15 @@ public class SetCommand implements Command<String> {
         }
     }
 
+    /**
+     * Extract expiry value from inputs
+     * 
+     * @param args
+     * @param i
+     * @param factor
+     * @return
+     * @throws InvalidCommand
+     */
     private int setExpiry(String[] args, int i, int factor)
             throws InvalidCommand {
         
@@ -87,6 +102,11 @@ public class SetCommand implements Command<String> {
         return new ResponseOk();
     }
 
+    /**
+     * Create a Timed value that needs to be put in to DB.
+     * 
+     * @return
+     */
     private TimedByteString createValue() {
 
         TimedByteString stringValue = null;
@@ -99,6 +119,12 @@ public class SetCommand implements Command<String> {
         return stringValue;
     }
 
+    /**
+     * Check if the key already exist as some object.
+     * 
+     * @param key
+     * @return
+     */
     private boolean hasKey(String key) {
         return DataMap.INSTANCE.get(key, Object.class) != null;
     }
