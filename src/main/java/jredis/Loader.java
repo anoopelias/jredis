@@ -44,10 +44,14 @@ public class Loader {
      */
     public void load() throws InvalidFileFormat {
         try {
-            verifyInit();
+            
+            //Stop everything else while loading.
+            synchronized (DataMap.INSTANCE) {
+                verifyInit();
 
-            while (hasNext())
-                loadValue();
+                while (hasNext())
+                    loadValue();
+            }
 
         } catch (IOException e) {
             throw new InvalidFileFormat("Error reading file", e);

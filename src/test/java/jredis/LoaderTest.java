@@ -274,6 +274,8 @@ public class LoaderTest {
 
     /*
      * TODO : CRC check.
+     * 2. Test cases for bit.
+     * 
      */
 
 }
