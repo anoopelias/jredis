@@ -70,8 +70,8 @@ public class LoaderTest {
     @Test
     public void test_loader_string() throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, STRING_VAL))).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
-        assertEquals("FINNES", val.value());
+        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        assertEquals("FINNES", val.value().toByteArray().toString());
         assertTrue(val.isValid());
     }
 
@@ -113,8 +113,8 @@ public class LoaderTest {
             throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, LONG_STRING_SIZE,
                 LONG_STRING.getBytes()))).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
-        assertEquals(LONG_STRING, val.value());
+        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        assertEquals(LONG_STRING, val.value().toByteArray().toString());
     }
 
     @Test
@@ -122,8 +122,8 @@ public class LoaderTest {
             throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, LONGER_STRING_SIZE,
                 LONGER_STRING.getBytes()))).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
-        assertEquals(LONGER_STRING, val.value());
+        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        assertEquals(LONGER_STRING, val.value().toByteArray().toString());
     }
 
     @Test
@@ -132,8 +132,8 @@ public class LoaderTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_long.rdb");
         new Loader(stream).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
-        assertEquals(LONG_STRING, val.value());
+        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        assertEquals(LONG_STRING, val.value().toByteArray().toString());
     }
 
     @Test
@@ -142,8 +142,8 @@ public class LoaderTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_longest.rdb");
         new Loader(stream).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
-        assertEquals(longestString(), val.value());
+        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        assertEquals(longestString(), val.value().toByteArray().toString());
     }
 
 
@@ -154,8 +154,8 @@ public class LoaderTest {
 
         new Loader(toStream(c(STRING_INIT, LONGEST_STRING_SIZE, longest
                 .getBytes()))).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
-        assertEquals(longest.toString(), val.value());
+        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        assertEquals(longest.toString(), val.value().toByteArray().toString());
     }
 
     private String longestString() {
@@ -170,16 +170,16 @@ public class LoaderTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump.rdb");
         new Loader(stream).load();
-        TimedString val = DataMap.INSTANCE.get("Anoop", TimedString.class);
-        assertEquals("Elias", val.value());
+        TimedByteString val = DataMap.INSTANCE.get("Anoop", TimedByteString.class);
+        assertEquals("Elias", val.value().toByteArray().toString());
     }
 
     @Test
     public void test_loader_mil_timed_string() throws InvalidFileFormat,
             InterruptedException {
         new Loader(toTimedStream(c(STRING_INIT, STRING_VAL), 100)).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
-        assertEquals("FINNES", val.value());
+        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        assertEquals("FINNES", val.value().toByteArray().toString());
         assertTrue(val.isValid());
 
         Thread.sleep(101);
@@ -200,7 +200,7 @@ public class LoaderTest {
         Thread.sleep(101);
 
         new Loader(stream).load();
-        TimedString val = DataMap.INSTANCE.get("RALPH", TimedString.class);
+        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
         assertNull(val);
     }
 
@@ -209,7 +209,7 @@ public class LoaderTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_timer.rdb");
         new Loader(stream).load();
-        TimedString val = DataMap.INSTANCE.get("John", TimedString.class);
+        TimedByteString val = DataMap.INSTANCE.get("John", TimedByteString.class);
 
         /*
          * Timer would have timed out already. This is a negative test case.
@@ -219,7 +219,7 @@ public class LoaderTest {
         assertNull(val);
 
         // An untimed key already there in the file.
-        val = DataMap.INSTANCE.get("Anoop", TimedString.class);
+        val = DataMap.INSTANCE.get("Anoop", TimedByteString.class);
         assertNotNull(val);
     }
 

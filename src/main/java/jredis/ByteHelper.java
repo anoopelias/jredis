@@ -21,6 +21,11 @@ public class ByteHelper {
         try {
             TimedByteString value = DataMap.INSTANCE.get(key,
                     TimedByteString.class);
+            
+            if(value != null && !value.isValid()) {
+                DataMap.INSTANCE.remove(key);
+                return null;
+            }
 
             return (value == null) ? null : value.value();
 

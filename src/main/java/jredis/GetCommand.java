@@ -25,20 +25,15 @@ public class GetCommand implements Command<String> {
     }
 
     @Override
-    public Response<String> execute() {
+    public Response<String> execute() throws InvalidCommand {
         
         synchronized(DataMap.INSTANCE) {
-            
-            TimedString value = DataMap.INSTANCE.get(key, TimedString.class);
+            ByteString value = ByteHelper.get(key);
             
             if(value == null)
                 return new ResponseString();
             
-            if(!value.isValid()) {
-                DataMap.INSTANCE.remove(key);
-                return new ResponseString();
-            }
-            return new ResponseString(value.value());
+            return new ResponseString(value.toByteArray().toString());
         }
         
     }

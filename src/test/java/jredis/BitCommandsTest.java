@@ -138,6 +138,8 @@ public class BitCommandsTest {
      * TODO: 
      * 1. Out of range offset tests
      * 2. Set and then Getbit.
+     * 3. Expired key available on getbit.
+     * 4. Expired key available on setbit.
      */
 
     

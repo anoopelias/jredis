@@ -109,8 +109,8 @@ public class Loader {
         if (valueType != 0) // Currently reads only String type.
             throw new InvalidFileFormat("Unsupported content");
 
-        String key = readString();
-        TimedString value = readValue(time);
+        String key = readString().toByteArray().toString();
+        TimedByteString value = readValue(time);
 
         if (value.isValid())
             DataMap.INSTANCE.put(key, value);
@@ -124,15 +124,15 @@ public class Loader {
      * @throws IOException
      * @throws InvalidFileFormat
      */
-    private TimedString readValue(long time) throws IOException,
+    private TimedByteString readValue(long time) throws IOException,
             InvalidFileFormat {
-        String valString = readString();
+        ByteString valString = readString();
 
-        TimedString value;
+        TimedByteString value;
         if (time != -1)
-            value = new TimedString(valString, time);
+            value = new TimedByteString(valString, time);
         else
-            value = new TimedString(valString);
+            value = new TimedByteString(valString);
         return value;
     }
 
@@ -156,7 +156,7 @@ public class Loader {
      * @throws IOException
      * @throws InvalidFileFormat
      */
-    private String readString() throws IOException, InvalidFileFormat {
+    private ByteString readString() throws IOException, InvalidFileFormat {
         int init = read();
         byte lengthType = (byte) (init & 0xc0); // First two bits of init represents the length encoding type.
 
@@ -177,7 +177,7 @@ public class Loader {
 
         byte[] b = new byte[length];
         stream.read(b);
-        return Protocol.toString(b);
+        return new ByteString(b);
     }
 
     /**

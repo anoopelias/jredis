@@ -72,7 +72,7 @@ public class SetCommand implements Command<String> {
 
     @Override
     public Response<String> execute() {
-        TimedString stringValue = createValue();
+        TimedByteString byteString = createValue();
 
         synchronized (DataMap.INSTANCE) {
 
@@ -82,24 +82,25 @@ public class SetCommand implements Command<String> {
             if (isXx && !hasKey(key))
                 return new ResponseString();
 
-            DataMap.INSTANCE.put(key, stringValue);
+            DataMap.INSTANCE.put(key, byteString);
         }
         return new ResponseOk();
     }
 
-    private TimedString createValue() {
+    private TimedByteString createValue() {
 
-        TimedString stringValue = null;
+        TimedByteString stringValue = null;
+        ByteString byteString = new ByteString(value);
         if (expiry != null)
-            stringValue = new TimedString(value, expiry + System.currentTimeMillis());
+            stringValue = new TimedByteString(byteString, expiry + System.currentTimeMillis());
         else
-            stringValue = new TimedString(value);
+            stringValue = new TimedByteString(byteString);
 
         return stringValue;
     }
 
     private boolean hasKey(String key) {
-        return DataMap.INSTANCE.get(key, TimedString.class) != null;
+        return DataMap.INSTANCE.get(key, Object.class) != null;
     }
 
 }

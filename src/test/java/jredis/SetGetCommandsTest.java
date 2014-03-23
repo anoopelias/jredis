@@ -189,6 +189,13 @@ public class SetGetCommandsTest {
         Thread.sleep(101);
         assertNull(getCommand.execute().value());
     }
+    
+    /*
+     * TODO: Some missing test cases
+     * 1. With class cast.
+     * 2. NX with original object set as another type such as ElementSet.
+     * 
+     */
 
 
 }

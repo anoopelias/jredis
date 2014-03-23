@@ -117,7 +117,7 @@ public class ProcessorTest {
         Processor processor = new Processor(socket, 2L);
         processor.call();
 
-        assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
+        assertTrue(os.toString().startsWith(OK + CRLF + COLON + "1"));
     }
 
     @Test
@@ -129,7 +129,7 @@ public class ProcessorTest {
         Processor processor = new Processor(socket, 2L);
         processor.call();
 
-        assertTrue(os.toString().startsWith(OK + CRLF + MINUS + "ERR "));
+        assertTrue(os.toString().startsWith(OK + CRLF + COLON + "1"));
     }
 
     @Test
