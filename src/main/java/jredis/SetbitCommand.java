@@ -48,17 +48,18 @@ public class SetbitCommand implements Command<Boolean> {
     @Override
     public Response<Boolean> execute() throws InvalidCommand {
         synchronized (DataMap.INSTANCE) {
-            BitString bitString = BitHelper.get(key);
-            if (bitString == null) {
-                bitString = new BitString();
-                DataMap.INSTANCE.put(key, bitString);
+            ByteString byteString = ByteHelper.get(key);
+            if (byteString == null) {
+                byteString = new ByteString();
+                TimedByteString timedByteString = new TimedByteString(byteString);
+                DataMap.INSTANCE.put(key, timedByteString);
             }
 
             /*
              * TODO: Probably we can move the set method outside synchronization
-             * block if we synchronize BitString instead.
+             * block if we synchronize ByteString instead.
              */
-            return new ResponseBit(bitString.set(offset, value));
+            return new ResponseBit(byteString.setBit(offset, value));
         }
     }
 
