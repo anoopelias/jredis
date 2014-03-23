@@ -74,7 +74,7 @@ public class CommandReader {
         stream.reset();
         return true;
     }
-    
+
     /**
      * Read the length of the args from the command stream.
      * 
@@ -89,6 +89,9 @@ public class CommandReader {
 
     /**
      * Get all the command params.
+     * 
+     * TODO : There is an obvious advantage in returning a ByteString[] rather
+     * than a String[] here. It will avoid double conversion.
      * 
      * @param len
      * @return
