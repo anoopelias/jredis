@@ -85,7 +85,7 @@ public class TestUtil {
         sb.append(CRLF);
         for (String arg : args) {
             sb.append(DOLLAR);
-            sb.append(arg.getBytes().length);
+            sb.append(Protocol.toBytes(arg).length);
             sb.append(CRLF);
             sb.append(arg);
             sb.append(CRLF);

@@ -36,7 +36,8 @@ public class LoaderByteStringTest {
             + "A noted Shakespeare interpreter, he first achieved success onstage "
             + "at the Royal National Theatre. (Source : Wikipedia)";
 
-    private static final String LONGER_STRING = LONG_STRING + "Fiennes' portrayal of Nazi war criminal Amon "
+    private static final String LONGER_STRING = LONG_STRING
+            + "Fiennes' portrayal of Nazi war criminal Amon "
             + "Goeth in Schindler's List (1993) earned him a nomination for the Academy "
             + "Award for Best Supporting Actor and the Golden Globe Award for "
             + "Best Supporting Actor, and won the BAFTA Award for Best Actor in a "
@@ -70,7 +71,8 @@ public class LoaderByteStringTest {
     @Test
     public void test_loader_string() throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, STRING_VAL))).load();
-        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        TimedByteString val = DataMap.INSTANCE.get("RALPH",
+                TimedByteString.class);
         assertEquals("FINNES", val.value().toString());
         assertTrue(val.isValid());
     }
@@ -112,8 +114,9 @@ public class LoaderByteStringTest {
     public void test_loader_string_greater_than_63_bytes()
             throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, LONG_STRING_SIZE,
-                LONG_STRING.getBytes()))).load();
-        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+                Protocol.toBytes(LONG_STRING)))).load();
+        TimedByteString val = DataMap.INSTANCE.get("RALPH",
+                TimedByteString.class);
         assertEquals(LONG_STRING, val.value().toString());
     }
 
@@ -121,40 +124,41 @@ public class LoaderByteStringTest {
     public void test_loader_string_greater_than_256_bytes()
             throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, LONGER_STRING_SIZE,
-                LONGER_STRING.getBytes()))).load();
-        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+                Protocol.toBytes(LONGER_STRING)))).load();
+        TimedByteString val = DataMap.INSTANCE.get("RALPH",
+                TimedByteString.class);
         assertEquals(LONGER_STRING, val.value().toString());
     }
 
     @Test
-    public void test_loader_file_long_string()
-            throws InvalidFileFormat {
+    public void test_loader_file_long_string() throws InvalidFileFormat {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_long.rdb");
         new Loader(stream).load();
-        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        TimedByteString val = DataMap.INSTANCE.get("RALPH",
+                TimedByteString.class);
         assertEquals(LONG_STRING, val.value().toString());
     }
 
     @Test
-    public void test_loader_file_longest_string()
-            throws InvalidFileFormat {
+    public void test_loader_file_longest_string() throws InvalidFileFormat {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_longest.rdb");
         new Loader(stream).load();
-        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        TimedByteString val = DataMap.INSTANCE.get("RALPH",
+                TimedByteString.class);
         assertEquals(longestString(), val.value().toString());
     }
-
 
     @Test
     public void test_loader_string_greater_than_16383_bytes()
             throws InvalidFileFormat {
         String longest = longestString();
 
-        new Loader(toStream(c(STRING_INIT, LONGEST_STRING_SIZE, longest
-                .getBytes()))).load();
-        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        new Loader(toStream(c(STRING_INIT, LONGEST_STRING_SIZE,
+                Protocol.toBytes(longest)))).load();
+        TimedByteString val = DataMap.INSTANCE.get("RALPH",
+                TimedByteString.class);
         assertEquals(longest.toString(), val.value().toString());
     }
 
@@ -170,7 +174,8 @@ public class LoaderByteStringTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump.rdb");
         new Loader(stream).load();
-        TimedByteString val = DataMap.INSTANCE.get("Anoop", TimedByteString.class);
+        TimedByteString val = DataMap.INSTANCE.get("Anoop",
+                TimedByteString.class);
         assertEquals("Elias", val.value().toString());
     }
 
@@ -178,7 +183,8 @@ public class LoaderByteStringTest {
     public void test_loader_mil_timed_string() throws InvalidFileFormat,
             InterruptedException {
         new Loader(toTimedStream(c(STRING_INIT, STRING_VAL), 100)).load();
-        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        TimedByteString val = DataMap.INSTANCE.get("RALPH",
+                TimedByteString.class);
         assertEquals("FINNES", val.value().toString());
         assertTrue(val.isValid());
 
@@ -200,7 +206,8 @@ public class LoaderByteStringTest {
         Thread.sleep(101);
 
         new Loader(stream).load();
-        TimedByteString val = DataMap.INSTANCE.get("RALPH", TimedByteString.class);
+        TimedByteString val = DataMap.INSTANCE.get("RALPH",
+                TimedByteString.class);
         assertNull(val);
     }
 
@@ -209,7 +216,8 @@ public class LoaderByteStringTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_timer.rdb");
         new Loader(stream).load();
-        TimedByteString val = DataMap.INSTANCE.get("John", TimedByteString.class);
+        TimedByteString val = DataMap.INSTANCE.get("John",
+                TimedByteString.class);
 
         /*
          * Timer would have timed out already. This is a negative test case.
@@ -273,9 +281,7 @@ public class LoaderByteStringTest {
     }
 
     /*
-     * TODO : CRC check.
-     * 2. Test cases for bit.
-     * 
+     * TODO : CRC check. 2. Test cases for bit.
      */
 
 }
