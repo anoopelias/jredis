@@ -1,8 +1,6 @@
 package jredis;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.Callable;
 
@@ -58,8 +56,8 @@ public class Processor implements Callable<Object> {
         } catch (IOException e) {
 
             if (Server.isDebug()) {
-                System.out.println("Some I/O problem with request :" + reqId
-                        + " Ending the request.");
+                System.out.println("Some I/O problem with connection :" + reqId
+                        + " Ending the connection.");
                 e.printStackTrace();
             }
         }
