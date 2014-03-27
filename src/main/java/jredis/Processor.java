@@ -16,7 +16,7 @@ import jredis.exception.InvalidCommand;
  */
 public class Processor implements Callable<Object> {
 
-    private Socket clientSocket = null;
+    private Socket socket = null;
 
     private long reqId;
 
@@ -28,7 +28,7 @@ public class Processor implements Callable<Object> {
      *            unique identifier for each new socket.
      */
     public Processor(Socket clientSocket, long reqId) {
-        this.clientSocket = clientSocket;
+        this.socket = clientSocket;
         this.reqId = reqId;
     }
 
@@ -36,12 +36,8 @@ public class Processor implements Callable<Object> {
     public Object call() throws Exception {
 
         try {
-
-            InputStream is = clientSocket.getInputStream();
-            OutputStream os = clientSocket.getOutputStream();
-
-            CommandReader reader = new CommandReader(is);
-            ResponseWriter writer = new ResponseWriter(os);
+            CommandReader reader = new CommandReader(socket.getInputStream());
+            ResponseWriter writer = new ResponseWriter(socket.getOutputStream());
 
             while (reader.hasNext()) {
                 try {
@@ -57,7 +53,7 @@ public class Processor implements Callable<Object> {
                     writer.write(e);
                 }
             }
-            clientSocket.close();
+            socket.close();
 
         } catch (IOException e) {
 
