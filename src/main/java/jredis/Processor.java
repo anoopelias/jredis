@@ -43,12 +43,9 @@ public class Processor implements Callable<Object> {
             CommandReader reader = new CommandReader(is);
             ResponseWriter writer = new ResponseWriter(os);
 
-            while (true) {
+            while (reader.hasNext()) {
                 try {
                     Command<?> c = reader.next();
-                    if (c == null)
-                        break;
-
                     c.execute().write(writer);
 
                 } catch (InvalidCommand e) {

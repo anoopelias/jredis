@@ -66,7 +66,7 @@ public class CommandReader {
      * @return
      * @throws IOException
      */
-    private boolean hasNext() throws IOException {
+    public boolean hasNext() throws IOException {
         stream.mark(1);
         if (stream.read() == -1)
             return false;
