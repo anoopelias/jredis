@@ -1,6 +1,5 @@
 package jredis;
 
-import static jredis.TestUtil.c;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -15,54 +14,47 @@ import jredis.exception.InvalidFileFormat;
 import org.junit.Test;
 
 public class StreamReaderTest {
+    
+    private static final byte[] NUMBERS = {
+       0x10, //len 
+       0x10, 0x00, 0x00, 0x00, //zlbytes
+       0x0e, 0x00, 0x00, 0x00, //zltail
+       0x02, 0x00, //zllen
+       
+       // e1
+       0x00, // prev len
+       0x03, // spl flag
+       0x4f, 0x6e, 0x65, // raw 'One'
+       
+       // e2
+       0x06, // prev len
+       (byte) 0xf9, // special flag
+       
+       (byte) 0xff // end
+    };
 
-    private static final byte[] NUMBERS_LEN = { 0x10 };
-
-    // 16
-    private static final byte[] NUMBERS_ZLBYTES = { 0x10, 0x00, 0x00, 0x00 }; // 4
-                                                                              // bytes
-
-    // Zero as this is the tail
-    private static final byte[] NUMBERS_ZLTAIL = { 0x0e, 0x00, 0x00, 0x00 }; // 4
-                                                                             // bytes
-
-    // Two entries
-    private static final byte[] NUMBERS_ZLLEN = { 0x02, 0x00 }; // 2 bytes
-
-    // Entry 1 - Prev len = 0
-    private static final byte[] NUMBERS_ENTRY1_PREV_LEN = { 0x00 };
-
-    // Entry 1 - Special flag - String of 3 chars
-    private static final byte[] NUMBERS_ENTRY1_SPECIAL_FLAG = { 0x03 };
-
-    // Entry 1 - Raw 'One'
-    private static final byte[] NUMBERS_ENTRY1_SPECIAL_RAW = { 0x4f, 0x6e, 0x65 };
-
-    // Entry 2 - Prev len = 6
-    private static final byte[] NUMBERS_ENTRY2_PREV_LEN = { 0x06 };
-
-    // Entry 2 - Special flag - integer between 0 to 12 (8)
-    private static final byte[] NUMBERS_ENTRY2_SPECIAL_FLAG = { (byte) 0xf9 };
-
-    // Entry 2 - Raw nothing.
-    private static final byte[] NUMBERS_ENTRY2_SPECIAL_RAW = {};
-
-    private static final byte[] NUMBERS_ZLEND = { (byte) 0xff }; // 1 byte
+    private static final byte[] NUMBERS_STRING_SCORE = {
+        0x1c, //len 
+        0x1c, 0x00, 0x00, 0x00, //zlbytes 4
+        0x14, 0x00, 0x00, 0x00, //zltail 4
+        0x02, 0x00, //zllen 2
+        
+        // e1
+        0x00, // prev len 1
+        0x08, // spl flag 1
+        0x46, 0x6f, 0x75, 0x72, 0x74, 0x69, 0x65, 0x73,  // raw 'Fourties' 8
+        
+        // e2
+        0x06, // prev len 1
+        (byte) 0x05, // special flag 1
+        0x34, 0x37, 0x2e, 0x33, 0x32, // raw '47.32' 5
+        
+        (byte) 0xff // end 1
+     };
 
     @Test
     public void test_load_integer() throws IOException, InvalidFileFormat {
-        byte[] str = c(NUMBERS_LEN, NUMBERS_ZLBYTES, NUMBERS_ZLTAIL,
-                NUMBERS_ZLLEN,
-
-                NUMBERS_ENTRY1_PREV_LEN, NUMBERS_ENTRY1_SPECIAL_FLAG,
-                NUMBERS_ENTRY1_SPECIAL_RAW,
-
-                NUMBERS_ENTRY2_PREV_LEN, NUMBERS_ENTRY2_SPECIAL_FLAG,
-                NUMBERS_ENTRY2_SPECIAL_RAW,
-
-                NUMBERS_ZLEND);
-
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS));
 
         ElementSet elementSet = reader.readElementSet();
         assertNotNull(elementSet);
@@ -72,6 +64,23 @@ public class StreamReaderTest {
         Element elem = iter.next();
         assertEquals("One", elem.getMember());
         assertEquals(new Double(8.0), elem.getScore());
+
+        assertFalse(iter.hasNext());
+
+    }
+
+    @Test
+    public void test_load_string() throws IOException, InvalidFileFormat {
+        StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS_STRING_SCORE));
+
+        ElementSet elementSet = reader.readElementSet();
+        assertNotNull(elementSet);
+
+        Iterator<Element> iter = elementSet.iterator();
+        assertTrue(iter.hasNext());
+        Element elem = iter.next();
+        assertEquals("Fourties", elem.getMember());
+        assertEquals(new Double(47.32), elem.getScore());
 
         assertFalse(iter.hasNext());
 
@@ -165,10 +174,21 @@ public class StreamReaderTest {
     }
 
     /*
-     * TODO : Other test cases, 1. zlbytes do not represent the actual length 2.
-     * zltail do not represent the tail entry. 3. Doesn't end in ff. 4. Previous
-     * entry length greater than 254. 5. Invalid previous length. 6. Odd number
-     * of entries. 8. Negative numbers.
+     * TODO : Other test cases, 1. zlbytes do not represent the actual length
+     * 
+     * 2. zltail do not represent the tail entry.
+     * 
+     * 3. Doesn't end in ff.
+     * 
+     * 4. Previous entry length greater than 254.
+     * 
+     * 5. Invalid previous length.
+     * 
+     * 6. Odd number of entries.
+     * 
+     * 8. Negative numbers.
+     * 
+     * 9. score in decimal String
      */
 
 }
