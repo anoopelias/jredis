@@ -5,17 +5,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static jredis.TestUtil.c;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Iterator;
 
 import jredis.exception.InvalidFileFormat;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class LoaderByteStringTest {
+public class LoaderTest {
 
     /**
      * Represents the value, 'REDIS0006' FE 00
@@ -67,6 +69,10 @@ public class LoaderByteStringTest {
         InputStream is = new ByteArrayInputStream(INIT_INVALID);
         new Loader(is).load();
     }
+
+    /*
+     * Test cases for loading ByetString.
+     */
 
     @Test
     public void test_loader_string() throws InvalidFileFormat {
@@ -231,6 +237,73 @@ public class LoaderByteStringTest {
         assertNotNull(val);
     }
 
+    /*
+     * Test cases for loading Zset.
+     */
+
+    private static final byte[] NUMBERS_INIT = { 0x0c, 0x07, 'N', 'u', 'm',
+            'b', 'e', 'r', 's' };
+
+    // 16
+    private static final byte[] NUMBERS_LEN = { 0x10 };
+
+    // 16
+    private static final byte[] NUMBERS_ZLBYTES = { 0x10, 0x00, 0x00, 0x00 }; // 4
+                                                                              // bytes
+
+    // Zero as this is the tail
+    private static final byte[] NUMBERS_ZLTAIL = { 0x0e, 0x00, 0x00, 0x00 }; // 4
+                                                                             // bytes
+
+    // Two entries
+    private static final byte[] NUMBERS_ZLLEN = { 0x02, 0x00 }; // 2 bytes
+
+    // Entry 1 - Prev len = 0
+    private static final byte[] NUMBERS_ENTRY1_PREV_LEN = { 0x00 };
+
+    // Entry 1 - Special flag - String of 3 chars
+    private static final byte[] NUMBERS_ENTRY1_SPECIAL_FLAG = { 0x03 };
+
+    // Entry 1 - Raw 'One'
+    private static final byte[] NUMBERS_ENTRY1_SPECIAL_RAW = { 0x4f, 0x6e, 0x65 };
+
+    // Entry 2 - Prev len = 6
+    private static final byte[] NUMBERS_ENTRY2_PREV_LEN = { 0x06 };
+
+    // Entry 2 - Special flag - integer between 0 to 12 (8)
+    private static final byte[] NUMBERS_ENTRY2_SPECIAL_FLAG = { (byte) 0xf9 };
+
+    // Entry 2 - Raw nothing.
+    private static final byte[] NUMBERS_ENTRY2_SPECIAL_RAW = {};
+
+    private static final byte[] NUMBERS_ZLEND = { (byte) 0xff }; // 1 byte
+
+    @Test
+    public void test_load_value_score_entry() throws InvalidFileFormat {
+        InputStream stream = toStream(c(NUMBERS_INIT, NUMBERS_LEN, NUMBERS_ZLBYTES,
+                NUMBERS_ZLTAIL, NUMBERS_ZLLEN, NUMBERS_ENTRY1_PREV_LEN,
+                NUMBERS_ENTRY1_SPECIAL_FLAG, NUMBERS_ENTRY1_SPECIAL_RAW,
+                NUMBERS_ENTRY2_PREV_LEN, NUMBERS_ENTRY2_SPECIAL_FLAG,
+                NUMBERS_ENTRY2_SPECIAL_RAW, NUMBERS_ZLEND));
+        
+        new Loader(stream).load();
+        ElementSet val = DataMap.INSTANCE.get("Numbers",
+                ElementSet.class);
+        assertNotNull(val);
+        
+        Iterator<Element> iter = val.iterator();
+        assertTrue(iter.hasNext());
+        Element elem = iter.next();
+        assertEquals("One", elem.getMember());
+        assertEquals(new Double(8.0), elem.getScore());
+
+        assertFalse(iter.hasNext());
+    }
+
+    /*
+     * Helper methods.
+     */
+
     private InputStream toTimedStream(byte[] keyValue, long mils) {
         byte[] num = numToBytes(System.currentTimeMillis() + mils);
         byte[] stream = c(INIT, num, keyValue, END);
@@ -247,22 +320,6 @@ public class LoaderByteStringTest {
 
     private InputStream toStream(byte[] keyValue) {
         return new ByteArrayInputStream(c(INIT, keyValue, END));
-    }
-
-    private byte[] c(byte[]... byt) {
-        int size = 0;
-        for (byte[] by : byt)
-            size += by.length;
-
-        byte[] ret = new byte[size];
-        int index = 0;
-        for (int i = 0; i < byt.length; i++) {
-            for (int j = 0; j < byt[i].length; j++) {
-                ret[index++] = byt[i][j];
-            }
-        }
-
-        return ret;
     }
 
     /**

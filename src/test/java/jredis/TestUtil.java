@@ -105,4 +105,26 @@ public class TestUtil {
         return s.getBytes(Protocol.CHARSET);
     }
 
+    /**
+     * Combine byte arrays.
+     * 
+     * @param byt
+     * @return
+     */
+    public static byte[] c(byte[]... byt) {
+        int size = 0;
+        for (byte[] by : byt)
+            size += by.length;
+
+        byte[] ret = new byte[size];
+        int index = 0;
+        for (int i = 0; i < byt.length; i++) {
+            for (int j = 0; j < byt[i].length; j++) {
+                ret[index++] = byt[i][j];
+            }
+        }
+
+        return ret;
+    }
+
 }
