@@ -338,7 +338,14 @@ public class LoaderTest {
     }
 
     /*
-     * TODO : CRC check. 2. Test cases for bit.
+     * TODO : 
+     * 1. CRC check. 
+     * 
+     * 2. Test cases for bit.
+     * 
+     * 3. Test case to read dump_zset
      */
+    
+    
 
 }
