@@ -127,17 +127,49 @@ public class StreamReader {
         case 0x30:
             switch (spFlag & (byte) 0x0F) {
             case 0x00: // 3 bytes
-                // http://stackoverflow.com/questions/13154715/convert-3-bytes-to-int-in-java
-                return ((read() & 0xFF) | ((read() & 0xFF) << 8) | ((read()) << 16)) << 8 >> 8;
+                return read3ByteNumber();
             case 0x0e: // 1 byte
-                return (read() & 0xFF) << 24 >> 24;
+                return readByteNumber();
             default: // half byte
-                return (spFlag & (byte) 0x0F) - 1;
+                return readHalfByteNumber(spFlag);
             }
         }
 
         // We shouldn't be here.
         throw new InvalidFileFormat("Couldn't read number");
+    }
+
+    /**
+     * Convert the 4 bits of the byte in to a number.
+     * 
+     * @param spFlag
+     * @return
+     */
+    private int readHalfByteNumber(int by) {
+        return (by & (byte) 0x0F) - 1;
+    }
+
+    /**
+     * Read a byte and convert it to signed integer.
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    private int readByteNumber() throws IOException, InvalidFileFormat {
+        return (read() & 0xFF) << 24 >> 24;
+    }
+
+    /**
+     * Read 3 bytes and convert it to signed integer.
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    private int read3ByteNumber() throws IOException, InvalidFileFormat {
+        // http://stackoverflow.com/questions/13154715/convert-3-bytes-to-int-in-java
+        return ((read() & 0xFF) | ((read() & 0xFF) << 8) | ((read()) << 16)) << 8 >> 8;
     }
 
     /**
