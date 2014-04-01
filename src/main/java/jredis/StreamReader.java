@@ -46,7 +46,8 @@ public class StreamReader {
         int len = readShort();
 
         // Number of entries will be even for zset.
-        assert len % 2 == 0;
+        if(len % 2 != 0)
+            throw new InvalidFileFormat("Element set should have even number of entries");
 
         for (int i = 0; i < len / 2; i++)
             elementSet.insert(readElement());

@@ -72,9 +72,33 @@ public class StreamReaderTest {
         (byte) 0xff // end 1
      };
 
+    private static final byte[] THREE_ENTRIES = {
+        0x26, //len 
+        0x26, 0x00, 0x00, 0x00, //zlbytes 4
+        0x14, 0x00, 0x00, 0x00, //zltail 4
+        0x03, 0x00, //zllen 2
+        
+        // e1
+        0x00, // prev len 1
+        0x08, // spl flag 1
+        0x46, 0x6f, 0x75, 0x72, 0x74, 0x69, 0x65, 0x73,  // raw 'Fourties' 8
+        
+        // e2
+        0x06, // prev len 1
+        (byte) 0x05, // special flag 1
+        0x34, 0x37, 0x2e, 0x6d, 0x32, // raw '47.m2' 5
+
+        // e3
+        0x00, // prev len 1
+        0x08, // spl flag 1
+        0x46, 0x6f, 0x75, 0x72, 0x74, 0x69, 0x65, 0x46,  // raw 'FourtieF' 8
+
+        (byte) 0xff // end 1
+     };
+
     private static final byte[] NUMBERS_LARGE_KEY_START = {
         0x1c, //len 
-        0x1c, 0x00, 0x00, 0x00, //zlbytes 4
+        0x58, 0x06, 0x00, 0x00, //zlbytes 4
         0x14, 0x00, 0x00, 0x00, //zltail 4
         0x02, 0x00, //zllen 2
         
@@ -83,7 +107,7 @@ public class StreamReaderTest {
         (byte) 0x46, 0x40, // special flag 2
     };
     
-    private static final byte[] NUMBERS_LARGE_KEY = { 0x46, 0x6f, 0x75, 0x72, 0x74, 0x69, 0x65, 0x73 }; // raw 'Fourties' 8
+    private static final byte[] NUMBERS_LARGE_KEY = { 0x46, 0x6f, 0x75, 0x72, 0x74, 0x69, 0x65, 0x73 }; // raw 'Fourties' 1600
         
     private static final byte[] NUMBERS_LARGE_KEY_END = {
         // e2
@@ -163,6 +187,12 @@ public class StreamReaderTest {
 
         assertFalse(iter.hasNext());
 
+    }
+
+    @Test(expected = InvalidFileFormat.class)
+    public void test_read_odd_entries() throws IOException, InvalidFileFormat {
+        StreamReader reader = new StreamReader(new ByteArrayInputStream(THREE_ENTRIES));
+        reader.readElementSet();
     }
 
     @Test
