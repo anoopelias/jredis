@@ -11,6 +11,8 @@ import jredis.exception.InvalidFileFormat;
 /**
  * Actively read the file spec objects from stream.
  * 
+ * TODO: API needs cleanup.
+ * 
  * @author anoopelias
  * 
  */
