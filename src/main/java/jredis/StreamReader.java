@@ -9,7 +9,7 @@ import java.nio.ByteOrder;
 import jredis.exception.InvalidFileFormat;
 
 /**
- * Convert a byte array in to its corresponding element set.
+ * Actively read the file spec objects from stream.
  * 
  * @author anoopelias
  * 
@@ -32,7 +32,7 @@ public class StreamReader {
     public ElementSet readElementSet() throws IOException, InvalidFileFormat {
 
         ElementSet elementSet = new TreeElementSet();
-        
+
         // length of the string
         readStringLen(read());
 
@@ -63,22 +63,37 @@ public class StreamReader {
      */
     private Element readElement() throws IOException, InvalidFileFormat {
 
-        // Ignoring a byte of previous length.
-        read();
+        try {
 
-        ByteString member = readString();
+            // Ignoring previous length.
+            readLenPrevEntry();
 
-        // Ignoring a byte of previous length.
-        read();
+            ByteString member = readString();
 
-        int spFlag = read();
-        double score;
-        if ((spFlag & 0xc0) == 0xc0)
-            score = readNumber(spFlag);
+            // Ignoring previous length.
+            readLenPrevEntry();
+
+            int spFlag = read();
+            double score;
+            if ((spFlag & 0xc0) == 0xc0)
+                score = readNumber(spFlag);
+            else
+                score = Protocol.parseDouble(readString(spFlag).toString());
+
+            return new Element(member.toString(), score);
+
+        } catch (NumberFormatException e) {
+            throw new InvalidFileFormat("Couldn't parse score.", e);
+        }
+    }
+
+    private int readLenPrevEntry() throws IOException, InvalidFileFormat {
+        int len = read();
+        if (len != 0xfe)
+            return len;
         else
-            score = Protocol.parseDouble(readString(spFlag).toString());
+            return readInt();
 
-        return new Element(member.toString(), score);
     }
 
     /**
@@ -196,11 +211,25 @@ public class StreamReader {
     /**
      * Read a 4 byte integer.
      * 
+     * 
      * @return
      * @throws IOException
      */
     private int readInt(ByteOrder order) throws IOException {
         return ByteBuffer.wrap(read(4)).order(order).getInt();
+    }
+
+    /**
+     * Read a 4 byte to an unsigned long.
+     * 
+     * Ref : http://stackoverflow.com/questions/14108121/java-convert-long-to-4-
+     * bytes
+     * 
+     * @return
+     * @throws IOException
+     */
+    public long readUnsignedInt() throws IOException {
+        return readInt() & 0xFFFFFFFFL;
     }
 
     /**

@@ -299,7 +299,7 @@ public class LoaderTest {
 
         assertFalse(iter.hasNext());
     }
-
+    
     /*
      * Helper methods.
      */

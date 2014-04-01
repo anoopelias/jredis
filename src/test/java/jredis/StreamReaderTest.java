@@ -1,5 +1,6 @@
 package jredis;
 
+import static jredis.TestUtil.c;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -52,6 +53,48 @@ public class StreamReaderTest {
         (byte) 0xff // end 1
      };
 
+    private static final byte[] NUMBERS_INVALID_STRING_SCORE = {
+        0x1c, //len 
+        0x1c, 0x00, 0x00, 0x00, //zlbytes 4
+        0x14, 0x00, 0x00, 0x00, //zltail 4
+        0x02, 0x00, //zllen 2
+        
+        // e1
+        0x00, // prev len 1
+        0x08, // spl flag 1
+        0x46, 0x6f, 0x75, 0x72, 0x74, 0x69, 0x65, 0x73,  // raw 'Fourties' 8
+        
+        // e2
+        0x06, // prev len 1
+        (byte) 0x05, // special flag 1
+        0x34, 0x37, 0x2e, 0x6d, 0x32, // raw '47.m2' 5
+        
+        (byte) 0xff // end 1
+     };
+
+    private static final byte[] NUMBERS_LARGE_KEY_START = {
+        0x1c, //len 
+        0x1c, 0x00, 0x00, 0x00, //zlbytes 4
+        0x14, 0x00, 0x00, 0x00, //zltail 4
+        0x02, 0x00, //zllen 2
+        
+        // e1
+        0x00, // prev len 1
+        (byte) 0x46, 0x40, // special flag 2
+    };
+    
+    private static final byte[] NUMBERS_LARGE_KEY = { 0x46, 0x6f, 0x75, 0x72, 0x74, 0x69, 0x65, 0x73 }; // raw 'Fourties' 8
+        
+    private static final byte[] NUMBERS_LARGE_KEY_END = {
+        // e2
+        (byte) 0xfe, // prev len 1
+        0x43, 0x06, 0x00, 0x00, // prev len 4
+        (byte) 0xd0, // special flag 1
+        ~0x0f, ~(byte) 0xa9, ~0x53, ~0x42, // -1112779024 signed integer 4
+        
+        (byte) 0xff // end 1
+     };
+
     @Test
     public void test_load_integer() throws IOException, InvalidFileFormat {
         StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS));
@@ -81,6 +124,42 @@ public class StreamReaderTest {
         Element elem = iter.next();
         assertEquals("Fourties", elem.getMember());
         assertEquals(new Double(47.32), elem.getScore());
+
+        assertFalse(iter.hasNext());
+
+    }
+
+    @Test(expected = InvalidFileFormat.class)
+    public void tesst_load_invalid_string() throws IOException, InvalidFileFormat {
+        StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS_INVALID_STRING_SCORE));
+        reader.readElementSet();
+    }
+
+    @Test
+    public void test_load_large_prev() throws IOException, InvalidFileFormat {
+        
+        byte[] key = {};
+        for(int i=0; i<200; i++)
+            key = c(key, NUMBERS_LARGE_KEY);
+        
+        byte[] input = c(NUMBERS_LARGE_KEY_START, key, NUMBERS_LARGE_KEY_END);
+        
+        StreamReader reader = new StreamReader(new ByteArrayInputStream(input));
+
+        ElementSet elementSet = reader.readElementSet();
+        assertNotNull(elementSet);
+
+        Iterator<Element> iter = elementSet.iterator();
+        assertTrue(iter.hasNext());
+        Element elem = iter.next();
+        
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<200; i++)
+            sb.append("Fourties");
+
+        
+        assertEquals(sb.toString(), elem.getMember());
+        assertEquals(new Double(-1112779024), elem.getScore());
 
         assertFalse(iter.hasNext());
 
@@ -180,15 +259,10 @@ public class StreamReaderTest {
      * 
      * 3. Doesn't end in ff.
      * 
-     * 4. Previous entry length greater than 254.
-     * 
      * 5. Invalid previous length.
      * 
      * 6. Odd number of entries.
      * 
-     * 8. Negative numbers.
-     * 
-     * 9. score in decimal String
      */
 
 }
