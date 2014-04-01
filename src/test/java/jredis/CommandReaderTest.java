@@ -19,6 +19,8 @@ public class CommandReaderTest {
 
     private static String[] CMD_INVALID_TYPE = { "LOOK", "Elon" };
 
+    private static String CMD_WRONG_FIRST_CHAR = "$k\r\n";
+
     @Before
     public void setup() {
         DataMap.INSTANCE.clear();
@@ -62,9 +64,14 @@ public class CommandReaderTest {
         reader.next();
     }
 
+    @Test(expected = InvalidCommand.class)
+    public void test_no_starting_star() throws InvalidCommand {
+        CommandReader reader = new CommandReader(toInputStream(CMD_WRONG_FIRST_CHAR));
+        reader.next();
+    }
+
     /*
      * TODO : InvalidCommand test cases 
-     * 3. Commands which doesn't start with a *
      * 5. Commands where there is not enough arguments as specified initially. (For eg. the
      * stream finishes earlier) 
      * 6. Commands which ends on just \n and not on \r\n 
