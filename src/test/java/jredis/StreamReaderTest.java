@@ -95,6 +95,23 @@ public class StreamReaderTest {
 
         (byte) 0xff // end 1
      };
+    
+    private static final byte[] NUMBERS_NO_END = {
+        0x0f, //len 
+        0x0f, 0x00, 0x00, 0x00, //zlbytes
+        0x0e, 0x00, 0x00, 0x00, //zltail
+        0x02, 0x00, //zllen
+        
+        // e1
+        0x00, // prev len
+        0x03, // spl flag
+        0x4f, 0x6e, 0x65, // raw 'One'
+        
+        // e2
+        0x06, // prev len
+        (byte) 0xf9, // special flag
+     };
+
 
     private static final byte[] NUMBERS_LARGE_KEY_START = {
         0x1c, //len 
@@ -195,6 +212,12 @@ public class StreamReaderTest {
         reader.readElementSet();
     }
 
+    @Test(expected = InvalidFileFormat.class)
+    public void test_no_end() throws IOException, InvalidFileFormat {
+        StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS_NO_END));
+        reader.readElementSet();
+    }
+
     @Test
     public void test_read_short() throws IOException, InvalidFileFormat {
         byte[] str = { 0x15, 0x42 };
@@ -287,11 +310,7 @@ public class StreamReaderTest {
      * 
      * 2. zltail do not represent the tail entry.
      * 
-     * 3. Doesn't end in ff.
-     * 
-     * 5. Invalid previous length.
-     * 
-     * 6. Odd number of entries.
+     * 4. Invalid previous length.
      * 
      */
 

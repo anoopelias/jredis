@@ -51,6 +51,9 @@ public class StreamReader {
 
         for (int i = 0; i < len / 2; i++)
             elementSet.insert(readElement());
+        
+        if(read() != 0xff)
+            throw new InvalidFileFormat("Couldn't find end of zset");
 
         return elementSet;
     }
