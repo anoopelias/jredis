@@ -34,7 +34,7 @@ public class StreamReader {
         ElementSet elementSet = new TreeElementSet();
 
         // length of the string
-        readStringLen(read());
+        readLength(read());
 
         // zlbytes
         read(4);
@@ -91,6 +91,13 @@ public class StreamReader {
         }
     }
 
+    /**
+     * Read a number in the format of previous length.
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
     private int readLenPrevEntry() throws IOException, InvalidFileFormat {
         int len = read();
         if (len != 0xfe)
@@ -139,10 +146,15 @@ public class StreamReader {
      * @param len
      * @return
      * @throws IOException
+     * @throws InvalidFileFormat 
      */
-    public byte[] read(int len) throws IOException {
+    public byte[] read(int len) throws IOException, InvalidFileFormat {
         byte[] ret = new byte[len];
-        stream.read(ret);
+        int readLen = stream.read(ret);
+        
+        if(len != readLen)
+            throw new InvalidFileFormat("Premature end of stream.");
+        
         return ret;
     }
 
@@ -166,20 +178,20 @@ public class StreamReader {
      */
     private ByteString readString(int init) throws IOException,
             InvalidFileFormat {
-        byte[] b = new byte[readStringLen(init)];
+        byte[] b = new byte[readLength(init)];
         stream.read(b);
         return new ByteString(b);
     }
 
     /**
-     * Read the length of a string.
+     * Read the length encoding.
      * 
      * @param init
      * @return
      * @throws IOException
      * @throws InvalidFileFormat
      */
-    public int readStringLen(int init) throws IOException, InvalidFileFormat {
+    private int readLength(int init) throws IOException, InvalidFileFormat {
         byte lengthType = (byte) (init & 0xc0); // First two bits of init
                                                 // represents the length
                                                 // encoding type.
@@ -218,8 +230,9 @@ public class StreamReader {
      * 
      * @return
      * @throws IOException
+     * @throws InvalidFileFormat 
      */
-    private int readInt(ByteOrder order) throws IOException {
+    private int readInt(ByteOrder order) throws IOException, InvalidFileFormat {
         return ByteBuffer.wrap(read(4)).order(order).getInt();
     }
 
@@ -231,8 +244,9 @@ public class StreamReader {
      * 
      * @return
      * @throws IOException
+     * @throws InvalidFileFormat 
      */
-    public long readUnsignedInt() throws IOException {
+    public long readUnsignedInt() throws IOException, InvalidFileFormat {
         return readInt() & 0xFFFFFFFFL;
     }
 
@@ -241,8 +255,9 @@ public class StreamReader {
      * 
      * @return
      * @throws IOException
+     * @throws InvalidFileFormat 
      */
-    private int readInt() throws IOException {
+    private int readInt() throws IOException, InvalidFileFormat {
         return readInt(Protocol.ENDIAN);
     }
 
@@ -251,8 +266,9 @@ public class StreamReader {
      * 
      * @return
      * @throws IOException
+     * @throws InvalidFileFormat 
      */
-    private int readShort() throws IOException {
+    private int readShort() throws IOException, InvalidFileFormat {
         return buffer(read(2)).getShort();
     }
 
@@ -271,8 +287,9 @@ public class StreamReader {
      * 
      * @return
      * @throws IOException
+     * @throws InvalidFileFormat 
      */
-    public long readLong() throws IOException {
+    public long readLong() throws IOException, InvalidFileFormat {
         return buffer(read(8)).getLong();
     }
 

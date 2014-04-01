@@ -156,8 +156,9 @@ public class Loader {
      * 
      * @return
      * @throws IOException
+     * @throws InvalidFileFormat 
      */
-    private long readTime() throws IOException {
+    private long readTime() throws IOException, InvalidFileFormat {
         return stream.readLong();
     }
 
