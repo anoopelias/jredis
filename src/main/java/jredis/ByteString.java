@@ -119,6 +119,7 @@ public class ByteString {
      * @param minSize
      */
     private void expand(int minSize) {
+        // http://stackoverflow.com/questions/22573483/efficient-array-expansion-in-java
         value = Arrays.copyOf(value, Integer.highestOneBit(minSize) * 2);
     }
 
