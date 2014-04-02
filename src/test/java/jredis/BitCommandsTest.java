@@ -28,7 +28,7 @@ public class BitCommandsTest {
 
     @Before
     public void setup() {
-        DataMap.INSTANCE.clear();
+        DB.INSTANCE.clear();
     }
 
     @Test

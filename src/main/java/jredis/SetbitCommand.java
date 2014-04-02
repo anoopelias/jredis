@@ -47,7 +47,7 @@ public class SetbitCommand implements Command<Boolean> {
 
     @Override
     public Response<Boolean> execute() throws InvalidCommand {
-        synchronized (DataMap.INSTANCE) {
+        synchronized (DB.INSTANCE) {
             ByteString byteString = ByteHelper.getOrCreate(key);
 
             /*

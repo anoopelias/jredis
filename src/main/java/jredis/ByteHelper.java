@@ -19,11 +19,11 @@ public class ByteHelper {
      */
     public static ByteString get(String key) throws InvalidCommand {
         try {
-            TimedByteString value = DataMap.INSTANCE.get(key,
+            TimedByteString value = DB.INSTANCE.get(key,
                     TimedByteString.class);
             
             if(value != null && !value.isValid()) {
-                DataMap.INSTANCE.remove(key);
+                DB.INSTANCE.remove(key);
                 return null;
             }
 
@@ -47,7 +47,7 @@ public class ByteHelper {
         if (byteString == null) {
             byteString = new ByteString();
             TimedByteString timedByteString = new TimedByteString(byteString);
-            DataMap.INSTANCE.put(key, timedByteString);
+            DB.INSTANCE.put(key, timedByteString);
         }
         
         return byteString;

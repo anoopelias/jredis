@@ -42,7 +42,7 @@ public class ServerTest {
 
     @Before
     public void setup() {
-        DataMap.INSTANCE.clear();
+        DB.INSTANCE.clear();
     }
 
     private void waitForServerStartup() {

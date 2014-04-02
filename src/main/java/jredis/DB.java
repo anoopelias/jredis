@@ -9,11 +9,11 @@ import java.util.Map;
  * @author anoopelias
  *
  */
-public class DataMap {
+public class DB {
 
-    public static DataMap INSTANCE = new DataMap();
+    public static DB INSTANCE = new DB();
 
-    private DataMap() {
+    private DB() {
     }
 
     private Map<String, Object> data = new HashMap<String, Object>();

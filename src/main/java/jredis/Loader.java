@@ -44,7 +44,7 @@ public class Loader {
         try {
 
             // Stop everything else while loading.
-            synchronized (DataMap.INSTANCE) {
+            synchronized (DB.INSTANCE) {
                 verifyInit();
 
                 while (!stream.end())
@@ -114,7 +114,7 @@ public class Loader {
         TimedByteString value = readValue(time);
 
         if (value.isValid())
-            DataMap.INSTANCE.put(key, value);
+            DB.INSTANCE.put(key, value);
     }
 
     /**
@@ -128,7 +128,7 @@ public class Loader {
             InvalidFileFormat {
         String key = stream.readString().toString();
         ElementSet value = stream.readElementSet();
-        DataMap.INSTANCE.put(key, value);
+        DB.INSTANCE.put(key, value);
     }
 
     /**

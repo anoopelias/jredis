@@ -89,7 +89,7 @@ public class SetCommand implements Command<String> {
     public Response<String> execute() {
         TimedByteString byteString = createValue();
 
-        synchronized (DataMap.INSTANCE) {
+        synchronized (DB.INSTANCE) {
 
             if (isNx && hasKey(key))
                 return new ResponseString();
@@ -97,7 +97,7 @@ public class SetCommand implements Command<String> {
             if (isXx && !hasKey(key))
                 return new ResponseString();
 
-            DataMap.INSTANCE.put(key, byteString);
+            DB.INSTANCE.put(key, byteString);
         }
         return new ResponseOk();
     }
@@ -126,7 +126,7 @@ public class SetCommand implements Command<String> {
      * @return
      */
     private boolean hasKey(String key) {
-        return DataMap.INSTANCE.get(key, Object.class) != null;
+        return DB.INSTANCE.get(key, Object.class) != null;
     }
 
 }

@@ -24,7 +24,7 @@ public class ZrangeCommandTest {
     
     @Before
     public void setup() {
-        DataMap.INSTANCE.clear();
+        DB.INSTANCE.clear();
     }
 
     @Test(expected = InvalidCommand.class)

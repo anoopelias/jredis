@@ -41,7 +41,7 @@ public class ZcountCommand implements Command<Integer> {
 
     @Override
     public Response<Integer> execute() throws InvalidCommand {
-        synchronized (DataMap.INSTANCE) {
+        synchronized (DB.INSTANCE) {
             ElementSet set = ZsetHelper.get(key);
             if (set == null)
                 return new ResponseNumber(0);

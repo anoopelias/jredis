@@ -27,7 +27,7 @@ public class GetCommand implements Command<String> {
     @Override
     public Response<String> execute() throws InvalidCommand {
         
-        synchronized(DataMap.INSTANCE) {
+        synchronized(DB.INSTANCE) {
             ByteString value = ByteHelper.get(key);
             
             if(value == null)

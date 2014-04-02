@@ -26,11 +26,11 @@ public class ZaddCommand implements Command<Integer> {
 
         boolean inserted;
 
-        synchronized (DataMap.INSTANCE) {
+        synchronized (DB.INSTANCE) {
             ElementSet map = ZsetHelper.get(key);
             if (map == null) {
                 map = new TreeElementSet();
-                DataMap.INSTANCE.put(key, map);
+                DB.INSTANCE.put(key, map);
             }
 
             inserted = map.insert(new Element(value, score));

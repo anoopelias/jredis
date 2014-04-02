@@ -56,7 +56,7 @@ public class ProcessorTest {
 
     @Before
     public void setup() {
-        DataMap.INSTANCE.clear();
+        DB.INSTANCE.clear();
     }
 
     @Test

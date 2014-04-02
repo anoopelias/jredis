@@ -39,7 +39,7 @@ public class SetCommandTest {
     
     @Before
     public void setup() {
-        DataMap.INSTANCE.clear();
+        DB.INSTANCE.clear();
     }
 
     @Test(expected=InvalidCommand.class)
