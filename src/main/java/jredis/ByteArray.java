@@ -1,5 +1,8 @@
 package jredis;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * A ByteArray which can handle subsize in constant time.
  * 
@@ -59,6 +62,17 @@ public class ByteArray {
      */
     public int length() {
         return length;
+    }
+    
+    /**
+     * Write the bytes to an output stream.
+     * 
+     * @param os
+     * @throws IOException 
+     */
+    public void write(OutputStream os) throws IOException {
+        for(int i=0; i< length; i++)
+            os.write(content[i]);
     }
 
     @Override

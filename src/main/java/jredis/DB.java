@@ -1,6 +1,7 @@
 package jredis;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -63,6 +64,14 @@ public class DB {
      */
     public synchronized void clear() {
         data = new HashMap<String, Object>();
+    }
+    
+    /**
+     * Iterator to iterate through all the keys.
+     * 
+     */
+    public synchronized Iterator<String> iterator() {
+        return data.keySet().iterator();
     }
 
 }
