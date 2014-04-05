@@ -36,13 +36,26 @@ public class StreamWriter {
         os.flush();
     }
 
-    private void writeLen(long num) throws IOException {
-        if (num >>> 6 == 0) // If the number is only 6 bits
-            os.write((byte) num);
-        else if (num >>> 14 == 0) {
-            os.write((int) (num >>> 8 | 0x40));
-            os.write((int) (num));
+    private void writeLen(long unsignedInt) throws IOException {
+        if (unsignedInt >>> 6 == 0) // If the number is only 6 bits
+            os.write((byte) unsignedInt);
+        else if (unsignedInt >>> 14 == 0) { // If it is only 14 bits
+            os.write((int) (unsignedInt >>> 8 | 0x40));
+            os.write((int) (unsignedInt));
+        } else {
+            os.write(0x80);
+            os.write(toBytes(unsignedInt));
         }
+    }
+
+    private byte[] toBytes(long unsignedInt) {
+        byte[] by = new byte[4];
+        by[0] = (byte) (unsignedInt >>> 24);
+        by[1] = (byte) (unsignedInt >>> 16);
+        by[2] = (byte) (unsignedInt >>> 8);
+        by[3] = (byte) (unsignedInt);
+
+        return by;
     }
 
 }

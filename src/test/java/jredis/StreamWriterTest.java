@@ -15,6 +15,12 @@ public class StreamWriterTest {
             + "Proin feugiat porttitor nunc nec consequat. "
             + "Nulla aliquam consequat lorem, vitae luctus dolor gravida ut.";
 
+    private static final String LOREM_IPSUM_UNDER_16383 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+            + "Integer rutrum odio quis tortor sodales, in rutrum tortor gravida. "
+            + "Proin feugiat porttitor nunc nec consequat. "
+            + "Nulla aliquam consequat lorem, vitae luctus dolor gravida ut. "
+            + "Pellentesque ornare sem a consectetur auctor. ";
+
     @Test
     public void test_write_byte_string_1_char() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -58,6 +64,53 @@ public class StreamWriterTest {
         byte[] ex = TestUtil.toBytes(LOREM_IPSUM_UNDER_256);
         for (int i = 0; i < ex.length; i++)
             assertEquals(ex[i], by[i + 2]);
+    }
+
+    @Test
+    public void test_write_byte_string_under_16383_char() throws IOException {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        StreamWriter sw = new StreamWriter(baos);
+        sw.write(new ByteString(LOREM_IPSUM_UNDER_16383));
+        byte[] by = baos.toByteArray();
+
+        assertEquals(278, by.length);
+        assertEquals(0x41, by[0]);
+        assertEquals(0x14, by[1]);
+
+        byte[] ex = TestUtil.toBytes(LOREM_IPSUM_UNDER_16383);
+        for (int i = 0; i < ex.length; i++)
+            assertEquals(ex[i], by[i + 2]);
+    }
+
+    @Test
+    public void test_write_byte_string_above_16383_char() throws IOException {
+
+        int size = 16384;
+
+        String sb = build(size);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        StreamWriter sw = new StreamWriter(baos);
+        sw.write(new ByteString(sb.toString()));
+        byte[] by = baos.toByteArray();
+
+        assertEquals(16389, by.length);
+        assertEquals(0x80, by[0] & 0xc0);
+        assertEquals(0x00, by[1]);
+        assertEquals(0x00, by[2]);
+        assertEquals(0x40, by[3]);
+        assertEquals(0x00, by[4]);
+
+        for (int i = 0; i < size; i++)
+            assertEquals('A', by[i + 5]);
+    }
+
+    private String build(long size) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < size; i++)
+            sb.append('A');
+        return sb.toString();
     }
 
 }
