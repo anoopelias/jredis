@@ -36,18 +36,30 @@ public class StreamWriter {
         os.flush();
     }
 
+    /**
+     * Write the number in length encoding.
+     * 
+     * @param unsignedInt
+     * @throws IOException
+     */
     private void writeLen(long unsignedInt) throws IOException {
         if (unsignedInt >>> 6 == 0) // If the number is only 6 bits
             os.write((byte) unsignedInt);
         else if (unsignedInt >>> 14 == 0) { // If it is only 14 bits
             os.write((int) (unsignedInt >>> 8 | 0x40));
             os.write((int) (unsignedInt));
-        } else {
+        } else { // Means the length can be expressed only in more than 4 bytes
             os.write(0x80);
             os.write(toBytes(unsignedInt));
         }
     }
 
+    /**
+     * Convert an unsigned integer to bytes
+     * 
+     * @param unsignedInt
+     * @return
+     */
     private byte[] toBytes(long unsignedInt) {
         byte[] by = new byte[4];
         by[0] = (byte) (unsignedInt >>> 24);
