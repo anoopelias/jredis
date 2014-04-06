@@ -1,5 +1,7 @@
 package jredis;
 
+import static jredis.RdfProtocol.INIT;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +24,21 @@ public class RdfReader {
 
     public RdfReader(InputStream is) {
         this.stream = new BufferedInputStream(is);
+    }
+    
+    /**
+     * Verify the the file starts in the correct format.
+     * 
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    public void verifyInit() throws IOException, InvalidFileFormat {
+        byte[] init = read(INIT.length);
+
+        for (int i = 0; i < INIT.length; i++) {
+            if (INIT[i] != init[i])
+                throw new InvalidFileFormat("Init structure do not match");
+        }
     }
 
     /**
@@ -182,7 +199,7 @@ public class RdfReader {
      * @throws IOException
      * @throws InvalidFileFormat 
      */
-    public byte[] read(int len) throws IOException, InvalidFileFormat {
+    private byte[] read(int len) throws IOException, InvalidFileFormat {
         byte[] ret = new byte[len];
         int readLen = stream.read(ret);
         

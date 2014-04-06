@@ -17,21 +17,10 @@ import jredis.exception.InvalidFileFormat;
  */
 public class Loader {
 
-    /**
-     * Initialization structure of the file.
-     * 
-     * Version 6, database 00 is supported at the moment.
-     * 
-     * 'REDIS0006' 0xFE 0x00
-     * 
-     */
-    private static final byte[] INIT = { 0x52, 0x45, 0x44, 0x49, 0x53, 0x30,
-            0x30, 0x30, 0x36, (byte) 0xfe, 0x00 };
-
-    private RdfReader stream;
+    private RdfReader reader;
 
     public Loader(InputStream is) {
-        stream = new RdfReader(is);
+        reader = new RdfReader(is);
     }
 
     /**
@@ -45,9 +34,9 @@ public class Loader {
 
             // Stop everything else while loading.
             synchronized (DB.INSTANCE) {
-                verifyInit();
+                reader.verifyInit();
 
-                while (!stream.end())
+                while (!reader.end())
                     loadValue();
             }
 
@@ -58,28 +47,13 @@ public class Loader {
     }
 
     /**
-     * Verify the the file starts in the correct format.
-     * 
-     * @throws IOException
-     * @throws InvalidFileFormat
-     */
-    private void verifyInit() throws IOException, InvalidFileFormat {
-        byte[] init = stream.read(INIT.length);
-
-        for (int i = 0; i < INIT.length; i++) {
-            if (INIT[i] != init[i])
-                throw new InvalidFileFormat("Init structure do not match");
-        }
-    }
-
-    /**
      * Load next value based on type.
      * 
      * @throws IOException
      * @throws InvalidFileFormat
      */
     private void loadValue() throws IOException, InvalidFileFormat {
-        int valueType = stream.read();
+        int valueType = reader.read();
 
         long time = -1;
 
@@ -89,7 +63,7 @@ public class Loader {
          */
         if (valueType == 0xfc) {
             time = readTime();
-            valueType = stream.read();
+            valueType = reader.read();
         }
 
         if (valueType == 0) // Currently reads only String type.
@@ -110,7 +84,7 @@ public class Loader {
      */
     private void loadStringValue(long time) throws IOException,
             InvalidFileFormat {
-        String key = stream.readString().toString();
+        String key = reader.readString().toString();
         TimedByteString value = readValue(time);
 
         if (value.isValid())
@@ -126,8 +100,8 @@ public class Loader {
      */
     private void loadElementSetValue(long time) throws IOException,
             InvalidFileFormat {
-        String key = stream.readString().toString();
-        ElementSet value = stream.readElementSet();
+        String key = reader.readString().toString();
+        ElementSet value = reader.readElementSet();
         DB.INSTANCE.put(key, value);
     }
 
@@ -141,7 +115,7 @@ public class Loader {
      */
     private TimedByteString readValue(long time) throws IOException,
             InvalidFileFormat {
-        ByteString valString = stream.readString();
+        ByteString valString = reader.readString();
 
         TimedByteString value;
         if (time != -1)
@@ -159,7 +133,7 @@ public class Loader {
      * @throws InvalidFileFormat 
      */
     private long readTime() throws IOException, InvalidFileFormat {
-        return stream.readLong();
+        return reader.readLong();
     }
 
 }

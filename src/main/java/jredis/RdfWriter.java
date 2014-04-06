@@ -1,5 +1,7 @@
 package jredis;
 
+import static jredis.RdfProtocol.toBytes;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -52,22 +54,6 @@ public class RdfWriter {
             os.write(0x80);
             os.write(toBytes(unsignedInt));
         }
-    }
-
-    /**
-     * Convert an unsigned integer to bytes
-     * 
-     * @param unsignedInt
-     * @return
-     */
-    private byte[] toBytes(long unsignedInt) {
-        byte[] by = new byte[4];
-        by[0] = (byte) (unsignedInt >>> 24);
-        by[1] = (byte) (unsignedInt >>> 16);
-        by[2] = (byte) (unsignedInt >>> 8);
-        by[3] = (byte) (unsignedInt);
-
-        return by;
     }
 
 }
