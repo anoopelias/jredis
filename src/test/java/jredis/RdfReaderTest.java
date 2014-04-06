@@ -14,7 +14,7 @@ import jredis.exception.InvalidFileFormat;
 
 import org.junit.Test;
 
-public class StreamReaderTest {
+public class RdfReaderTest {
     
     private static final byte[] NUMBERS = {
        0x10, //len 

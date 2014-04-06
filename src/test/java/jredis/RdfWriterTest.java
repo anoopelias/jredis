@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-public class StreamWriterTest {
+public class RdfWriterTest {
 
     private static final String LOREM_IPSUM_UNDER_63 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
     private static final String LOREM_IPSUM_UNDER_256 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
