@@ -16,11 +16,11 @@ import jredis.exception.InvalidFileFormat;
  * @author anoopelias
  * 
  */
-public class StreamReader {
+public class RdfReader {
 
     private InputStream stream;
 
-    public StreamReader(InputStream is) {
+    public RdfReader(InputStream is) {
         this.stream = new BufferedInputStream(is);
     }
 

@@ -10,7 +10,7 @@ import java.io.OutputStream;
  * @author anoopelias
  * 
  */
-public class StreamWriter {
+public class RdfWriter {
 
     private OutputStream os = null;
 
@@ -19,7 +19,7 @@ public class StreamWriter {
      * 
      * @param os
      */
-    public StreamWriter(OutputStream os) {
+    public RdfWriter(OutputStream os) {
         this.os = new BufferedOutputStream(os);
     }
 

@@ -138,7 +138,7 @@ public class StreamReaderTest {
 
     @Test
     public void test_load_integer() throws IOException, InvalidFileFormat {
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(NUMBERS));
 
         ElementSet elementSet = reader.readElementSet();
         assertNotNull(elementSet);
@@ -155,7 +155,7 @@ public class StreamReaderTest {
 
     @Test
     public void test_load_string() throws IOException, InvalidFileFormat {
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS_STRING_SCORE));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(NUMBERS_STRING_SCORE));
 
         ElementSet elementSet = reader.readElementSet();
         assertNotNull(elementSet);
@@ -172,7 +172,7 @@ public class StreamReaderTest {
 
     @Test(expected = InvalidFileFormat.class)
     public void tesst_load_invalid_string() throws IOException, InvalidFileFormat {
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS_INVALID_STRING_SCORE));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(NUMBERS_INVALID_STRING_SCORE));
         reader.readElementSet();
     }
 
@@ -185,7 +185,7 @@ public class StreamReaderTest {
         
         byte[] input = c(NUMBERS_LARGE_KEY_START, key, NUMBERS_LARGE_KEY_END);
         
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(input));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(input));
 
         ElementSet elementSet = reader.readElementSet();
         assertNotNull(elementSet);
@@ -208,20 +208,20 @@ public class StreamReaderTest {
 
     @Test(expected = InvalidFileFormat.class)
     public void test_read_odd_entries() throws IOException, InvalidFileFormat {
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(THREE_ENTRIES));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(THREE_ENTRIES));
         reader.readElementSet();
     }
 
     @Test(expected = InvalidFileFormat.class)
     public void test_no_end() throws IOException, InvalidFileFormat {
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(NUMBERS_NO_END));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(NUMBERS_NO_END));
         reader.readElementSet();
     }
 
     @Test
     public void test_read_short() throws IOException, InvalidFileFormat {
         byte[] str = { 0x15, 0x42 };
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(16917, reader.readNumber(0xc5));
     }
 
@@ -229,21 +229,21 @@ public class StreamReaderTest {
     public void test_read_short_negative() throws IOException,
             InvalidFileFormat {
         byte[] str = { ~0x15, ~0x42 };
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(-16918, reader.readNumber(0xc5));
     }
 
     @Test
     public void test_read_int() throws IOException, InvalidFileFormat {
         byte[] str = { 0x0f, (byte) 0xa9, 0x53, 0x42 };
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(1112779023, reader.readNumber(0xd5));
     }
 
     @Test
     public void test_read_int_negative() throws IOException, InvalidFileFormat {
         byte[] str = { ~0x0f, ~(byte) 0xa9, ~0x53, ~0x42 };
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(-1112779024, reader.readNumber(0xd5));
     }
 
@@ -251,7 +251,7 @@ public class StreamReaderTest {
     public void test_read_long() throws IOException, InvalidFileFormat {
         byte[] str = { (byte) 0x17, (byte) 0x89, 0x27, (byte) 0x85, 0x17,
                 (byte) 0x91, 0x29, 0x40 };
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(4623386022676760855L, reader.readNumber(0xe5));
     }
 
@@ -259,14 +259,14 @@ public class StreamReaderTest {
     public void test_read_long_negative() throws IOException, InvalidFileFormat {
         byte[] str = { ~(byte) 0xa7, ~(byte) 0xe9, ~0x27, ~(byte) 0x85, ~0x17,
                 ~(byte) 0x91, ~0x29, ~0x40 };
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(-4623386022676785576L, reader.readNumber(0xe5));
     }
 
     @Test
     public void test_read_3bytes() throws IOException, InvalidFileFormat {
         byte[] str = { (byte) 0xa7, (byte) 0xe9, 0x40 };
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(4254119, reader.readNumber(0xF0));
     }
 
@@ -275,7 +275,7 @@ public class StreamReaderTest {
             InvalidFileFormat {
         byte[] str = { ~(byte) 0xa7, ~(byte) 0xE9, ~0x40 };
 
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(-4254120, reader.readNumber(0xf0));
     }
 
@@ -283,7 +283,7 @@ public class StreamReaderTest {
     public void test_read_1byte() throws IOException, InvalidFileFormat {
         byte[] str = { 0x15 };
 
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(21, reader.readNumber(0xfe));
     }
 
@@ -292,7 +292,7 @@ public class StreamReaderTest {
             InvalidFileFormat {
         byte[] str = { (byte) 0xff };
 
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(-1, reader.readNumber(0xfe));
     }
 
@@ -301,7 +301,7 @@ public class StreamReaderTest {
             InvalidFileFormat {
         byte[] str = {};
 
-        StreamReader reader = new StreamReader(new ByteArrayInputStream(str));
+        RdfReader reader = new RdfReader(new ByteArrayInputStream(str));
         assertEquals(9, reader.readNumber(0xfa));
     }
 

@@ -24,7 +24,7 @@ public class StreamWriterTest {
     @Test
     public void test_write_byte_string_1_char() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        StreamWriter sw = new StreamWriter(baos);
+        RdfWriter sw = new RdfWriter(baos);
         sw.write(new ByteString("A"));
         byte[] by = baos.toByteArray();
 
@@ -37,7 +37,7 @@ public class StreamWriterTest {
     public void test_write_byte_string_under_63_char() throws IOException {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        StreamWriter sw = new StreamWriter(baos);
+        RdfWriter sw = new RdfWriter(baos);
         sw.write(new ByteString(LOREM_IPSUM_UNDER_63));
         byte[] by = baos.toByteArray();
 
@@ -53,7 +53,7 @@ public class StreamWriterTest {
     public void test_write_byte_string_under_256_char() throws IOException {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        StreamWriter sw = new StreamWriter(baos);
+        RdfWriter sw = new RdfWriter(baos);
         sw.write(new ByteString(LOREM_IPSUM_UNDER_256));
         byte[] by = baos.toByteArray();
 
@@ -70,7 +70,7 @@ public class StreamWriterTest {
     public void test_write_byte_string_under_16383_char() throws IOException {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        StreamWriter sw = new StreamWriter(baos);
+        RdfWriter sw = new RdfWriter(baos);
         sw.write(new ByteString(LOREM_IPSUM_UNDER_16383));
         byte[] by = baos.toByteArray();
 
@@ -91,7 +91,7 @@ public class StreamWriterTest {
         String sb = build(size);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        StreamWriter sw = new StreamWriter(baos);
+        RdfWriter sw = new RdfWriter(baos);
         sw.write(new ByteString(sb.toString()));
         byte[] by = baos.toByteArray();
 

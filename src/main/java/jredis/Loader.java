@@ -28,10 +28,10 @@ public class Loader {
     private static final byte[] INIT = { 0x52, 0x45, 0x44, 0x49, 0x53, 0x30,
             0x30, 0x30, 0x36, (byte) 0xfe, 0x00 };
 
-    private StreamReader stream;
+    private RdfReader stream;
 
     public Loader(InputStream is) {
-        stream = new StreamReader(is);
+        stream = new RdfReader(is);
     }
 
     /**
