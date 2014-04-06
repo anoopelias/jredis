@@ -18,12 +18,12 @@ public class RdfProtocol {
 
 
     /**
-     * Convert an unsigned integer to bytes. Big Endian
+     * Convert an unsigned integer to bytes. Big Endian.
      * 
      * @param unsignedInt
      * @return
      */
-    public static byte[] toBytes(long unsignedInt) {
+    public static byte[] unsignedIntToBytes(long unsignedInt) {
         byte[] by = new byte[4];
         by[0] = (byte) (unsignedInt >>> 24);
         by[1] = (byte) (unsignedInt >>> 16);

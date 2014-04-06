@@ -1,6 +1,6 @@
 package jredis;
 
-import static jredis.RdfProtocol.toBytes;
+import static jredis.RdfProtocol.unsignedIntToBytes;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class RdfWriter {
             os.write((int) (unsignedInt));
         } else { // Means the length can be expressed only in more than 4 bytes
             os.write(0x80);
-            os.write(toBytes(unsignedInt));
+            os.write(unsignedIntToBytes(unsignedInt));
         }
     }
 

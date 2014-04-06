@@ -27,6 +27,21 @@ public class RdfReader {
     }
     
     /**
+     * Read a byte. Throws error on EOF.
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    public int read() throws IOException, InvalidFileFormat {
+        int ret = stream.read();
+        if (ret == -1)
+            throw new InvalidFileFormat("Premature end of file");
+
+        return ret;
+    }
+
+    /**
      * Verify the the file starts in the correct format.
      * 
      * @throws IOException
@@ -39,6 +54,95 @@ public class RdfReader {
             if (INIT[i] != init[i])
                 throw new InvalidFileFormat("Init structure do not match");
         }
+    }
+    
+    /**
+     * Read a string value from buffer.
+     * 
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    public ByteString readString() throws IOException, InvalidFileFormat {
+        return readString(stream.read());
+    }
+
+    /**
+     * Read a string value from buffer.
+     * 
+     * TODO: integer / LZF compression.
+     * 
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    private ByteString readString(int init) throws IOException,
+            InvalidFileFormat {
+        byte[] b = new byte[readLength(init)];
+        stream.read(b);
+        return new ByteString(b);
+    }
+
+    /**
+     * Read the length encoding.
+     * 
+     * @param init
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    private int readLength(int init) throws IOException, InvalidFileFormat {
+        byte lengthType = (byte) (init & 0xc0); // First two bits of init
+                                                // represents the length
+                                                // encoding type.
+        int length;
+        switch (lengthType) {
+        case 0x00: // 1 byte
+            length = init;
+            break;
+        case 0x40: // 2 byte
+            length = readSmallInt(init & 0x3f); // The last 6 bits give the msb
+            break;
+        case (byte) 0x80: // 5 byte
+            length = readInt(ByteOrder.BIG_ENDIAN);
+            break;
+        default:
+            throw new InvalidFileFormat("Unknown length format");
+        }
+        return length;
+    }
+
+    /**
+     * Read a byte and join it with msb provided.
+     * 
+     * @param msb
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat
+     */
+    private int readSmallInt(int msb) throws IOException, InvalidFileFormat {
+        return (msb * 256) + read();
+    }
+
+    /**
+     * Read a 4 byte integer.
+     * 
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat 
+     */
+    private int readInt(ByteOrder order) throws IOException, InvalidFileFormat {
+        return ByteBuffer.wrap(read(4)).order(order).getInt();
+    }
+
+    /**
+     * Read a 8 byte integer, Little Endian.
+     * 
+     * @return
+     * @throws IOException
+     * @throws InvalidFileFormat 
+     */
+    public long readLong() throws IOException, InvalidFileFormat {
+        return buffer(read(8)).getLong();
     }
 
     /**
@@ -129,6 +233,8 @@ public class RdfReader {
     /**
      * Read a number from the stream.
      * 
+     * Kept as a public method so that it is testable.
+     * 
      * @param spFlag
      * @return
      * @throws IOException
@@ -210,98 +316,6 @@ public class RdfReader {
     }
 
     /**
-     * Read a string value from buffer.
-     * 
-     * @throws IOException
-     * @throws InvalidFileFormat
-     */
-    public ByteString readString() throws IOException, InvalidFileFormat {
-        return readString(stream.read());
-    }
-
-    /**
-     * Read a string value from buffer.
-     * 
-     * TODO: integer / LZF compression.
-     * 
-     * @throws IOException
-     * @throws InvalidFileFormat
-     */
-    private ByteString readString(int init) throws IOException,
-            InvalidFileFormat {
-        byte[] b = new byte[readLength(init)];
-        stream.read(b);
-        return new ByteString(b);
-    }
-
-    /**
-     * Read the length encoding.
-     * 
-     * @param init
-     * @return
-     * @throws IOException
-     * @throws InvalidFileFormat
-     */
-    private int readLength(int init) throws IOException, InvalidFileFormat {
-        byte lengthType = (byte) (init & 0xc0); // First two bits of init
-                                                // represents the length
-                                                // encoding type.
-        int length;
-        switch (lengthType) {
-        case 0x00: // 1 byte
-            length = init;
-            break;
-        case 0x40: // 2 byte
-            length = readSmallInt(init & 0x3f); // The last 6 bits give the msb
-            break;
-        case (byte) 0x80: // 5 byte
-            length = readInt(ByteOrder.BIG_ENDIAN);
-            break;
-        default:
-            throw new InvalidFileFormat("Unknown length format");
-        }
-        return length;
-    }
-
-    /**
-     * Read a byte and join it with msb provided.
-     * 
-     * @param msb
-     * @return
-     * @throws IOException
-     * @throws InvalidFileFormat
-     */
-    private int readSmallInt(int msb) throws IOException, InvalidFileFormat {
-        return (msb * 256) + read();
-    }
-
-    /**
-     * Read a 4 byte integer.
-     * 
-     * 
-     * @return
-     * @throws IOException
-     * @throws InvalidFileFormat 
-     */
-    private int readInt(ByteOrder order) throws IOException, InvalidFileFormat {
-        return ByteBuffer.wrap(read(4)).order(order).getInt();
-    }
-
-    /**
-     * Read a 4 byte to an unsigned long.
-     * 
-     * Ref : http://stackoverflow.com/questions/14108121/java-convert-long-to-4-
-     * bytes
-     * 
-     * @return
-     * @throws IOException
-     * @throws InvalidFileFormat 
-     */
-    public long readUnsignedInt() throws IOException, InvalidFileFormat {
-        return readInt() & 0xFFFFFFFFL;
-    }
-
-    /**
      * Read a 4 byte integer, Little Endian.
      * 
      * @return
@@ -331,32 +345,6 @@ public class RdfReader {
      */
     private ByteBuffer buffer(byte[] by) {
         return ByteBuffer.wrap(by).order(Protocol.ENDIAN);
-    }
-
-    /**
-     * Read a 8 byte integer, Little Endian.
-     * 
-     * @return
-     * @throws IOException
-     * @throws InvalidFileFormat 
-     */
-    public long readLong() throws IOException, InvalidFileFormat {
-        return buffer(read(8)).getLong();
-    }
-
-    /**
-     * Read a byte. Throws error on EOF.
-     * 
-     * @return
-     * @throws IOException
-     * @throws InvalidFileFormat
-     */
-    public int read() throws IOException, InvalidFileFormat {
-        int ret = stream.read();
-        if (ret == -1)
-            throw new InvalidFileFormat("Premature end of file");
-
-        return ret;
     }
 
     /**
