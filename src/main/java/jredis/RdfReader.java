@@ -123,7 +123,7 @@ public class RdfReader {
     }
 
     /**
-     * Read a 4 byte integer.
+     * Read a 4 byte integer. Signed.
      * 
      * 
      * @return
@@ -131,7 +131,7 @@ public class RdfReader {
      * @throws InvalidFileFormat 
      */
     private int readInt(ByteOrder order) throws IOException, InvalidFileFormat {
-        return ByteBuffer.wrap(read(4)).order(order).getInt();
+        return buffer(read(4)).order(order).getInt();
     }
 
     /**
