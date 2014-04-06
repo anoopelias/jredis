@@ -302,7 +302,7 @@ public class RdfReader {
     }
 
     /**
-     * Read a 4 byte integer, Big Endian.
+     * Read a 4 byte integer, Little Endian.
      * 
      * @return
      * @throws IOException
@@ -313,7 +313,7 @@ public class RdfReader {
     }
 
     /**
-     * Read a 4 byte integer, Little Endian.
+     * Read a 2 byte integer, Little Endian.
      * 
      * @return
      * @throws IOException
