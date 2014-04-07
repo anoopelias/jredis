@@ -73,6 +73,9 @@ public class ServerTest {
         bitTests(jedis);
         zTests(jedis2);
         setStringBitCombinationTests(jedis);
+        
+        jedis.quit();
+        jedis2.quit();
     }
 
     private void setStringBitCombinationTests(Jedis jedis) {

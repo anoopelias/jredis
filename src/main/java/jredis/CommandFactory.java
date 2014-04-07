@@ -40,6 +40,8 @@ public class CommandFactory {
             c = new ZcountCommand(args);
         else if("ZRANGE".equals(name))
             c = new ZrangeCommand(args);
+        else if("QUIT".equals(name))
+            c = new QuitCommand(args);
         else
             throw new InvalidCommand("Cannot find command type");
         

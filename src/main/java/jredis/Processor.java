@@ -41,6 +41,9 @@ public class Processor implements Callable<Object> {
                 try {
                     Command<?> c = reader.next();
                     c.execute().write(writer);
+                    
+                    if(c instanceof QuitCommand)
+                        break;
 
                 } catch (InvalidCommand e) {
                     /*
