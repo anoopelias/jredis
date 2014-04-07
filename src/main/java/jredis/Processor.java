@@ -60,6 +60,13 @@ public class Processor implements Callable<Object> {
                         + " Ending the connection.");
                 e.printStackTrace();
             }
+        } catch (Throwable e) {
+            // We don't let any exceptions escape.
+            if (Server.isDebug()) {
+                System.out.println("Some bug :" + reqId
+                        + " Ending the connection.");
+                e.printStackTrace();
+            }
         }
 
         return null;
