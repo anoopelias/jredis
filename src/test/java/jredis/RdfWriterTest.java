@@ -112,5 +112,4 @@ public class RdfWriterTest {
             sb.append('A');
         return sb.toString();
     }
-
 }

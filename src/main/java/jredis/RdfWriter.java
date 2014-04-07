@@ -5,6 +5,8 @@ import static jredis.RdfProtocol.unsignedIntToBytes;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Write data into stream in RDF format.
@@ -54,6 +56,24 @@ public class RdfWriter {
             os.write(0x80);
             os.write(unsignedIntToBytes(unsignedInt));
         }
+    }
+
+    /**
+     * Write a byte string.
+     * 
+     * @param b
+     * @throws IOException
+     */
+    public void write(ElementSet es) throws IOException {
+        List<Byte> list = new LinkedList<>();
+        long prevLength = 0;
+        
+        for(Element e : es) {
+            list.add((byte)prevLength);
+            
+        }
+        
+        os.flush();
     }
 
 }
