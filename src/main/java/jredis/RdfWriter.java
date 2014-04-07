@@ -71,6 +71,8 @@ public class RdfWriter {
         for(Element e : es) {
             list.add((byte)prevLength);
             
+            // FIXME: Complete the implementation
+            
         }
         
         os.flush();
