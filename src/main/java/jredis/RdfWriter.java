@@ -161,7 +161,7 @@ public class RdfWriter {
     private List<ByteArray> toBytes(double d) throws IOException {
         double df = Math.floor(d);
         if ((d == df) && !Double.isInfinite(d)) {
-            return new ArrayList<>(Arrays.asList(toBytes((int) df)));
+            return new ArrayList<>(Arrays.asList(toBytes((long) df)));
         } else {
             return toBytes(String.valueOf(d));
         }
@@ -191,13 +191,30 @@ public class RdfWriter {
      * @param i
      * @return
      */
-    private ByteArray toBytes(int i) {
+    public static ByteArray toBytes(long i) {
         if (i >= 0 && i <= 12)
             return new ByteArray(new byte[] { (byte) (i + 1 | (byte) 0xf0) });
 
-        // TODO: Implement.
+        if (Math.abs(i) <= 127)
+            return new ByteArray(new byte[] { (byte) 0xfe, (byte) i });
 
-        return null;
+        if (Math.abs(i) <= 32767)
+            return new ByteArray(new byte[] { (byte) 0xc0, (byte) i,
+                    (byte) (i >> 8) });
+
+        if (Math.abs(i) <= 8388607)
+            return new ByteArray(new byte[] { (byte) 0xf0, (byte) i,
+                    (byte) (i >> 8), (byte) (i >> 16) });
+
+        if (Math.abs(i) <= Integer.MAX_VALUE)
+            return new ByteArray(new byte[] { (byte) 0xd0, (byte) i,
+                    (byte) (i >> 8), (byte) (i >> 16), (byte) (i >> 24) });
+
+        return new ByteArray(new byte[] { (byte) 0xe0, (byte) i,
+                (byte) (i >> 8), (byte) (i >> 16), (byte) (i >> 24),
+                (byte) (i >> 32), (byte) (i >> 40), (byte) (i >> 48),
+                (byte) (i >> 56) });
+
     }
 
     /**

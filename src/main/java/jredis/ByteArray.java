@@ -2,6 +2,7 @@ package jredis;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
  * A ByteArray which can handle subsize in constant time.
@@ -82,6 +83,40 @@ public class ByteArray {
     @Override
     public String toString() {
         return Protocol.toString(content, 0, length);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(content);
+        result = prime * result + length;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ByteArray other = (ByteArray) obj;
+        if (length != other.length)
+            return false;
+
+        if (!sameContent(other))
+            return false;
+
+        return true;
+    }
+
+    private boolean sameContent(ByteArray other) {
+        for (int i = 0; i < length; i++)
+            if (content[i] != other.content[i])
+                return false;
+        return true;
     }
 
 }

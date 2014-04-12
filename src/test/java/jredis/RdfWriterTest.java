@@ -115,18 +115,18 @@ public class RdfWriterTest {
             sb.append('A');
         return sb.toString();
     }
-    
+
     @Test
     public void test_write_element_set_string_score() throws IOException {
         ElementSet elementSet = new TreeElementSet();
         Element e = new Element("Fourties", 47.32);
         elementSet.insert(e);
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         RdfWriter sw = new RdfWriter(baos);
         sw.write(elementSet);
         byte[] by = baos.toByteArray();
-        
+
         assertArrayEquals(NUMBERS_STRING_SCORE, by);
     }
 
@@ -135,12 +135,74 @@ public class RdfWriterTest {
         ElementSet elementSet = new TreeElementSet();
         Element e = new Element("One", 8.0);
         elementSet.insert(e);
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         RdfWriter sw = new RdfWriter(baos);
         sw.write(elementSet);
         byte[] by = baos.toByteArray();
-        
+
         assertArrayEquals(NUMBERS, by);
     }
+
+    @Test
+    public void test_int_less_than_byte() {
+        ByteArray ba = RdfWriter.toBytes(25);
+        assertEquals(new ByteArray(new byte[] { (byte) 0xfe, 0x19 }), ba);
+    }
+
+    @Test
+    public void test_int_less_than_byte_negative() {
+        ByteArray ba = RdfWriter.toBytes(-25);
+        assertEquals(new ByteArray(new byte[] { (byte) 0xfe, (byte) 0xe7 }), ba);
+    }
+
+    @Test
+    public void test_int_less_than_2_bytes() {
+        ByteArray ba = RdfWriter.toBytes(187);
+        assertEquals(new ByteArray(
+                new byte[] { (byte) 0xc0, (byte) 0xbb, 0x00 }), ba);
+    }
+
+    @Test
+    public void test_int_less_than_2_bytes_large() {
+        ByteArray ba = RdfWriter.toBytes(9876);
+        assertEquals(new ByteArray(
+                new byte[] { (byte) 0xc0, (byte) 0x94, 0x26 }), ba);
+    }
+
+    @Test
+    public void test_int_less_than_2_bytes_large_negative() {
+        ByteArray ba = RdfWriter.toBytes(-9876);
+        assertEquals(new ByteArray(new byte[] { (byte) 0xc0, (byte) 0x6c,
+                (byte) 0xd9 }), ba);
+    }
+
+    @Test
+    public void test_int_less_than_3_bytes() {
+        ByteArray ba = RdfWriter.toBytes(56789);
+        assertEquals(new ByteArray(new byte[] { (byte) 0xf0, (byte) 0xd5,
+                (byte) 0xdd, 0x00 }), ba);
+    }
+
+    @Test
+    public void test_int_less_than_3_bytes_negative() {
+        ByteArray ba = RdfWriter.toBytes(-56789);
+        assertEquals(new ByteArray(new byte[] { (byte) 0xf0, (byte) 0x2b,
+                (byte) 0x22, (byte) 0xff }), ba);
+    }
+
+    @Test
+    public void test_int_less_than_4_bytes() {
+        ByteArray ba = RdfWriter.toBytes(10389000);
+        assertEquals(new ByteArray(new byte[] { (byte) 0xd0, (byte) 0x08,
+                (byte) 0x86, (byte) 0x9e, 0x00 }), ba);
+    }
+
+    @Test
+    public void test_8_bytes() {
+        ByteArray ba = RdfWriter.toBytes(435519079242l);
+        assertEquals(new ByteArray(new byte[] { (byte) 0xe0, (byte) 0x4a,
+                (byte) 0xc3, (byte) 0xf5, 0x66, 0x65, 0x00, 0x00, 0x00 }), ba);
+    }
+
 }
