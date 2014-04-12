@@ -195,26 +195,46 @@ public class RdfWriter {
         if (i >= 0 && i <= 12)
             return new ByteArray(new byte[] { (byte) (i + 1 | (byte) 0xf0) });
 
-        if (Math.abs(i) <= 127)
-            return new ByteArray(new byte[] { (byte) 0xfe, (byte) i });
+        if (Math.abs(i) <= Byte.MAX_VALUE)
+            return toBytes(i, 1);
 
-        if (Math.abs(i) <= 32767)
-            return new ByteArray(new byte[] { (byte) 0xc0, (byte) i,
-                    (byte) (i >> 8) });
+        if (Math.abs(i) <= Short.MAX_VALUE)
+            return toBytes(i, 2);
 
         if (Math.abs(i) <= 8388607)
-            return new ByteArray(new byte[] { (byte) 0xf0, (byte) i,
-                    (byte) (i >> 8), (byte) (i >> 16) });
+            return toBytes(i, 3);
 
         if (Math.abs(i) <= Integer.MAX_VALUE)
-            return new ByteArray(new byte[] { (byte) 0xd0, (byte) i,
-                    (byte) (i >> 8), (byte) (i >> 16), (byte) (i >> 24) });
+            return toBytes(i, 4);
 
-        return new ByteArray(new byte[] { (byte) 0xe0, (byte) i,
-                (byte) (i >> 8), (byte) (i >> 16), (byte) (i >> 24),
-                (byte) (i >> 32), (byte) (i >> 40), (byte) (i >> 48),
-                (byte) (i >> 56) });
+        return toBytes(i, 8);
 
+    }
+
+    private static ByteArray toBytes(long num, int size) {
+        byte[] by = new byte[size + 1];
+        switch (size) {
+        case 1:
+            by[0] = (byte) 0xfe;
+            break;
+        case 2:
+            by[0] = (byte) 0xc0;
+            break;
+        case 3:
+            by[0] = (byte) 0xf0;
+            break;
+        case 4:
+            by[0] = (byte) 0xd0;
+            break;
+        default:
+            by[0] = (byte) 0xe0;
+            break;
+
+        }
+        for (int i = 0; i < size; i++)
+            by[i + 1] = (byte) (num >> (i * 8));
+
+        return new ByteArray(by);
     }
 
     /**
