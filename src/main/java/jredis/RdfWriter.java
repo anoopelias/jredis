@@ -211,6 +211,13 @@ public class RdfWriter {
 
     }
 
+    /**
+     * Convert the number to as many number of bytes as specified.
+     * 
+     * @param num
+     * @param size
+     * @return
+     */
     private static ByteArray toBytes(long num, int size) {
         byte[] by = new byte[size + 1];
         switch (size) {
