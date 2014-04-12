@@ -1,5 +1,7 @@
 package jredis;
 
+import static jredis.RdfTestUtil.NUMBERS_STRING_SCORE;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
@@ -111,5 +113,19 @@ public class RdfWriterTest {
         for (int i = 0; i < size; i++)
             sb.append('A');
         return sb.toString();
+    }
+    
+    @Test
+    public void test_write_element_set() throws IOException {
+        ElementSet elementSet = new TreeElementSet();
+        Element e = new Element("Fourties", 47.32);
+        elementSet.insert(e);
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        RdfWriter sw = new RdfWriter(baos);
+        sw.write(elementSet);
+        byte[] by = baos.toByteArray();
+        
+        assertArrayEquals(NUMBERS_STRING_SCORE, by);
     }
 }

@@ -17,20 +17,4 @@ public class RdfProtocol {
             0x30, 0x30, 0x36, (byte) 0xfe, 0x00 };
 
 
-    /**
-     * Convert an unsigned integer to bytes. Big Endian.
-     * 
-     * @param unsignedInt
-     * @return
-     */
-    public static byte[] unsignedIntToBytes(long unsignedInt) {
-        byte[] by = new byte[4];
-        by[0] = (byte) (unsignedInt >>> 24);
-        by[1] = (byte) (unsignedInt >>> 16);
-        by[2] = (byte) (unsignedInt >>> 8);
-        by[3] = (byte) (unsignedInt);
-
-        return by;
-    }
-
 }

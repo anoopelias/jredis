@@ -30,31 +30,35 @@ public class ByteArray {
      * 
      * @param content
      * @param length
-     * @throws IllegalArgumentException if length is bigger than the length of the content.
+     * @throws IllegalArgumentException
+     *             if length is bigger than the length of the content.
      */
     public ByteArray(byte[] content, int length)
             throws IllegalArgumentException {
-        if(length > content.length)
-            throw new IllegalArgumentException("length is greater than content length");
-        
+        if (length > content.length)
+            throw new IllegalArgumentException(
+                    "length is greater than content length");
+
         this.content = content;
         this.length = length;
     }
-    
+
     /**
      * To create a subArray of given length.
      * 
      * @param length
      * @return
-     * @throws IllegalArgumentException if length is greater than current length.
+     * @throws IllegalArgumentException
+     *             if length is greater than current length.
      */
     public ByteArray subArray(int length) throws IllegalArgumentException {
-        if(length > this.length)
-            throw new IllegalArgumentException("SubArray size is bigger than original array");
-        
+        if (length > this.length)
+            throw new IllegalArgumentException(
+                    "SubArray size is bigger than original array");
+
         return new ByteArray(content, length);
     }
-    
+
     /**
      * Get the length of the byte array.
      * 
@@ -63,15 +67,15 @@ public class ByteArray {
     public int length() {
         return length;
     }
-    
+
     /**
      * Write the bytes to an output stream.
      * 
      * @param os
-     * @throws IOException 
+     * @throws IOException
      */
     public void write(OutputStream os) throws IOException {
-        for(int i=0; i< length; i++)
+        for (int i = 0; i < length; i++)
             os.write(content[i]);
     }
 

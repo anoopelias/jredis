@@ -26,7 +26,7 @@ public class RdfTestUtil {
      public static final byte[] NUMBERS_STRING_SCORE = {
          0x1c, //len 
          0x1c, 0x00, 0x00, 0x00, //zlbytes 4
-         0x14, 0x00, 0x00, 0x00, //zltail 4
+         0x15, 0x00, 0x00, 0x00, //zltail 4
          0x02, 0x00, //zllen 2
          
          // e1
@@ -35,7 +35,7 @@ public class RdfTestUtil {
          0x46, 0x6f, 0x75, 0x72, 0x74, 0x69, 0x65, 0x73,  // raw 'Fourties' 8
          
          // e2
-         0x06, // prev len 1
+         0x0a, // prev len 1
          (byte) 0x05, // special flag 1
          0x34, 0x37, 0x2e, 0x33, 0x32, // raw '47.32' 5
          
