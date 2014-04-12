@@ -96,7 +96,7 @@ public class RdfWriter {
         List<ByteArray> bytes = new ArrayList<>();
 
         // Start with zllen
-        bytes.add(0, to2Bytes(es.size() * 2));
+        bytes.add(to2Bytes(es.size() * 2));
 
         for (Element e : es) {
 
@@ -107,7 +107,7 @@ public class RdfWriter {
             prevLength = len(entry);
 
             // Add score
-            tail = bytes.size() + 1;
+            tail = bytes.size();
             entry = toBytes(e.getScore());
             entry.add(0, new ByteArray(new byte[] { (byte) prevLength }));
             bytes.addAll(entry);
@@ -115,7 +115,7 @@ public class RdfWriter {
         }
 
         // Adding zlend to the end
-        bytes.add(new ByteArray(new byte[]{(byte)0xff}));
+        bytes.add(new ByteArray(new byte[] { (byte) 0xff }));
 
         /*
          * Adding zltail
@@ -123,7 +123,7 @@ public class RdfWriter {
          * offset = 4 zlbytes + 4 zltail = 8
          */
         bytes.add(0, to4Bytes(len(bytes.subList(0, tail)) + 8));
-        
+
         long len = len(bytes) + 4;
 
         // Adding zlbytes
@@ -161,7 +161,7 @@ public class RdfWriter {
     private List<ByteArray> toBytes(double d) throws IOException {
         double df = Math.floor(d);
         if ((d == df) && !Double.isInfinite(d)) {
-            return Arrays.asList(toBytes((int) df));
+            return new ArrayList<>(Arrays.asList(toBytes((int) df)));
         } else {
             return toBytes(String.valueOf(d));
         }
@@ -192,6 +192,8 @@ public class RdfWriter {
      * @return
      */
     private ByteArray toBytes(int i) {
+        if (i >= 0 && i <= 12)
+            return new ByteArray(new byte[] { (byte) (i + 1 | (byte) 0xf0) });
 
         // TODO: Implement.
 

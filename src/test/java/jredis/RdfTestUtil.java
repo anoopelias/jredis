@@ -6,9 +6,9 @@ public class RdfTestUtil {
     }
 
     public static final byte[] NUMBERS = {
-        0x10, //len 
-        0x10, 0x00, 0x00, 0x00, //zlbytes
-        0x0e, 0x00, 0x00, 0x00, //zltail
+        0x12, //len 
+        0x12, 0x00, 0x00, 0x00, //zlbytes
+        0x0f, 0x00, 0x00, 0x00, //zltail
         0x02, 0x00, //zllen
         
         // e1
@@ -17,7 +17,7 @@ public class RdfTestUtil {
         0x4f, 0x6e, 0x65, // raw 'One'
         
         // e2
-        0x06, // prev len
+        0x05, // prev len
         (byte) 0xf9, // special flag
         
         (byte) 0xff // end
@@ -26,7 +26,7 @@ public class RdfTestUtil {
      public static final byte[] NUMBERS_STRING_SCORE = {
          0x1c, //len 
          0x1c, 0x00, 0x00, 0x00, //zlbytes 4
-         0x15, 0x00, 0x00, 0x00, //zltail 4
+         0x14, 0x00, 0x00, 0x00, //zltail 4
          0x02, 0x00, //zllen 2
          
          // e1
