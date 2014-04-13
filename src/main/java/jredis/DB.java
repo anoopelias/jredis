@@ -10,7 +10,7 @@ import java.util.Map;
  * @author anoopelias
  *
  */
-public class DB {
+public class DB implements Iterable<String> {
 
     public static DB INSTANCE = new DB();
 

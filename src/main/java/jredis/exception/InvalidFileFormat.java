@@ -1,5 +1,11 @@
 package jredis.exception;
 
+/**
+ * To denote invalid format of a loading file.
+ * 
+ * @author anoopelias
+ *
+ */
 public class InvalidFileFormat extends Exception {
 
     /**

@@ -16,5 +16,31 @@ public class RdfProtocol {
     public static final byte[] INIT = { 0x52, 0x45, 0x44, 0x49, 0x53, 0x30,
             0x30, 0x30, 0x36, (byte) 0xfe, 0x00 };
 
+    /**
+     * End of file. (Checksum follows) 
+     */
+    public static final byte[] END = { (byte) 0xff };
+    
+    /**
+     * Types of values.
+     * 
+     * @author anoopelias
+     *
+     */
+    public static enum ValueType {
+        STRING(0),
+        SORTED_SET_ZIPLIST(12);
+        
+        private final int value;
+        
+        private ValueType(int i) {
+            this.value = i;
+        }
+        
+        public int value() {
+            return value;
+        }
+    }
+
 
 }

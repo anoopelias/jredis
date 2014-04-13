@@ -1,11 +1,16 @@
 package jredis;
 
+import static jredis.RdfProtocol.END;
+import static jredis.RdfProtocol.INIT;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import jredis.RdfProtocol.ValueType;
 
 /**
  * Write data into stream in RDF format.
@@ -24,6 +29,36 @@ public class RdfWriter {
      */
     public RdfWriter(OutputStream os) {
         this.os = new BufferedOutputStream(os);
+    }
+    
+    /**
+     * Write initialization structure of RDF file.
+     * @throws IOException 
+     * 
+     */
+    public void writeInit() throws IOException {
+        os.write(INIT);
+        os.flush();
+    }
+
+    /**
+     * Write initialization structure of RDF file.
+     * @throws IOException 
+     * 
+     */
+    public void writeEnd() throws IOException {
+        os.write(END);
+        os.flush();
+    }
+
+    /**
+     * Write initialization structure of RDF file.
+     * @throws IOException 
+     * 
+     */
+    public void write(ValueType typ) throws IOException {
+        os.write(typ.value());
+        os.flush();
     }
 
     /**
