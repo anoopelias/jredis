@@ -114,11 +114,7 @@ public class RdfWriter {
             bytes = new byte[5];
             bytes[0] = (byte) (0x80);
 
-            // Big endian conversion
-            bytes[1] = (byte) (unsignedInt >>> 24);
-            bytes[2] = (byte) (unsignedInt >>> 16);
-            bytes[3] = (byte) (unsignedInt >>> 8);
-            bytes[4] = (byte) (unsignedInt);
+            to4Bytes(unsignedInt, bytes, 1);
         }
         return new ByteArray(bytes);
     }
@@ -201,16 +197,27 @@ public class RdfWriter {
             byte[] bytes = new byte[5];
             bytes[0] = (byte) (254);
 
-            // Big endian conversion
-            // FIXME: Violates DRY
-            bytes[1] = (byte) (prevLength >>> 24);
-            bytes[2] = (byte) (prevLength >>> 16);
-            bytes[3] = (byte) (prevLength >>> 8);
-            bytes[4] = (byte) (prevLength);
+            to4Bytes(prevLength, bytes, 1);
 
             return new ByteArray(bytes);
         }
 
+    }
+
+    /**
+     * Convert the given number to 4 bytes unsigned integer and assign it on the
+     * byte array at starting offset.
+     * 
+     * @param num
+     * @param bytes
+     * @param offset
+     */
+    private void to4Bytes(long num, byte[] bytes, int offset) {
+        int index = offset;
+        bytes[index++] = (byte) (num >>> 24);
+        bytes[index++] = (byte) (num >>> 16);
+        bytes[index++] = (byte) (num >>> 8);
+        bytes[index++] = (byte) (num);
     }
 
     /**
