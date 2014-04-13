@@ -2,14 +2,10 @@ package jredis;
 
 import static jredis.RdfTestUtil.NUMBERS;
 import static jredis.RdfTestUtil.NUMBERS_INVALID_STRING_SCORE;
-import static jredis.RdfTestUtil.NUMBERS_LARGE_KEY;
-import static jredis.RdfTestUtil.NUMBERS_LARGE_KEY_END;
-import static jredis.RdfTestUtil.NUMBERS_LARGE_KEY_START;
 import static jredis.RdfTestUtil.NUMBERS_NO_END;
 import static jredis.RdfTestUtil.NUMBERS_STRING_SCORE;
 import static jredis.RdfTestUtil.THREE_ENTRIES;
-import static jredis.TestUtil.c;
-
+import static jredis.RdfTestUtil.largeMember;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -71,11 +67,7 @@ public class RdfReaderTest {
     @Test
     public void test_load_large_prev() throws IOException, InvalidFileFormat {
 
-        byte[] key = {};
-        for (int i = 0; i < 200; i++)
-            key = c(key, NUMBERS_LARGE_KEY);
-
-        byte[] input = c(NUMBERS_LARGE_KEY_START, key, NUMBERS_LARGE_KEY_END);
+        byte[] input = largeMember();
 
         RdfReader reader = new RdfReader(new ByteArrayInputStream(input));
 

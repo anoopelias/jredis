@@ -2,6 +2,7 @@ package jredis;
 
 import static jredis.RdfTestUtil.NUMBERS_STRING_SCORE;
 import static jredis.RdfTestUtil.NUMBERS;
+import static jredis.RdfTestUtil.largeMember;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -142,6 +143,24 @@ public class RdfWriterTest {
         byte[] by = baos.toByteArray();
 
         assertArrayEquals(NUMBERS, by);
+    }
+
+    @Test
+    public void test_write_large_member() throws IOException {
+        
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 200; i++)
+            sb.append("Fourties");
+
+        ElementSet elementSet = new TreeElementSet();
+        Element e = new Element(sb.toString(), new Double(-1112779024));
+        elementSet.insert(e);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        RdfWriter sw = new RdfWriter(baos);
+        sw.write(elementSet);
+
+        assertArrayEquals(largeMember(), baos.toByteArray());
     }
 
     @Test

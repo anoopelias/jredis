@@ -1,5 +1,7 @@
 package jredis;
 
+import static jredis.TestUtil.c;
+
 public class RdfTestUtil {
     
     private RdfTestUtil(){
@@ -103,9 +105,9 @@ public class RdfTestUtil {
 
 
      public static final byte[] NUMBERS_LARGE_KEY_START = {
-         0x1c, //len 
+         0x46, 0x58, //len 
          0x58, 0x06, 0x00, 0x00, //zlbytes 4
-         0x14, 0x00, 0x00, 0x00, //zltail 4
+         0x4d, 0x06, 0x00, 0x00, //zltail 4
          0x02, 0x00, //zllen 2
          
          // e1
@@ -118,11 +120,21 @@ public class RdfTestUtil {
      public static final byte[] NUMBERS_LARGE_KEY_END = {
          // e2
          (byte) 0xfe, // prev len 1
-         0x43, 0x06, 0x00, 0x00, // prev len 4
+         0x00, 0x00, 0x06, 0x43, // prev len 4 (Assuming big endian)
          (byte) 0xd0, // special flag 1
          ~0x0f, ~(byte) 0xa9, ~0x53, ~0x42, // -1112779024 signed integer 4
          
          (byte) 0xff // end 1
       };
+
+     public static byte[] largeMember() {
+         byte[] key = {};
+         for (int i = 0; i < 200; i++)
+             key = c(key, NUMBERS_LARGE_KEY);
+
+         byte[] input = c(NUMBERS_LARGE_KEY_START, key, NUMBERS_LARGE_KEY_END);
+         return input;
+     }
+
 
 }

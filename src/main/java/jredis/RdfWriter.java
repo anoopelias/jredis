@@ -102,14 +102,14 @@ public class RdfWriter {
 
             // Add member
             List<ByteArray> entry = toBytes(e.getMember());
-            entry.add(0, new ByteArray(new byte[] { (byte) prevLength }));
+            entry.add(0, toPrevLength(prevLength));
             bytes.addAll(entry);
             prevLength = len(entry);
 
             // Add score
             tail = bytes.size();
             entry = toBytes(e.getScore());
-            entry.add(0, new ByteArray(new byte[] { (byte) prevLength }));
+            entry.add(0, toPrevLength(prevLength));
             bytes.addAll(entry);
             prevLength = len(entry);
         }
@@ -136,6 +136,25 @@ public class RdfWriter {
             byt.write(os);
 
         os.flush();
+    }
+
+    private ByteArray toPrevLength(long prevLength) {
+        if (prevLength < 254)
+            return new ByteArray(new byte[] { (byte) prevLength });
+        else {
+            byte[] bytes = new byte[5];
+            bytes[0] = (byte) (254);
+            
+            // Big endian conversion
+            // FIXME: Violates DRY
+            bytes[1] = (byte) (prevLength >>> 24);
+            bytes[2] = (byte) (prevLength >>> 16);
+            bytes[3] = (byte) (prevLength >>> 8);
+            bytes[4] = (byte) (prevLength);
+
+            return new ByteArray(bytes);
+        }
+            
     }
 
     /**
