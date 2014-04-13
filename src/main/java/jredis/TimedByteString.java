@@ -48,6 +48,14 @@ public class TimedByteString {
     public boolean isValid() {
         return expiryTime == null || expiryTime > System.currentTimeMillis();
     }
-
+    
+    /**
+     * Expiry time. null if no expiry.
+     * 
+     * @return
+     */
+    public Long expiryTime() {
+        return expiryTime;
+    }
     
 }

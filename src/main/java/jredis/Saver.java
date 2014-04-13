@@ -31,18 +31,44 @@ public class Saver {
     public void save() {
         try {
             rdfWriter.writeInit();
-            for(String key : DB.INSTANCE) {
-                Object obj = DB.INSTANCE.get(key, Object.class);
-                if(obj instanceof TimedByteString) {
-                    rdfWriter.write(RdfProtocol.ValueType.STRING);
-                    rdfWriter.write(new ByteString(key)); // TODO : DB Key should ideally be ByteString
-                    rdfWriter.write(((TimedByteString)obj).value());
-                }
-            }
+            writeAllKeys();
+            
             rdfWriter.writeEnd();
         } catch (IOException e) {
             throw new InternalServerError("Some problem with saving", e);
         }
+    }
+
+    /**
+     * Write all keys to stream.
+     * 
+     * @throws IOException
+     */
+    private void writeAllKeys() throws IOException {
+        for(String key : DB.INSTANCE) {
+            Object obj = DB.INSTANCE.get(key, Object.class);
+            if(obj instanceof TimedByteString) {
+                writeTbs(key, (TimedByteString)obj);
+            }
+        }
+    }
+
+    /**
+     * Write a TimedByteString to output stream.
+     * 
+     * @param key
+     * @param tbs
+     * @throws IOException
+     */
+    private void writeTbs(String key, TimedByteString tbs)
+            throws IOException {
+        
+        if(tbs.expiryTime() != null)
+            rdfWriter.write(tbs.expiryTime());
+            
+        rdfWriter.write(RdfProtocol.ValueType.STRING);
+        rdfWriter.write(new ByteString(key)); // TODO : DB Key should ideally be ByteString
+        rdfWriter.write(tbs.value());
     }
 
 }

@@ -30,10 +30,11 @@ public class RdfWriter {
     public RdfWriter(OutputStream os) {
         this.os = new BufferedOutputStream(os);
     }
-    
+
     /**
      * Write initialization structure of RDF file.
-     * @throws IOException 
+     * 
+     * @throws IOException
      * 
      */
     public void writeInit() throws IOException {
@@ -43,7 +44,8 @@ public class RdfWriter {
 
     /**
      * Write initialization structure of RDF file.
-     * @throws IOException 
+     * 
+     * @throws IOException
      * 
      */
     public void writeEnd() throws IOException {
@@ -52,8 +54,27 @@ public class RdfWriter {
     }
 
     /**
-     * Write initialization structure of RDF file.
-     * @throws IOException 
+     * Write timestamp in to the stream.
+     * 
+     * @param num
+     * @throws IOException
+     */
+    public void write(long num) throws IOException {
+        os.write((byte) 0xfc);
+
+        byte[] bytes = new byte[8];
+
+        // FIXME: DRY
+        for (int i = 0; i < 8; i++)
+            bytes[i] = (byte) (num >>> (i * 8));
+
+        os.write(bytes);
+    }
+
+    /**
+     * Write value type in to the stream.
+     * 
+     * @throws IOException
      * 
      */
     public void write(ValueType typ) throws IOException {
@@ -179,7 +200,7 @@ public class RdfWriter {
         else {
             byte[] bytes = new byte[5];
             bytes[0] = (byte) (254);
-            
+
             // Big endian conversion
             // FIXME: Violates DRY
             bytes[1] = (byte) (prevLength >>> 24);
@@ -189,7 +210,7 @@ public class RdfWriter {
 
             return new ByteArray(bytes);
         }
-            
+
     }
 
     /**
@@ -266,7 +287,8 @@ public class RdfWriter {
     }
 
     /**
-     * Convert the number to as many number of bytes as specified.
+     * Convert the number to as many number of bytes as specified. Little
+     * endian.
      * 
      * @param num
      * @param size
