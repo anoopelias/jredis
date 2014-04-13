@@ -64,7 +64,7 @@ public class RdfWriter {
 
         byte[] bytes = new byte[8];
 
-        // FIXME: DRY
+        // Cannot reuse toBytes as it is signed.
         for (int i = 0; i < 8; i++)
             bytes[i] = (byte) (num >>> (i * 8));
 
@@ -206,7 +206,7 @@ public class RdfWriter {
 
     /**
      * Convert the given number to 4 bytes unsigned integer and assign it on the
-     * byte array at starting offset.
+     * byte array at starting offset. Big endian.
      * 
      * @param num
      * @param bytes
@@ -258,7 +258,6 @@ public class RdfWriter {
      */
     private ByteArray to4Bytes(long unsignedInt) throws IOException {
         byte[] bytes = new byte[4];
-        // Big endian conversion
         bytes[0] = (byte) (unsignedInt);
         bytes[1] = (byte) (unsignedInt >>> 8);
         bytes[2] = (byte) (unsignedInt >>> 16);
