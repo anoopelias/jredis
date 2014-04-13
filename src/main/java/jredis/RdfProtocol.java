@@ -29,7 +29,7 @@ public class RdfProtocol {
      */
     public static enum ValueType {
         STRING(0),
-        SORTED_SET_ZIPLIST(12);
+        SORTED_ZIPLIST(12);
         
         private final int value;
         

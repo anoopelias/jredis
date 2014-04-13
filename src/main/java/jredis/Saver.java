@@ -49,8 +49,25 @@ public class Saver {
             Object obj = DB.INSTANCE.get(key, Object.class);
             if(obj instanceof TimedByteString) {
                 writeTbs(key, (TimedByteString)obj);
+            } else if (obj instanceof ElementSet) {
+                writeElementSet(key, (ElementSet)obj);
+            } else {
+                throw new InternalServerError("Unknown data type to save : " + obj);
             }
         }
+    }
+
+    /**
+     * Write an element set key and value.
+     * 
+     * @param key
+     * @param obj
+     * @throws IOException
+     */
+    private void writeElementSet(String key, ElementSet obj) throws IOException {
+        rdfWriter.write(RdfProtocol.ValueType.SORTED_ZIPLIST);
+        rdfWriter.write(new ByteString(key));
+        rdfWriter.write(obj);
     }
 
     /**
