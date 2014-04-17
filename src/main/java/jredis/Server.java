@@ -30,7 +30,7 @@ import jredis.exception.InternalServerError;
  */
 public class Server {
 
-    private ExecutorService service = Executors.newFixedThreadPool(5);
+    private ExecutorService service;
 
     private long reqId;
     
@@ -50,6 +50,9 @@ public class Server {
             
             port = Integer.parseInt(config("port"));
             isDebug = Boolean.parseBoolean(config("debug"));
+            
+            int pool = Integer.parseInt(config("pool"));
+            service = Executors.newFixedThreadPool(pool);
             
         } catch (Throwable e) {
             System.err.println("Fatal : Exception during startup");
