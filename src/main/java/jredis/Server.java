@@ -1,17 +1,25 @@
 package jredis;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import jredis.exception.InternalServerError;
 
 /**
  * The server class.
  * 
- * Known mismatches in behavior of Redis with jRedis. 
+ * Known mismatches in behavior of Redis with jRedis.
  * 
- * 1. In Redis, A SET with both PX and EX options at the same time will invalidate the SET
- * operation. While jRedis will use the last specified option.
+ * 1. In Redis, A SET with both PX and EX options at the same time will
+ * invalidate the SET operation. While jRedis will use the last specified
+ * option.
  * 
  * 2. Error messages/types in jRedis is not consistent with that in Redis.
  * 
@@ -25,13 +33,89 @@ public class Server {
     private ExecutorService service = Executors.newFixedThreadPool(5);
 
     private long reqId;
+    
+    private static int port;
+    private static boolean isDebug;
+    private static Properties props;
+    
+    public static Server INSTANCE = new Server();
+
+    /**
+     * One server instance per JVM.
+     * 
+     */
+    private Server() {
+        try {
+            loadConfig();
+            
+            port = Integer.parseInt(config("port"));
+            isDebug = Boolean.parseBoolean(config("debug"));
+            
+        } catch (Throwable e) {
+            System.err.println("Fatal : Exception during startup");
+            System.err.println("Fatal : Aborting");
+            throw new InternalServerError(e);
+        }
+
+    }
+
+    /**
+     * Load server configuration.
+     * 
+     * @throws IOException
+     */
+    private void loadConfig() throws IOException {
+        InputStream config = null;
+        String configFile = System.getProperty("jredis.config");
+        if (configFile != null) {
+            config = loadConfig(configFile);
+        }
+
+        if (config == null) {
+            config = loadDefaultConfig();
+        }
+
+        props = new Properties();
+        props.load(config);
+    }
+
+    /**
+     * Load default config.
+     * 
+     * @return
+     */
+    private InputStream loadDefaultConfig() {
+        InputStream config;
+        System.out.println("Using default config");
+        config = this.getClass().getClassLoader()
+                .getResourceAsStream("jredis/config_default.properties");
+        return config;
+    }
+
+    /**
+     * Load the given config file. Returns null if file doens't exist.
+     * 
+     * @param configFile
+     * @return
+     */
+    private InputStream loadConfig(String configFile) {
+        InputStream config = null;
+        System.out.println("Using config file : " + configFile);
+        try {
+            config = new FileInputStream(configFile);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found : " + configFile);
+        }
+        return config;
+    }
 
     /**
      * Psvm to start the server.
      * 
      * @param args
+     * @throws IOException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new Server().start();
     }
 
@@ -40,8 +124,8 @@ public class Server {
      * 
      */
     public void start() {
-        System.out.println("Server starting..");
-        try (ServerSocket serverSocket = new ServerSocket(15000)) {
+        System.out.println("Server starting on port " + port + " ...");
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
@@ -55,6 +139,16 @@ public class Server {
                 e.printStackTrace();
         }
     }
+    
+    /**
+     * Get a specific config value.
+     * 
+     * @param key
+     * @return
+     */
+    public static String config(String key) {
+        return props.getProperty(key);
+    }
 
     /**
      * Check if the server is in debug mode.
@@ -62,9 +156,7 @@ public class Server {
      * @return
      */
     public static boolean isDebug() {
-
-        // TODO: Get some jvm args to set this.
-        return true;
+        return isDebug;
     }
 
 }

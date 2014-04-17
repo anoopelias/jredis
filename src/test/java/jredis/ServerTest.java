@@ -32,8 +32,7 @@ public class ServerTest {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Server server = new Server();
-                server.start();
+                Server.INSTANCE.start();
             }
         }).start();
 
