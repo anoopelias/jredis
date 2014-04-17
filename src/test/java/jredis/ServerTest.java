@@ -73,6 +73,8 @@ public class ServerTest {
         zTests(jedis2);
         setStringBitCombinationTests(jedis);
         
+        jedis.save();
+        
         jedis.quit();
         jedis2.quit();
     }

@@ -42,6 +42,8 @@ public class CommandFactory {
             c = new ZrangeCommand(args);
         else if("QUIT".equals(name))
             c = new QuitCommand(args);
+        else if("SAVE".equals(name))
+            c = new SaveCommand(args);
         else
             throw new InvalidCommand("Cannot find command type");
         

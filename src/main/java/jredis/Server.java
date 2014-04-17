@@ -1,5 +1,6 @@
 package jredis;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import jredis.exception.InternalServerError;
+import jredis.exception.InvalidFileFormat;
 
 /**
  * The server class.
@@ -54,12 +56,39 @@ public class Server {
             int pool = Integer.parseInt(config("pool"));
             service = Executors.newFixedThreadPool(pool);
             
+            loadData();
+            
         } catch (Throwable e) {
             System.err.println("Fatal : Exception during startup");
             System.err.println("Fatal : Aborting");
             throw new InternalServerError(e);
         }
 
+    }
+
+    /**
+     * Load data from file to server.
+     * 
+     */
+    private void loadData() {
+        String rdfFileName = config("data");
+        if(rdfFileName != null) {
+            File rdfFile = new File(rdfFileName);
+            if(rdfFile.exists()) {
+                try {
+                    InputStream is = new FileInputStream(rdfFile);
+                    Loader loader = new Loader(is);
+                    loader.load();
+                    
+                } catch (FileNotFoundException e) {
+                    // Ignore. This cannot happen.
+                } catch (InvalidFileFormat e) {
+                    System.err.println("Couldn't load data : " + e.getMessage());
+                    System.err.println("Ignoring the error");
+                }
+            }
+        }
+        
     }
 
     /**
