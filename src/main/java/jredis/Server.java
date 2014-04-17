@@ -116,7 +116,7 @@ public class Server {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        new Server().start();
+        INSTANCE.start();
     }
 
     /**
