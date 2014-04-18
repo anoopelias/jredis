@@ -47,24 +47,39 @@ public class Server {
      * 
      */
     private Server() {
+        init();
+    }
+
+    /**
+     * Initialize server.
+     * 
+     */
+    private void init() {
         try {
             loadConfig();
-            
-            port = Integer.parseInt(config("port"));
-            isDebug = Boolean.parseBoolean(config("debug"));
-            
-            int pool = Integer.parseInt(config("pool"));
-            service = Executors.newFixedThreadPool(pool);
+            loadLevel();
             
             loadData();
+            loadPort();
+            loadPool();
             
         } catch (Throwable e) {
             System.err.println("Fatal : Exception during startup");
             System.err.println("Fatal : Aborting");
             throw new InternalServerError(e);
         }
-
     }
+    
+    /**
+     * Psvm to start the server.
+     * 
+     * @param args
+     * @throws IOException
+     */
+    public static void main(String[] args) throws IOException {
+        INSTANCE.start();
+    }
+
 
     /**
      * Load data from file to server.
@@ -142,16 +157,6 @@ public class Server {
     }
 
     /**
-     * Psvm to start the server.
-     * 
-     * @param args
-     * @throws IOException
-     */
-    public static void main(String[] args) throws IOException {
-        INSTANCE.start();
-    }
-
-    /**
      * Start the server.
      * 
      */
@@ -189,6 +194,30 @@ public class Server {
      */
     public static boolean isDebug() {
         return isDebug;
+    }
+    
+    /**
+     * Load a thread pool.
+     * 
+     */
+    private void loadPool() {
+        service = Executors.newFixedThreadPool(Integer.parseInt(config("pool")));
+    }
+
+    /**
+     * Load the port to which the server listens to.
+     * 
+     */
+    private void loadPort() {
+        port = Integer.parseInt(config("port"));
+    }
+
+    /**
+     * Load log level of the server.
+     * 
+     */
+    private void loadLevel() {
+        isDebug = Boolean.parseBoolean(config("debug"));
     }
 
 }
