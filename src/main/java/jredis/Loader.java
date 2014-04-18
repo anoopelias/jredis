@@ -32,13 +32,9 @@ public class Loader {
     public void load() throws InvalidFileFormat {
         try {
 
-            // Stop everything else while loading.
-            synchronized (DB.INSTANCE) {
-                reader.verifyInit();
-
-                while (!reader.end())
-                    loadValue();
-            }
+            reader.verifyInit();
+            while (!reader.end())
+                loadValue();
 
         } catch (IOException e) {
             throw new InvalidFileFormat("Error reading file", e);
@@ -130,7 +126,7 @@ public class Loader {
      * 
      * @return
      * @throws IOException
-     * @throws InvalidFileFormat 
+     * @throws InvalidFileFormat
      */
     private long readTime() throws IOException, InvalidFileFormat {
         return reader.readLong();
