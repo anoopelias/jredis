@@ -81,6 +81,7 @@ public class Server {
     }
 
 
+
     /**
      * Load data from file to server.
      * 
@@ -91,9 +92,8 @@ public class Server {
             File rdfFile = new File(rdfFileName);
             if(rdfFile.exists()) {
                 try {
-                    InputStream is = new FileInputStream(rdfFile);
-                    Loader loader = new Loader(is);
-                    loader.load();
+                    
+                    new Loader(new FileInputStream(rdfFile)).load();
                     
                 } catch (FileNotFoundException e) {
                     // Ignore. This cannot happen.
