@@ -30,14 +30,16 @@ public class SaveCommand implements Command<String> {
 
     @Override
     public Response<String> execute() throws InvalidCommand {
-        File rdfFile = new File(Server.config(Server.DATA_DUMP));
-        if (rdfFile.exists())
-            rdfFile.delete();
 
         try {
             
             // Complete blocking call
             synchronized (DB.INSTANCE) {
+                
+                File rdfFile = new File(Server.config(Server.DATA_DUMP));
+                if (rdfFile.exists())
+                    rdfFile.delete();
+
                 OutputStream os = new FileOutputStream(rdfFile);
                 Saver saver = new Saver(os);
                 saver.save();

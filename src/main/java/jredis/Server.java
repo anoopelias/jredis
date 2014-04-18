@@ -97,11 +97,14 @@ public class Server {
             if (rdfFile.exists()) {
                 try {
 
-                    new Loader(new FileInputStream(rdfFile)).load();
+                    InputStream is = new FileInputStream(rdfFile);
+                    new Loader(is).load();
+
+                    is.close();
 
                 } catch (FileNotFoundException e) {
                     // Ignore. This cannot happen.
-                } catch (InvalidFileFormat e) {
+                } catch (InvalidFileFormat | IOException e) {
                     System.err
                             .println("Couldn't load data : " + e.getMessage());
                     System.err.println("Ignoring the error");
@@ -207,7 +210,7 @@ public class Server {
      * @return
      */
     public static void debug(String message) {
-        if(isDebug) {
+        if (isDebug) {
             System.out.println(message);
         }
     }
@@ -236,7 +239,7 @@ public class Server {
     private void loadLevel() {
         isDebug = Boolean.parseBoolean(config("debug"));
     }
-    
+
     /**
      * Add a shutdown hook.
      * 
@@ -245,6 +248,5 @@ public class Server {
         Runtime.getRuntime().addShutdownHook(new Thread(new Shutdown()));
 
     }
-
 
 }
