@@ -35,12 +35,17 @@ public class SaveCommand implements Command<String> {
             rdfFile.delete();
 
         try {
-            OutputStream os = new FileOutputStream(rdfFile);
-            Saver saver = new Saver(os);
-            saver.save();
             
-            os.close();
-
+            // Complete blocking call
+            synchronized (DB.INSTANCE) {
+                OutputStream os = new FileOutputStream(rdfFile);
+                Saver saver = new Saver(os);
+                saver.save();
+                
+                os.close();
+                
+            }
+            
         } catch (FileNotFoundException e) {
             throw new InvalidCommand("Couldn't create file", e);
         } catch (IOException e) {
