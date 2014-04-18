@@ -82,6 +82,7 @@
 					</systemPropertyVariables>
 					<argLine>
 						-Xmx1024m -XX:MaxPermSize=256m
+						-Djredis.config=src/test/resources/config_test.properties
 						<!-- -javaagent:"${settings.localRepository}"/com/googlecode/jmockit/jmockit-coverage/${jmockit-version}/jmockit-coverage-${jmockit-version}.jar -->
 					</argLine>
 				</configuration>
