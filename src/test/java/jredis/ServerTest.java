@@ -71,20 +71,11 @@ public class ServerTest {
         keyTests(jedis, jedis2);
         bitTests(jedis);
         zTests(jedis2);
-        setStringBitCombinationTests(jedis);
         
         jedis.save();
         
         jedis.quit();
         jedis2.quit();
-    }
-
-    private void setStringBitCombinationTests(Jedis jedis) {
-        jedis.set("Jack", "Nicholson");
-        assertEquals("Nicholson", jedis.get("Jack"));
-        jedis.setbit("Jack", 74, true);
-        jedis.setbit("Jack", 75, true);
-        assertEquals("Nicholson0", jedis.get("Jack"));
     }
 
     private void zTests(Jedis jedis2) {

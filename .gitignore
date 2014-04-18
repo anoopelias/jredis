@@ -2,4 +2,5 @@
 .project
 .classpath
 .settings
+jredis.rdb
 /coverage-report

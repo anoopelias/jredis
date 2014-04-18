@@ -19,7 +19,6 @@ import org.junit.Test;
 
 public class ProcessorTest {
 
-
     private static String[] CMD_SET = { "SET", "Elon", "Musk" };
     private static String[] CMD_GET = { "GET", "Elon" };
     private static String CMD_RESP = OK + CRLF + DOLLAR + "4" + CRLF + "Musk"
@@ -53,6 +52,12 @@ public class ProcessorTest {
     private static String[] CMD_ZCOUNT_INVALID = { "ZCOUNT", "Elon", "1.5",
             "3.5" };
     private static String[] CMD_ZRANGE_INVALID = { "ZRANGE", "Elon", "1", "5" };
+
+    private static String[] CMD_STRING_BIT_SET = { "SET", "Jack", "Nicholson" };
+    private static String[] CMD_STRING_BIT_GET = { "GET", "Jack" };
+
+    private static String[] CMD_STRING_BIT_SETBIT1 = { "SETBIT", "Jack", "74", "1" };
+    private static String[] CMD_STRING_BIT_SETBIT2 = { "SETBIT", "Jack", "75", "1" };
 
     @Before
     public void setup() {
@@ -238,6 +243,31 @@ public class ProcessorTest {
         assertEquals(OK, output[1]);
         assertEquals("$4", output[2]);
         assertEquals("Musk", output[3]);
+    }
+
+    @Test
+    public void test_setbit_getstring() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Socket socket = mockSocket(toCommand(CMD_STRING_BIT_SET)
+                + toCommand(CMD_STRING_BIT_GET)
+                + toCommand(CMD_STRING_BIT_SETBIT1)
+                + toCommand(CMD_STRING_BIT_SETBIT2)
+                + toCommand(CMD_STRING_BIT_GET), os);
+
+        Processor processor = new Processor(socket, 2L);
+        processor.call();
+
+        String[] output = os.toString().split(CRLF);
+        assertEquals(7, output.length);
+
+        assertEquals(OK, output[0]);
+        assertEquals("$9", output[1]);
+        assertEquals("Nicholson", output[2]);
+        assertEquals(":0", output[3]);
+        assertEquals(":0", output[4]);
+        assertEquals("$10", output[5]);
+        assertEquals("Nicholson0", output[6]);
+
     }
 
 }
