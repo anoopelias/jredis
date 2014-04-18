@@ -39,11 +39,11 @@ public class Server {
     private ExecutorService service;
 
     private long reqId;
-    
+
     private static int port;
     private static boolean isDebug;
     private static Properties props;
-    
+
     public static Server INSTANCE = new Server();
 
     /**
@@ -62,18 +62,20 @@ public class Server {
         try {
             loadConfig();
             loadLevel();
-            
+
             loadData();
             loadPort();
             loadPool();
-            
+
+            addShutdownHook();
+
         } catch (Throwable e) {
             System.err.println("Fatal : Exception during startup");
             System.err.println("Fatal : Aborting");
             throw new InternalServerError(e);
         }
     }
-    
+
     /**
      * Psvm to start the server.
      * 
@@ -90,22 +92,23 @@ public class Server {
      */
     private void loadData() {
         String rdfFileName = config(DATA_DUMP);
-        if(rdfFileName != null) {
+        if (rdfFileName != null) {
             File rdfFile = new File(rdfFileName);
-            if(rdfFile.exists()) {
+            if (rdfFile.exists()) {
                 try {
-                    
+
                     new Loader(new FileInputStream(rdfFile)).load();
-                    
+
                 } catch (FileNotFoundException e) {
                     // Ignore. This cannot happen.
                 } catch (InvalidFileFormat e) {
-                    System.err.println("Couldn't load data : " + e.getMessage());
+                    System.err
+                            .println("Couldn't load data : " + e.getMessage());
                     System.err.println("Ignoring the error");
                 }
             }
         }
-        
+
     }
 
     /**
@@ -178,7 +181,7 @@ public class Server {
                 e.printStackTrace();
         }
     }
-    
+
     /**
      * Get a specific config value.
      * 
@@ -197,13 +200,25 @@ public class Server {
     public static boolean isDebug() {
         return isDebug;
     }
-    
+
+    /**
+     * Send a debug message.
+     * 
+     * @return
+     */
+    public static void debug(String message) {
+        if(isDebug) {
+            System.out.println(message);
+        }
+    }
+
     /**
      * Load a thread pool.
      * 
      */
     private void loadPool() {
-        service = Executors.newFixedThreadPool(Integer.parseInt(config("pool")));
+        service = Executors
+                .newFixedThreadPool(Integer.parseInt(config("pool")));
     }
 
     /**
@@ -221,5 +236,15 @@ public class Server {
     private void loadLevel() {
         isDebug = Boolean.parseBoolean(config("debug"));
     }
+    
+    /**
+     * Add a shutdown hook.
+     * 
+     */
+    private void addShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(new Shutdown()));
+
+    }
+
 
 }
