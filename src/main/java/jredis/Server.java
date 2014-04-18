@@ -80,8 +80,6 @@ public class Server {
         INSTANCE.start();
     }
 
-
-
     /**
      * Load data from file to server.
      * 
