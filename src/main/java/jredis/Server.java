@@ -32,6 +32,10 @@ import jredis.exception.InvalidFileFormat;
  */
 public class Server {
 
+    public static final String DATA_DUMP = "data";
+
+    public static final String JREDIS_CONFIG = "jredis.config";
+
     private ExecutorService service;
 
     private long reqId;
@@ -85,7 +89,7 @@ public class Server {
      * 
      */
     private void loadData() {
-        String rdfFileName = config("data");
+        String rdfFileName = config(DATA_DUMP);
         if(rdfFileName != null) {
             File rdfFile = new File(rdfFileName);
             if(rdfFile.exists()) {
@@ -111,7 +115,7 @@ public class Server {
      */
     private void loadConfig() throws IOException {
         InputStream config = null;
-        String configFile = System.getProperty("jredis.config");
+        String configFile = System.getProperty(JREDIS_CONFIG);
         if (configFile != null) {
             config = loadConfig(configFile);
         }
