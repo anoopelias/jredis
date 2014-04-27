@@ -3,7 +3,7 @@ package jredis.nft;
 import static org.junit.Assert.assertTrue;
 import redis.clients.jedis.Jedis;
 
-public class SingleKeyGet extends NftBase {
+public class SingleKeyGet extends NftBaseTest {
 
     private static final int PORT = 15000;
     private static final int REQUESTS = 10000;

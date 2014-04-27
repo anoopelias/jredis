@@ -6,7 +6,7 @@ package jredis.nft;
  * @author anoopelias
  * 
  */
-public class NftBase {
+public class NftBaseTest {
 
     /**
      * Print distribution.
