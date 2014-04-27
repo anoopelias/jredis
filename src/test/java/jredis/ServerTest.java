@@ -6,62 +6,32 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import jredis.nft.Timer;
-
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
 
-public class ServerTest {
-
-    private static final int SERVER_START_TIMEOUT = 2000; // mSecs
-
-    private static String HOST = "localhost";
-    private static int PORT = 15000;
-
-    public ServerTest() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Server.INSTANCE.start();
-            }
-        }).start();
-
-        waitForServerStartup();
-    }
+public class ServerTest extends BaseTest {
 
     @Before
     public void setup() {
+        startServer();
         DB.INSTANCE.clear();
     }
-
-    private void waitForServerStartup() {
-        Socket tempSocket = null;
-        Timer timer = new Timer();
-        while (tempSocket == null && timer.milliTime() < SERVER_START_TIMEOUT) {
-
-            try (Socket kkSocket = new Socket(HOST, PORT)) {
-
-                tempSocket = kkSocket;
-            } catch (UnknownHostException e) {
-                throw new AssertionError("Unknown Host", e);
-            } catch (IOException e) {
-                // Eat the exception as we are waiting for server to start.
-            }
-        }
-
-        if (tempSocket == null)
-            throw new AssertionError("Failed to start server in time");
+    
+    @After
+    public void tearDown() {
+        stopServer();
     }
+
 
     @Test
     public void test_server_request() throws UnknownHostException, IOException {
