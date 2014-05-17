@@ -1,8 +1,6 @@
 package jredis.command;
 
-import jredis.Logger;
 import jredis.Protocol;
-import jredis.Timer;
 import jredis.data.Response;
 import jredis.data.ResponseString;
 import jredis.domain.BinaryString;
