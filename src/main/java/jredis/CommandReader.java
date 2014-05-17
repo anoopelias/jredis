@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import jredis.domain.BinaryString;
 import jredis.exception.InternalServerError;
 import jredis.exception.InvalidCommand;
 

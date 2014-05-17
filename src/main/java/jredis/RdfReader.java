@@ -8,6 +8,10 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import jredis.domain.BinaryString;
+import jredis.domain.Element;
+import jredis.domain.ElementSet;
+import jredis.domain.TreeElementSet;
 import jredis.exception.InvalidFileFormat;
 
 /**

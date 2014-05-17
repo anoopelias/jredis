@@ -9,6 +9,12 @@ import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import jredis.domain.BinaryString;
+import jredis.domain.ByteArray;
+import jredis.domain.Element;
+import jredis.domain.ElementSet;
+import jredis.domain.TreeElementSet;
+
 import org.junit.Test;
 
 public class RdfWriterTest {

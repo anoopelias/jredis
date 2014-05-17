@@ -1,8 +1,10 @@
-package jredis;
+package jredis.domain;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
+
+import jredis.Protocol;
 
 /**
  * A ByteArray which can handle subsize in constant time.

@@ -3,6 +3,8 @@ package jredis;
 import java.io.IOException;
 import java.util.HashSet;
 
+import jredis.domain.Element;
+
 /**
  * Response of type ElementRange
  * 

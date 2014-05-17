@@ -1,5 +1,6 @@
 package jredis;
 
+import jredis.domain.ElementSet;
 import jredis.exception.InvalidCommand;
 
 /**

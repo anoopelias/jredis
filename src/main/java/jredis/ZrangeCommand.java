@@ -2,6 +2,9 @@ package jredis;
 
 import java.util.Set;
 
+import jredis.domain.BinaryString;
+import jredis.domain.Element;
+import jredis.domain.ElementSet;
 import jredis.exception.InvalidCommand;
 
 /**

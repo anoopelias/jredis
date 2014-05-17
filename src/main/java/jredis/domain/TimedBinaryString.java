@@ -1,4 +1,5 @@
-package jredis;
+package jredis.domain;
+
 
 /**
  * A byte string wrapped with an expiry time.

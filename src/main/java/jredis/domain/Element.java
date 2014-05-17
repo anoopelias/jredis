@@ -1,4 +1,4 @@
-package jredis;
+package jredis.domain;
 
 /**
  * An Element to capture the member and its score. a.k.a the zelement.

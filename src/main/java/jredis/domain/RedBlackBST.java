@@ -1,4 +1,4 @@
-package jredis;
+package jredis.domain;
 
 import java.util.ArrayDeque;
 import java.util.LinkedHashSet;

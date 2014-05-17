@@ -3,6 +3,9 @@ package jredis;
 import java.io.IOException;
 import java.io.InputStream;
 
+import jredis.domain.BinaryString;
+import jredis.domain.ElementSet;
+import jredis.domain.TimedBinaryString;
 import jredis.exception.InvalidFileFormat;
 
 /**

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import jredis.domain.Element;
 import jredis.exception.InvalidCommand;
 
 import org.junit.Before;

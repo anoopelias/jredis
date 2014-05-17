@@ -12,6 +12,9 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 
+import jredis.domain.Element;
+import jredis.domain.ElementSet;
+import jredis.domain.TimedBinaryString;
 import jredis.exception.InvalidFileFormat;
 
 import org.junit.Before;

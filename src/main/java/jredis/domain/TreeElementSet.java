@@ -1,4 +1,4 @@
-package jredis;
+package jredis.domain;
 
 import java.util.Collections;
 import java.util.HashMap;

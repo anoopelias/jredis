@@ -1,5 +1,9 @@
 package jredis;
 
+import jredis.domain.BinaryString;
+import jredis.domain.Element;
+import jredis.domain.ElementSet;
+import jredis.domain.TreeElementSet;
 import jredis.exception.InvalidCommand;
 
 public class ZaddCommand implements Command<Integer> {

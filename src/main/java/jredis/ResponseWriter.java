@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
+import jredis.domain.Element;
 import jredis.exception.InvalidCommand;
 
 /**

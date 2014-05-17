@@ -1,9 +1,11 @@
-package jredis;
+package jredis.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.Iterator;
+
+import jredis.domain.TreeElementSet;
 
 import org.junit.Test;
 

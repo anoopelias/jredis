@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import jredis.RdfProtocol.ValueType;
+import jredis.domain.BinaryString;
+import jredis.domain.ByteArray;
+import jredis.domain.Element;
+import jredis.domain.ElementSet;
 
 /**
  * Write data into stream in RDF format.

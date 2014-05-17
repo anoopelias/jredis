@@ -2,6 +2,8 @@ package jredis;
 
 import java.util.Set;
 
+import jredis.domain.Element;
+
 /**
  * Data structure to hold the response to a range request.
  * 

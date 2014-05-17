@@ -1,5 +1,7 @@
 package jredis;
 
+import jredis.domain.BinaryString;
+import jredis.domain.TimedBinaryString;
 import jredis.exception.InvalidCommand;
 
 /**

@@ -1,6 +1,8 @@
-package jredis;
+package jredis.domain;
 
 import java.util.Arrays;
+
+import jredis.Protocol;
 
 /**
  * ByteString data structure to handle both string and bit string.

@@ -15,6 +15,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
+import jredis.domain.Element;
+import jredis.domain.ElementSet;
 import jredis.exception.InvalidFileFormat;
 
 import org.junit.Test;

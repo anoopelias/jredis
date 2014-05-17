@@ -3,6 +3,7 @@ package jredis;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteOrder;
 
+import jredis.domain.BinaryString;
 import jredis.exception.InternalServerError;
 
 /**
