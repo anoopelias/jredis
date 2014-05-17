@@ -91,7 +91,7 @@ public class SetCommand implements Command<String> {
 
     @Override
     public Response<String> execute() {
-        TimedByteString byteString = createValue();
+        TimedBinaryString byteString = createValue();
 
         synchronized (DB.INSTANCE) {
 
@@ -111,14 +111,14 @@ public class SetCommand implements Command<String> {
      * 
      * @return
      */
-    private TimedByteString createValue() {
+    private TimedBinaryString createValue() {
 
-        TimedByteString stringValue = null;
+        TimedBinaryString stringValue = null;
         BinaryString byteString = new BinaryString(value);
         if (expiry != null)
-            stringValue = new TimedByteString(byteString, expiry + System.currentTimeMillis());
+            stringValue = new TimedBinaryString(byteString, expiry + System.currentTimeMillis());
         else
-            stringValue = new TimedByteString(byteString);
+            stringValue = new TimedBinaryString(byteString);
 
         return stringValue;
     }

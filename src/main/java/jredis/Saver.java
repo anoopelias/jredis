@@ -47,8 +47,8 @@ public class Saver {
     private void writeAllKeys() throws IOException {
         for(String key : DB.INSTANCE) {
             Object obj = DB.INSTANCE.get(key, Object.class);
-            if(obj instanceof TimedByteString) {
-                writeTbs(key, (TimedByteString)obj);
+            if(obj instanceof TimedBinaryString) {
+                writeTbs(key, (TimedBinaryString)obj);
             } else if (obj instanceof ElementSet) {
                 writeElementSet(key, (ElementSet)obj);
             } else {
@@ -77,7 +77,7 @@ public class Saver {
      * @param tbs
      * @throws IOException
      */
-    private void writeTbs(String key, TimedByteString tbs)
+    private void writeTbs(String key, TimedBinaryString tbs)
             throws IOException {
         
         if(tbs.expiryTime() != null)

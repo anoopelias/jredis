@@ -77,8 +77,8 @@ public class LoaderTest {
     @Test
     public void test_loader_string() throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, STRING_VAL))).load();
-        TimedByteString val = DB.INSTANCE.get("RALPH",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("RALPH",
+                TimedBinaryString.class);
         assertEquals("FINNES", val.value().toString());
         assertTrue(val.isValid());
     }
@@ -121,8 +121,8 @@ public class LoaderTest {
             throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, LONG_STRING_SIZE,
                 Protocol.toBytes(LONG_STRING)))).load();
-        TimedByteString val = DB.INSTANCE.get("RALPH",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("RALPH",
+                TimedBinaryString.class);
         assertEquals(LONG_STRING, val.value().toString());
     }
 
@@ -131,8 +131,8 @@ public class LoaderTest {
             throws InvalidFileFormat {
         new Loader(toStream(c(STRING_INIT, LONGER_STRING_SIZE,
                 Protocol.toBytes(LONGER_STRING)))).load();
-        TimedByteString val = DB.INSTANCE.get("RALPH",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("RALPH",
+                TimedBinaryString.class);
         assertEquals(LONGER_STRING, val.value().toString());
     }
 
@@ -141,8 +141,8 @@ public class LoaderTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_long.rdb");
         new Loader(stream).load();
-        TimedByteString val = DB.INSTANCE.get("RALPH",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("RALPH",
+                TimedBinaryString.class);
         assertEquals(LONG_STRING, val.value().toString());
     }
 
@@ -151,8 +151,8 @@ public class LoaderTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_longest.rdb");
         new Loader(stream).load();
-        TimedByteString val = DB.INSTANCE.get("RALPH",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("RALPH",
+                TimedBinaryString.class);
         assertEquals(longestString(), val.value().toString());
     }
 
@@ -163,8 +163,8 @@ public class LoaderTest {
 
         new Loader(toStream(c(STRING_INIT, LONGEST_STRING_SIZE,
                 Protocol.toBytes(longest)))).load();
-        TimedByteString val = DB.INSTANCE.get("RALPH",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("RALPH",
+                TimedBinaryString.class);
         assertEquals(longest.toString(), val.value().toString());
     }
 
@@ -180,8 +180,8 @@ public class LoaderTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump.rdb");
         new Loader(stream).load();
-        TimedByteString val = DB.INSTANCE.get("Anoop",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("Anoop",
+                TimedBinaryString.class);
         assertEquals("Elias", val.value().toString());
     }
 
@@ -189,8 +189,8 @@ public class LoaderTest {
     public void test_loader_mil_timed_string() throws InvalidFileFormat,
             InterruptedException {
         new Loader(toTimedStream(c(STRING_INIT, STRING_VAL), 100)).load();
-        TimedByteString val = DB.INSTANCE.get("RALPH",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("RALPH",
+                TimedBinaryString.class);
         assertEquals("FINNES", val.value().toString());
         assertTrue(val.isValid());
 
@@ -212,8 +212,8 @@ public class LoaderTest {
         Thread.sleep(101);
 
         new Loader(stream).load();
-        TimedByteString val = DB.INSTANCE.get("RALPH",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("RALPH",
+                TimedBinaryString.class);
         assertNull(val);
     }
 
@@ -222,8 +222,8 @@ public class LoaderTest {
         InputStream stream = this.getClass().getClassLoader()
                 .getResourceAsStream("dump_timer.rdb");
         new Loader(stream).load();
-        TimedByteString val = DB.INSTANCE.get("John",
-                TimedByteString.class);
+        TimedBinaryString val = DB.INSTANCE.get("John",
+                TimedBinaryString.class);
 
         /*
          * Timer would have timed out already. This is a negative test case.
@@ -233,7 +233,7 @@ public class LoaderTest {
         assertNull(val);
 
         // An untimed key already there in the file.
-        val = DB.INSTANCE.get("Anoop", TimedByteString.class);
+        val = DB.INSTANCE.get("Anoop", TimedBinaryString.class);
         assertNotNull(val);
     }
 

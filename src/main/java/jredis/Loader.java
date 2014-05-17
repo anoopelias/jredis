@@ -81,7 +81,7 @@ public class Loader {
     private void loadStringValue(long time) throws IOException,
             InvalidFileFormat {
         String key = reader.readString().toString();
-        TimedByteString value = readValue(time);
+        TimedBinaryString value = readValue(time);
 
         if (value.isValid())
             DB.INSTANCE.put(key, value);
@@ -109,15 +109,15 @@ public class Loader {
      * @throws IOException
      * @throws InvalidFileFormat
      */
-    private TimedByteString readValue(long time) throws IOException,
+    private TimedBinaryString readValue(long time) throws IOException,
             InvalidFileFormat {
         BinaryString valString = reader.readString();
 
-        TimedByteString value;
+        TimedBinaryString value;
         if (time != -1)
-            value = new TimedByteString(valString, time);
+            value = new TimedBinaryString(valString, time);
         else
-            value = new TimedByteString(valString);
+            value = new TimedBinaryString(valString);
         return value;
     }
 

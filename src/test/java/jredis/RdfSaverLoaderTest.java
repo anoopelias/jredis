@@ -24,27 +24,27 @@ public class RdfSaverLoaderTest {
 
     @Test
     public void test_save_load_string() throws InvalidFileFormat {
-        DB.INSTANCE.put("John", new TimedByteString(new BinaryString("Nash")));
+        DB.INSTANCE.put("John", new TimedBinaryString(new BinaryString("Nash")));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Saver saver = new Saver(os);
         saver.save();
 
         DB.INSTANCE.clear();
-        assertNull(DB.INSTANCE.get("John", TimedByteString.class));
+        assertNull(DB.INSTANCE.get("John", TimedBinaryString.class));
 
         InputStream is = new ByteArrayInputStream(os.toByteArray());
         Loader loader = new Loader(is);
         loader.load();
 
-        TimedByteString john = DB.INSTANCE.get("John", TimedByteString.class);
+        TimedBinaryString john = DB.INSTANCE.get("John", TimedBinaryString.class);
         assertEquals("Nash", john.value().toString());
     }
 
     @Test
     public void test_save_load_timed_string() throws InvalidFileFormat,
             InterruptedException {
-        DB.INSTANCE.put("John", new TimedByteString(new BinaryString("Nash"),
+        DB.INSTANCE.put("John", new TimedBinaryString(new BinaryString("Nash"),
                 System.currentTimeMillis() + 200));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -52,13 +52,13 @@ public class RdfSaverLoaderTest {
         saver.save();
 
         DB.INSTANCE.clear();
-        assertNull(DB.INSTANCE.get("John", TimedByteString.class));
+        assertNull(DB.INSTANCE.get("John", TimedBinaryString.class));
 
         InputStream is = new ByteArrayInputStream(os.toByteArray());
         Loader loader = new Loader(is);
         loader.load();
 
-        TimedByteString john = DB.INSTANCE.get("John", TimedByteString.class);
+        TimedBinaryString john = DB.INSTANCE.get("John", TimedBinaryString.class);
         assertEquals("Nash", john.value().toString());
         assertTrue(john.isValid());
 
@@ -69,7 +69,7 @@ public class RdfSaverLoaderTest {
     @Test
     public void test_save_load_timed_string_invalid() throws InvalidFileFormat,
             InterruptedException {
-        DB.INSTANCE.put("John", new TimedByteString(new BinaryString("Nash"),
+        DB.INSTANCE.put("John", new TimedBinaryString(new BinaryString("Nash"),
                 System.currentTimeMillis() + 200));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -83,7 +83,7 @@ public class RdfSaverLoaderTest {
         Loader loader = new Loader(is);
         loader.load();
 
-        assertNull(DB.INSTANCE.get("John", TimedByteString.class));
+        assertNull(DB.INSTANCE.get("John", TimedBinaryString.class));
     }
 
     @Test

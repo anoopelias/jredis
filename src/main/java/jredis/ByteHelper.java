@@ -19,8 +19,8 @@ public class ByteHelper {
      */
     public static BinaryString get(String key) throws InvalidCommand {
         try {
-            TimedByteString value = DB.INSTANCE.get(key,
-                    TimedByteString.class);
+            TimedBinaryString value = DB.INSTANCE.get(key,
+                    TimedBinaryString.class);
             
             if(value != null && !value.isValid()) {
                 DB.INSTANCE.remove(key);
@@ -46,7 +46,7 @@ public class ByteHelper {
         
         if (byteString == null) {
             byteString = new BinaryString();
-            TimedByteString timedByteString = new TimedByteString(byteString);
+            TimedBinaryString timedByteString = new TimedBinaryString(byteString);
             DB.INSTANCE.put(key, timedByteString);
         }
         
