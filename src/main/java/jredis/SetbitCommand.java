@@ -48,7 +48,7 @@ public class SetbitCommand implements Command<Boolean> {
     @Override
     public Response<Boolean> execute() throws InvalidCommand {
         synchronized (DB.INSTANCE) {
-            ByteString byteString = ByteHelper.getOrCreate(key);
+            BinaryString byteString = ByteHelper.getOrCreate(key);
 
             /*
              * TODO: Probably we can move the set method outside synchronization

@@ -29,7 +29,7 @@ public class RdfWriterTest {
     public void test_write_byte_string_1_char() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         RdfWriter sw = new RdfWriter(baos);
-        sw.write(new ByteString("A"));
+        sw.write(new BinaryString("A"));
         byte[] by = baos.toByteArray();
 
         assertEquals(2, by.length);
@@ -42,7 +42,7 @@ public class RdfWriterTest {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         RdfWriter sw = new RdfWriter(baos);
-        sw.write(new ByteString(LOREM_IPSUM_UNDER_63));
+        sw.write(new BinaryString(LOREM_IPSUM_UNDER_63));
         byte[] by = baos.toByteArray();
 
         assertEquals(57, by.length);
@@ -58,7 +58,7 @@ public class RdfWriterTest {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         RdfWriter sw = new RdfWriter(baos);
-        sw.write(new ByteString(LOREM_IPSUM_UNDER_256));
+        sw.write(new BinaryString(LOREM_IPSUM_UNDER_256));
         byte[] by = baos.toByteArray();
 
         assertEquals(231, by.length);
@@ -75,7 +75,7 @@ public class RdfWriterTest {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         RdfWriter sw = new RdfWriter(baos);
-        sw.write(new ByteString(LOREM_IPSUM_UNDER_16383));
+        sw.write(new BinaryString(LOREM_IPSUM_UNDER_16383));
         byte[] by = baos.toByteArray();
 
         assertEquals(278, by.length);
@@ -96,7 +96,7 @@ public class RdfWriterTest {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         RdfWriter sw = new RdfWriter(baos);
-        sw.write(new ByteString(sb.toString()));
+        sw.write(new BinaryString(sb.toString()));
         byte[] by = baos.toByteArray();
 
         assertEquals(16389, by.length);

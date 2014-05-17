@@ -8,7 +8,7 @@ import java.util.Arrays;
  * @author anoopelias
  * 
  */
-public class ByteString {
+public class BinaryString {
 
     private static final int BYTE_SIZE = 8;
     private static final int INIT_SIZE = 256;
@@ -20,7 +20,7 @@ public class ByteString {
      * 
      * @param value
      */
-    public ByteString() {
+    public BinaryString() {
         this.value = new byte[INIT_SIZE];
         length = 0;
     }
@@ -30,7 +30,7 @@ public class ByteString {
      * 
      * @param value
      */
-    public ByteString(String value) {
+    public BinaryString(String value) {
         this.value = Protocol.toBytes(value);
         length = this.value.length;
     }
@@ -40,7 +40,7 @@ public class ByteString {
      * 
      * @param value
      */
-    public ByteString(byte[] value) {
+    public BinaryString(byte[] value) {
         this.value = value;
         length = value.length;
     }

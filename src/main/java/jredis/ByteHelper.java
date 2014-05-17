@@ -17,7 +17,7 @@ public class ByteHelper {
      * @return
      * @throws InvalidCommand if key already exists as another type.
      */
-    public static ByteString get(String key) throws InvalidCommand {
+    public static BinaryString get(String key) throws InvalidCommand {
         try {
             TimedByteString value = DB.INSTANCE.get(key,
                     TimedByteString.class);
@@ -41,11 +41,11 @@ public class ByteHelper {
      * @return
      * @throws InvalidCommand
      */
-    public static ByteString getOrCreate(String key) throws InvalidCommand {
-        ByteString byteString = get(key);
+    public static BinaryString getOrCreate(String key) throws InvalidCommand {
+        BinaryString byteString = get(key);
         
         if (byteString == null) {
-            byteString = new ByteString();
+            byteString = new BinaryString();
             TimedByteString timedByteString = new TimedByteString(byteString);
             DB.INSTANCE.put(key, timedByteString);
         }

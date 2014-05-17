@@ -110,7 +110,7 @@ public class SetCommand implements Command<String> {
     private TimedByteString createValue() {
 
         TimedByteString stringValue = null;
-        ByteString byteString = new ByteString(value);
+        BinaryString byteString = new BinaryString(value);
         if (expiry != null)
             stringValue = new TimedByteString(byteString, expiry + System.currentTimeMillis());
         else

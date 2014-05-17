@@ -28,7 +28,7 @@ public class GetCommand implements Command<String> {
     public Response<String> execute() throws InvalidCommand {
         
         synchronized(DB.INSTANCE) {
-            ByteString value = ByteHelper.get(key);
+            BinaryString value = ByteHelper.get(key);
             
             if(value == null)
                 return new ResponseString();

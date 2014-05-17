@@ -62,7 +62,7 @@ public class RdfReader {
      * @throws IOException
      * @throws InvalidFileFormat
      */
-    public ByteString readString() throws IOException, InvalidFileFormat {
+    public BinaryString readString() throws IOException, InvalidFileFormat {
         return readString(stream.read());
     }
 
@@ -74,11 +74,11 @@ public class RdfReader {
      * @throws IOException
      * @throws InvalidFileFormat
      */
-    private ByteString readString(int init) throws IOException,
+    private BinaryString readString(int init) throws IOException,
             InvalidFileFormat {
         byte[] b = new byte[readLength(init)];
         stream.read(b);
-        return new ByteString(b);
+        return new BinaryString(b);
     }
 
     /**
@@ -195,7 +195,7 @@ public class RdfReader {
             // Ignoring previous length.
             readLenPrevEntry();
 
-            ByteString member = readString();
+            BinaryString member = readString();
 
             // Ignoring previous length.
             readLenPrevEntry();

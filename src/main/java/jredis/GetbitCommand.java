@@ -40,7 +40,7 @@ public class GetbitCommand implements Command<Boolean> {
 
     @Override
     public Response<Boolean> execute() throws InvalidCommand {
-        ByteString byteString = ByteHelper.get(key);
+        BinaryString byteString = ByteHelper.get(key);
         
         return new ResponseBit((byteString == null) ? false
                 : byteString.getBit(offset));

@@ -21,33 +21,33 @@ public class ByteStringTest {
 
     @Test
     public void test_string() {
-        ByteString byteString = new ByteString(SOME_STRING);
+        BinaryString byteString = new BinaryString(SOME_STRING);
         assertEquals(12, byteString.toByteArray().length());
         assertEquals(SOME_STRING, byteString.toString());
     }
 
     @Test
     public void test_bytes() throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString(
+        BinaryString byteString = new BinaryString(
                 SOME_STRING.getBytes(Protocol.CHARSET));
         assertEquals(SOME_STRING, byteString.toString());
     }
 
     @Test
     public void test_get_byte_array_default() throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString();
+        BinaryString byteString = new BinaryString();
         assertEquals(0, byteString.toByteArray().length());
     }
 
     @Test
     public void test_get_byte_array_bytes() throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString(BYTE);
+        BinaryString byteString = new BinaryString(BYTE);
         assertEquals(10, byteString.toByteArray().length());
     }
 
     @Test
     public void test_getbit_null() throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString();
+        BinaryString byteString = new BinaryString();
 
         assertFalse(byteString.getBit(0));
         assertFalse(byteString.getBit(10));
@@ -58,7 +58,7 @@ public class ByteStringTest {
 
     @Test
     public void test_getbit() throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString(BYTE);
+        BinaryString byteString = new BinaryString(BYTE);
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 80; i++)
@@ -73,7 +73,7 @@ public class ByteStringTest {
     @Test
     public void test_getbit_larger_offset() {
         byte[] input = { 0x32 };
-        ByteString byteString = new ByteString(input);
+        BinaryString byteString = new BinaryString(input);
 
         assertTrue(byteString.getBit(6));
         assertFalse(byteString.getBit(7));
@@ -84,7 +84,7 @@ public class ByteStringTest {
     @Test
     public void test_setbit_set_zero_offset()
             throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString(BYTE);
+        BinaryString byteString = new BinaryString(BYTE);
         assertFalse(byteString.getBit(0));
 
         assertFalse(byteString.setBit(0, true));
@@ -100,7 +100,7 @@ public class ByteStringTest {
 
     @Test
     public void test_setbit_set_small_offsets() {
-        ByteString byteString = new ByteString(BYTE);
+        BinaryString byteString = new BinaryString(BYTE);
         assertTrue(byteString.getBit(1));
 
         assertTrue(byteString.setBit(1, true));
@@ -137,7 +137,7 @@ public class ByteStringTest {
 
     @Test
     public void test_setbit_large_offset() throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString(BYTE);
+        BinaryString byteString = new BinaryString(BYTE);
         byteString.setBit(545, true);
         assertTrue(byteString.getBit(545));
 
@@ -151,7 +151,7 @@ public class ByteStringTest {
 
     @Test
     public void test_setbit_max_offset() throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString(BYTE);
+        BinaryString byteString = new BinaryString(BYTE);
 
         // This will take more memory than usual.
         byteString.setBit(Integer.MAX_VALUE, true);
@@ -163,7 +163,7 @@ public class ByteStringTest {
 
     @Test
     public void test_get_byte_array() throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString(SOME_STRING);
+        BinaryString byteString = new BinaryString(SOME_STRING);
 
         assertEquals(12, byteString.toByteArray().length());
         assertEquals(SOME_STRING, byteString.toString());
@@ -172,7 +172,7 @@ public class ByteStringTest {
     @Test
     public void test_setbit_get_byte_array()
             throws UnsupportedEncodingException {
-        ByteString byteString = new ByteString(BYTE_128_STRING);
+        BinaryString byteString = new BinaryString(BYTE_128_STRING);
 
         int pos = 8 * 128 + 1;
         byteString.setBit(pos++, true);

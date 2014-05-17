@@ -7,7 +7,7 @@ package jredis;
  *
  */
 public class TimedByteString {
-    private ByteString value;
+    private BinaryString value;
     
     private Long expiryTime;
 
@@ -16,7 +16,7 @@ public class TimedByteString {
      * 
      * @param value
      */
-    public TimedByteString(ByteString value) {
+    public TimedByteString(BinaryString value) {
         this.value = value;
     }
 
@@ -26,7 +26,7 @@ public class TimedByteString {
      * @param value
      * @param expiryTime
      */
-    public TimedByteString(ByteString value, long expiryTime) {
+    public TimedByteString(BinaryString value, long expiryTime) {
         this.value = value;
         this.expiryTime = expiryTime;
     }
@@ -36,7 +36,7 @@ public class TimedByteString {
      * 
      * @return
      */
-    public ByteString value() {
+    public BinaryString value() {
         return value;
     }
     

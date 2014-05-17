@@ -111,7 +111,7 @@ public class Loader {
      */
     private TimedByteString readValue(long time) throws IOException,
             InvalidFileFormat {
-        ByteString valString = reader.readString();
+        BinaryString valString = reader.readString();
 
         TimedByteString value;
         if (time != -1)

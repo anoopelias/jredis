@@ -24,7 +24,7 @@ public class RdfSaverLoaderTest {
 
     @Test
     public void test_save_load_string() throws InvalidFileFormat {
-        DB.INSTANCE.put("John", new TimedByteString(new ByteString("Nash")));
+        DB.INSTANCE.put("John", new TimedByteString(new BinaryString("Nash")));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Saver saver = new Saver(os);
@@ -44,7 +44,7 @@ public class RdfSaverLoaderTest {
     @Test
     public void test_save_load_timed_string() throws InvalidFileFormat,
             InterruptedException {
-        DB.INSTANCE.put("John", new TimedByteString(new ByteString("Nash"),
+        DB.INSTANCE.put("John", new TimedByteString(new BinaryString("Nash"),
                 System.currentTimeMillis() + 200));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -69,7 +69,7 @@ public class RdfSaverLoaderTest {
     @Test
     public void test_save_load_timed_string_invalid() throws InvalidFileFormat,
             InterruptedException {
-        DB.INSTANCE.put("John", new TimedByteString(new ByteString("Nash"),
+        DB.INSTANCE.put("John", new TimedByteString(new BinaryString("Nash"),
                 System.currentTimeMillis() + 200));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();

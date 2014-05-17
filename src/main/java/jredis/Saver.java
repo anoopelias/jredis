@@ -66,7 +66,7 @@ public class Saver {
      */
     private void writeElementSet(String key, ElementSet obj) throws IOException {
         rdfWriter.write(RdfProtocol.ValueType.SORTED_ZIPLIST);
-        rdfWriter.write(new ByteString(key));
+        rdfWriter.write(new BinaryString(key));
         rdfWriter.write(obj);
     }
 
@@ -84,7 +84,7 @@ public class Saver {
             rdfWriter.write(tbs.expiryTime());
             
         rdfWriter.write(RdfProtocol.ValueType.STRING);
-        rdfWriter.write(new ByteString(key)); // TODO : DB Key should ideally be ByteString
+        rdfWriter.write(new BinaryString(key)); // TODO : DB Key should ideally be ByteString
         rdfWriter.write(tbs.value());
     }
 

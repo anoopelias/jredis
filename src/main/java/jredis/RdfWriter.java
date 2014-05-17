@@ -88,7 +88,7 @@ public class RdfWriter {
      * @param b
      * @throws IOException
      */
-    public void write(ByteString b) throws IOException {
+    public void write(BinaryString b) throws IOException {
         ByteArray by = b.toByteArray();
         lenToBytes(by.length()).write(os);
         by.write(os);
