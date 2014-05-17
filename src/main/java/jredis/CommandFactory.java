@@ -48,23 +48,22 @@ public class CommandFactory {
         else
             throw new InvalidCommand("Cannot find command type");
 
-        if (Server.isDebug()) {
+        if(Logger.isDebug())
             print(c, name, args);
-        }
 
         return c;
 
     }
 
     private void print(Command<?> c, String name, String[] args) {
-        System.out.print("Command : " + c + " " + name + " ");
-
+        StringBuilder sb = new StringBuilder("Command : " + c + " " + name + " ");
         if (args != null) {
             for (String arg : args) {
-                System.out.print(arg + " ");
+                sb.append(arg + " ");
             }
         }
-        System.out.println();
+        sb.append("\n");
+        Logger.debug(sb.toString());
     }
 
 }

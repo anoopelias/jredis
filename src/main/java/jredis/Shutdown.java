@@ -7,7 +7,7 @@ public class Shutdown implements Runnable {
 
     @Override
     public void run() {
-        Server.debug("Initializing shutdown");
+        Logger.debug("Initializing shutdown");
         
         try {
             CommandFactory.INSTANCE.createCommand("SAVE", null).execute();
@@ -16,7 +16,7 @@ public class Shutdown implements Runnable {
             throw new InternalServerError(e);
         }
 
-        Server.debug("Shutdown complete");
+        Logger.debug("Shutdown complete");
     }
     
 }

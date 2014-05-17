@@ -71,8 +71,7 @@ public class Protocol {
         try {
             return s.getBytes(CHARSET);
         } catch (UnsupportedEncodingException e) {
-            if (Server.isDebug())
-                e.printStackTrace();
+            Logger.debug(e);
             return null;
         }
     }
@@ -120,8 +119,7 @@ public class Protocol {
             return new String(bytes, offset, length, CHARSET);
         } catch (UnsupportedEncodingException e) {
             // This shouldn't happen, we have hardcoded charset.
-            if (Server.isDebug())
-                e.printStackTrace();
+            Logger.debug(e);
             return null;
         }
     }

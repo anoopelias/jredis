@@ -1,6 +1,5 @@
 package jredis;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.Callable;
 
@@ -46,6 +45,8 @@ public class Processor implements Callable<Object> {
                         break;
 
                 } catch (InvalidCommand e) {
+                    
+//                    Logger.debug(e);
                     /*
                      * In case of invalid command, we write the error back to
                      * the client and wait for next command.
@@ -56,20 +57,10 @@ public class Processor implements Callable<Object> {
             }
             socket.close();
 
-        } catch (IOException e) {
-
-            if (Server.isDebug()) {
-                System.out.println("Some I/O problem with connection :" + reqId
-                        + " Ending the connection.");
-                e.printStackTrace();
-            }
         } catch (Throwable e) {
             // We don't let any exceptions escape.
-            if (Server.isDebug()) {
-                System.out.println("Some bug :" + reqId
-                        + " Ending the connection.");
-                e.printStackTrace();
-            }
+            Logger.debug("Some unknown problem :" + reqId
+                    + " Ending the connection.", e);
         }
 
         return null;

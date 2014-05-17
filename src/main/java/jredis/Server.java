@@ -41,7 +41,6 @@ public class Server {
     private long reqId;
 
     private static int port;
-    private static boolean isDebug;
     private static Properties props;
 
     public static Server INSTANCE = new Server();
@@ -61,7 +60,6 @@ public class Server {
     private void init() {
         try {
             loadConfig();
-            loadLevel();
 
             loadData();
             loadPort();
@@ -180,8 +178,7 @@ public class Server {
 
         } catch (Throwable e) {
             System.out.println("Fatal issue with server. Stopping server.");
-            if (Server.isDebug())
-                e.printStackTrace();
+            Logger.debug(e);
         }
     }
 
@@ -193,26 +190,6 @@ public class Server {
      */
     public static String config(String key) {
         return props.getProperty(key);
-    }
-
-    /**
-     * Check if the server is in debug mode.
-     * 
-     * @return
-     */
-    public static boolean isDebug() {
-        return isDebug;
-    }
-
-    /**
-     * Send a debug message.
-     * 
-     * @return
-     */
-    public static void debug(String message) {
-        if (isDebug) {
-            System.out.println(message);
-        }
     }
 
     /**
@@ -230,14 +207,6 @@ public class Server {
      */
     private void loadPort() {
         port = Integer.parseInt(config("port"));
-    }
-
-    /**
-     * Load log level of the server.
-     * 
-     */
-    private void loadLevel() {
-        isDebug = Boolean.parseBoolean(config("debug"));
     }
 
     /**
