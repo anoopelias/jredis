@@ -1,5 +1,6 @@
 package jredis;
 
+import jredis.command.CommandFactory;
 import jredis.exception.InternalServerError;
 import jredis.exception.InvalidCommand;
 

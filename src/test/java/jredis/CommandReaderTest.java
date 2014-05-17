@@ -3,7 +3,9 @@ package jredis;
 import static jredis.TestUtil.toInputStream;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
+import jredis.command.Command;
+import jredis.command.GetCommand;
+import jredis.command.SetCommand;
 import jredis.exception.InvalidCommand;
 
 import org.junit.Before;

@@ -3,6 +3,9 @@ package jredis;
 import java.net.Socket;
 import java.util.concurrent.Callable;
 
+import jredis.command.Command;
+import jredis.command.QuitCommand;
+import jredis.data.Response;
 import jredis.exception.InvalidCommand;
 
 /**
