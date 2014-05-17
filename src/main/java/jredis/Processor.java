@@ -39,7 +39,10 @@ public class Processor implements Callable<Object> {
             while (reader.hasNext()) {
                 try {
                     Command<?> c = reader.next();
-                    c.execute().write(writer);
+                    Response<?> response = c.execute();
+                    response.write(writer);
+                    
+                    Logger.debug("Execution complete : " + response);
                     
                     if(c instanceof QuitCommand)
                         break;

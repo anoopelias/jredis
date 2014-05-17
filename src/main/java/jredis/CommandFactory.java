@@ -62,7 +62,6 @@ public class CommandFactory {
                 sb.append(arg + " ");
             }
         }
-        sb.append("\n");
         Logger.debug(sb.toString());
     }
 
