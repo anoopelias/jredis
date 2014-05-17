@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 
-public class ByteStringTest {
+public class BinaryStringTest {
 
     private static final String SOME_STRING = "Mathew Perry";
     private static final byte[] BYTE = { 0x50, 0x51, 0x52, 0x53, 0x54, 0x55,
