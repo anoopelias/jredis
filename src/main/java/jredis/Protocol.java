@@ -3,6 +3,8 @@ package jredis;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteOrder;
 
+import jredis.exception.InternalServerError;
+
 /**
  * Utility methods
  * 
@@ -72,7 +74,7 @@ public class Protocol {
             return s.getBytes(CHARSET);
         } catch (UnsupportedEncodingException e) {
             Logger.debug(e);
-            return null;
+            throw new InternalServerError(e);
         }
     }
 
@@ -119,8 +121,7 @@ public class Protocol {
             return new String(bytes, offset, length, CHARSET);
         } catch (UnsupportedEncodingException e) {
             // This shouldn't happen, we have hardcoded charset.
-            Logger.debug(e);
-            return null;
+            throw new InternalServerError(e);
         }
     }
 

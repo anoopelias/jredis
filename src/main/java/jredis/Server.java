@@ -68,8 +68,8 @@ public class Server {
             addShutdownHook();
 
         } catch (Throwable e) {
-            System.err.println("Fatal : Exception during startup");
-            System.err.println("Fatal : Aborting");
+            Logger.info("Fatal : Exception during startup");
+            Logger.info("Fatal : Aborting");
             throw new InternalServerError(e);
         }
     }
@@ -103,9 +103,8 @@ public class Server {
                 } catch (FileNotFoundException e) {
                     // Ignore. This cannot happen.
                 } catch (InvalidFileFormat | IOException e) {
-                    System.err
-                            .println("Couldn't load data : " + e.getMessage());
-                    System.err.println("Ignoring the error");
+                    Logger.info("Couldn't load data : " + e.getMessage());
+                    Logger.info("Ignoring the error");
                 }
             }
         }
@@ -167,7 +166,7 @@ public class Server {
      * 
      */
     public void start() {
-        System.out.println("Server starting on port " + port + " ...");
+        Logger.info("Server starting on port " + port + " ...");
         try (ServerSocket serverSocket = new ServerSocket(port)) {
 
             while (true) {
@@ -177,8 +176,8 @@ public class Server {
             }
 
         } catch (Throwable e) {
-            System.out.println("Fatal issue with server. Stopping server.");
-            Logger.debug(e);
+            Logger.info("Fatal issue with server. Stopping server.");
+            Logger.info(e);
         }
     }
 

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import jredis.exception.InternalServerError;
 import jredis.exception.InvalidCommand;
 
 /**
@@ -53,7 +54,7 @@ public class CommandReader {
             return CommandFactory.INSTANCE.createCommand(type, args);
 
         } catch (IOException e) {
-            throw new InvalidCommand("IO Exception during reading the command");
+            throw new InternalServerError("IO Exception during reading the command");
         } catch (NumberFormatException e) {
             throw new InvalidCommand("Number expected");
         }
