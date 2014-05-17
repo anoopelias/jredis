@@ -1,4 +1,4 @@
-package jredis;
+package jredis.rdf;
 
 import static jredis.TestUtil.c;
 

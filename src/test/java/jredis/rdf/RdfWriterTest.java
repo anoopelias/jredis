@@ -1,19 +1,21 @@
-package jredis;
+package jredis.rdf;
 
-import static jredis.RdfTestUtil.NUMBERS_STRING_SCORE;
-import static jredis.RdfTestUtil.NUMBERS;
-import static jredis.RdfTestUtil.largeMember;
+import static jredis.rdf.RdfTestUtil.NUMBERS;
+import static jredis.rdf.RdfTestUtil.NUMBERS_STRING_SCORE;
+import static jredis.rdf.RdfTestUtil.largeMember;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import jredis.TestUtil;
 import jredis.domain.BinaryString;
 import jredis.domain.ByteArray;
 import jredis.domain.Element;
 import jredis.domain.ElementSet;
 import jredis.domain.TreeElementSet;
+import jredis.rdf.RdfWriter;
 
 import org.junit.Test;
 

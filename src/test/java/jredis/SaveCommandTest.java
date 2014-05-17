@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 
 import jredis.exception.InvalidCommand;
 import jredis.exception.InvalidFileFormat;
+import jredis.rdf.Loader;
 
 import org.junit.Before;
 import org.junit.Test;

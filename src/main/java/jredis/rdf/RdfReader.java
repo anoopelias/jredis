@@ -1,6 +1,6 @@
-package jredis;
+package jredis.rdf;
 
-import static jredis.RdfProtocol.INIT;
+import static jredis.rdf.RdfProtocol.INIT;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import jredis.Protocol;
 import jredis.domain.BinaryString;
 import jredis.domain.Element;
 import jredis.domain.ElementSet;

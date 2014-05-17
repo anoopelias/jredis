@@ -8,6 +8,7 @@ import java.io.OutputStream;
 
 import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
+import jredis.rdf.Saver;
 
 /**
  * To save the contents of memory to file system.

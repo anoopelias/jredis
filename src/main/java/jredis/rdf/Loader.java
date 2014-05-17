@@ -1,8 +1,9 @@
-package jredis;
+package jredis.rdf;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import jredis.DB;
 import jredis.domain.BinaryString;
 import jredis.domain.ElementSet;
 import jredis.domain.TimedBinaryString;

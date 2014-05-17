@@ -1,7 +1,7 @@
-package jredis;
+package jredis.rdf;
 
-import static jredis.RdfProtocol.END;
-import static jredis.RdfProtocol.INIT;
+import static jredis.rdf.RdfProtocol.END;
+import static jredis.rdf.RdfProtocol.INIT;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jredis.RdfProtocol.ValueType;
+import jredis.Protocol;
 import jredis.domain.BinaryString;
 import jredis.domain.ByteArray;
 import jredis.domain.Element;
 import jredis.domain.ElementSet;
+import jredis.rdf.RdfProtocol.ValueType;
 
 /**
  * Write data into stream in RDF format.

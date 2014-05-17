@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 
 import jredis.exception.InternalServerError;
 import jredis.exception.InvalidFileFormat;
+import jredis.rdf.Loader;
 
 /**
  * The server class.

@@ -1,11 +1,11 @@
-package jredis;
+package jredis.rdf;
 
-import static jredis.RdfTestUtil.NUMBERS;
-import static jredis.RdfTestUtil.NUMBERS_INVALID_STRING_SCORE;
-import static jredis.RdfTestUtil.NUMBERS_NO_END;
-import static jredis.RdfTestUtil.NUMBERS_STRING_SCORE;
-import static jredis.RdfTestUtil.THREE_ENTRIES;
-import static jredis.RdfTestUtil.largeMember;
+import static jredis.rdf.RdfTestUtil.NUMBERS;
+import static jredis.rdf.RdfTestUtil.NUMBERS_INVALID_STRING_SCORE;
+import static jredis.rdf.RdfTestUtil.NUMBERS_NO_END;
+import static jredis.rdf.RdfTestUtil.NUMBERS_STRING_SCORE;
+import static jredis.rdf.RdfTestUtil.THREE_ENTRIES;
+import static jredis.rdf.RdfTestUtil.largeMember;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -18,6 +18,7 @@ import java.util.Iterator;
 import jredis.domain.Element;
 import jredis.domain.ElementSet;
 import jredis.exception.InvalidFileFormat;
+import jredis.rdf.RdfReader;
 
 import org.junit.Test;
 

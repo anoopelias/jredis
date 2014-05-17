@@ -1,4 +1,4 @@
-package jredis;
+package jredis.rdf;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -12,10 +12,13 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 
+import jredis.DB;
+import jredis.Protocol;
 import jredis.domain.Element;
 import jredis.domain.ElementSet;
 import jredis.domain.TimedBinaryString;
 import jredis.exception.InvalidFileFormat;
+import jredis.rdf.Loader;
 
 import org.junit.Before;
 import org.junit.Test;
