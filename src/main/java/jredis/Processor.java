@@ -46,7 +46,7 @@ public class Processor implements Callable<Object> {
 
                 } catch (InvalidCommand e) {
                     
-//                    Logger.debug(e);
+                    Logger.debug("Invalid Command : " + e.getMessage());
                     /*
                      * In case of invalid command, we write the error back to
                      * the client and wait for next command.
