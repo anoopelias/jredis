@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import jredis.nft.Timer;
-
 public class BaseTest {
 
     private static final int SERVER_START_TIMEOUT = 2000; // mSecs

@@ -17,6 +17,8 @@ import java.util.Set;
 
 import jredis.data.ElementRange;
 import jredis.data.ResponseOk;
+import jredis.domain.BinaryString;
+import jredis.domain.ByteArray;
 import jredis.domain.Element;
 import jredis.exception.InvalidCommand;
 
@@ -58,10 +60,10 @@ public class ResponseWriter {
         out.write(CRLF);
 
         for (Element element : elements) {
-            writeString(element.getMember());
+            write(element.getMember());
 
             if (elementRange.isScored())
-                writeString(String.valueOf(element.getScore()));
+                write(String.valueOf(element.getScore()));
         }
 
         out.flush();
@@ -90,21 +92,31 @@ public class ResponseWriter {
      * @param output
      * @throws IOException
      */
-    public void write(String value) throws IOException {
+    private void write(String value) throws IOException {
+        writeString(new BinaryString(value));
+    }
+
+    /**
+     * Write a BinaryString back to the client.
+     * 
+     * @param output
+     * @throws IOException
+     */
+    public void write(BinaryString value) throws IOException {
         writeString(value);
         out.flush();
     }
 
-    private void writeString(String value) throws IOException {
+    private void writeString(BinaryString value) throws IOException {
         if (value == null) {
             out.write(NULL_STRING);
             out.write(CRLF);
         } else {
-            byte[] bValue = toBytes(value);
+            ByteArray bValue = value.toByteArray();
             out.write(DOLLAR);
-            out.write(toBytes(bValue.length));
+            out.write(toBytes(bValue.length()));
             out.write(CRLF);
-            out.write(bValue);
+            bValue.write(out);
             out.write(CRLF);
         }
     }

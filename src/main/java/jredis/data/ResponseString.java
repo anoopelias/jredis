@@ -3,6 +3,7 @@ package jredis.data;
 import java.io.IOException;
 
 import jredis.ResponseWriter;
+import jredis.domain.BinaryString;
 
 /**
  * String response type.
@@ -12,7 +13,7 @@ import jredis.ResponseWriter;
  */
 public class ResponseString implements Response<String> {
     
-    private String value;
+    private BinaryString value;
     
     /**
      * ResponseString constructor to be used for 'nil' response.
@@ -27,13 +28,13 @@ public class ResponseString implements Response<String> {
      * 
      * @param value
      */
-    public ResponseString(String value) {
+    public ResponseString(BinaryString value) {
         this.value = value;
     }
 
     @Override
     public String value() {
-        return value;
+        return value == null ? null : value.toString();
     }
 
     @Override

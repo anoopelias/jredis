@@ -1,4 +1,4 @@
-package jredis.nft;
+package jredis;
 
 public class Timer {
 
