@@ -69,11 +69,11 @@ public class BinaryString {
      */
     public boolean setBit(int offset, boolean bit) {
         boolean ret = getBit(offset);
-        
+
         int bytePos = offset / BYTE_SIZE;
         int bitPos = offset % BYTE_SIZE;
         setBitValue(bytePos, bitPos, bit);
-        
+
         return ret;
     }
 
@@ -100,19 +100,19 @@ public class BinaryString {
      */
     private void setBitValue(int bytePos, int bitPos, boolean bit) {
         int lsb = lsb(bitPos);
-        if(bytePos >= value.length)
+        if (bytePos >= value.length)
             expand(bytePos);
-        
+
         byte curr = value[bytePos];
-        
+
         value[bytePos] = (byte) (bit ? (curr | (1 << lsb))
                 : (curr & ~(1 << lsb)));
-        
+
         // Increase the length if required.
-        if(length < (bytePos + 1))
+        if (length < (bytePos + 1))
             length = bytePos + 1;
     }
-    
+
     /**
      * Expand the size of the value to accommodate minSize.
      * 
@@ -132,8 +132,7 @@ public class BinaryString {
     private int lsb(int bitPos) {
         return BYTE_SIZE - (bitPos + 1);
     }
-    
-    
+
     /**
      * Get the value in terms of byte array.
      * 
@@ -142,13 +141,15 @@ public class BinaryString {
     public ByteArray toByteArray() {
         return new ByteArray(value, length);
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return toByteArray().toString();
+        return Protocol.toString(value, 0, length);
     }
 
 }

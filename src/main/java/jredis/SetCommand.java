@@ -13,7 +13,7 @@ import jredis.exception.InvalidCommand;
 public class SetCommand implements Command<String> {
 
     private String key;
-    private String value;
+    private BinaryString value;
 
     private boolean isNx;
     private boolean isXx;
@@ -27,17 +27,24 @@ public class SetCommand implements Command<String> {
      * @throws InvalidCommand
      */
     public SetCommand(String[] args) throws InvalidCommand {
+        this(Protocol.toBinaryStringArray(args));
+    }
+
+    /**
+     * Constructor to create SetCommand with its args.
+     * 
+     * @param args
+     * @throws InvalidCommand
+     */
+    public SetCommand(BinaryString[] args) throws InvalidCommand {
         if (args.length < 2)
             throw new InvalidCommand("Not enough args");
 
-        key = args[0];
+        key = args[0].toString();
         value = args[1];
-        
-        setOptions(Arrays.copyOfRange(args, 2, args.length));
-    }
 
-    public SetCommand(BinaryString[] args) throws InvalidCommand {
-        this(Protocol.toStringArray(args));
+        setOptions(Protocol.toStringArray(Arrays.copyOfRange(args, 2,
+                args.length)));
     }
 
     /**
@@ -51,16 +58,16 @@ public class SetCommand implements Command<String> {
 
             if ("NX".equals(options[i]))
                 isNx = true;
-            
+
             else if ("XX".equals(options[i]))
                 isXx = true;
-            
+
             else if ("PX".equals(options[i]))
                 i = setExpiry(options, i, 1);
-            
+
             else if ("EX".equals(options[i]))
                 i = setExpiry(options, i, 1000);
-            
+
             else
                 throw new InvalidCommand("Unknown option :" + options[i]);
         }
@@ -77,10 +84,10 @@ public class SetCommand implements Command<String> {
      */
     private int setExpiry(String[] args, int i, int factor)
             throws InvalidCommand {
-        
+
         if (args.length < (i + 2))
             throw new InvalidCommand("Expiry time not available");
-        
+
         try {
             expiry = Long.parseLong(args[i + 1]) * factor;
         } catch (NumberFormatException e) {
@@ -114,11 +121,11 @@ public class SetCommand implements Command<String> {
     private TimedBinaryString createValue() {
 
         TimedBinaryString stringValue = null;
-        BinaryString byteString = new BinaryString(value);
         if (expiry != null)
-            stringValue = new TimedBinaryString(byteString, expiry + System.currentTimeMillis());
+            stringValue = new TimedBinaryString(value, expiry
+                    + System.currentTimeMillis());
         else
-            stringValue = new TimedBinaryString(byteString);
+            stringValue = new TimedBinaryString(value);
 
         return stringValue;
     }
