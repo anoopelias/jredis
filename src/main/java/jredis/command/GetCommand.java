@@ -37,24 +37,14 @@ public class GetCommand implements Command<String> {
     @Override
     public Response<String> execute() throws InvalidCommand {
         
-        long get = -1;
-        long total = -1;
-        Timer timer = new Timer();
-
         BinaryString value = BitHelper.get(key);
-        get = timer.milliTime();
 
         if (value == null)
             return new ResponseString();
         
         Response<String> resp = new ResponseString(value); 
-        total = timer.milliTime();
         
-        if(total > 2)
-            Logger.info("Get : " + get + ", Total : " + total);
-
         return resp;
-
     }
 
 }
