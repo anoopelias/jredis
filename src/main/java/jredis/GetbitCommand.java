@@ -38,6 +38,10 @@ public class GetbitCommand implements Command<Boolean> {
 
     }
 
+    public GetbitCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     @Override
     public Response<Boolean> execute() throws InvalidCommand {
         BinaryString byteString = ByteHelper.get(key);

@@ -29,6 +29,10 @@ public class ZcountCommand implements Command<Integer> {
         to = parse(args[2]);
     }
 
+    public ZcountCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     private double parse(String arg) throws InvalidCommand {
         try {
             return Protocol.parseDouble(arg);

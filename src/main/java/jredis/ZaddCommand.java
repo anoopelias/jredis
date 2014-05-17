@@ -21,6 +21,10 @@ public class ZaddCommand implements Command<Integer> {
         }
     }
 
+    public ZaddCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     @Override
     public Response<Integer> execute() throws InvalidCommand {
 

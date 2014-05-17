@@ -45,6 +45,10 @@ public class ZrangeCommand implements Command<ElementRange> {
 
     }
 
+    public ZrangeCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     @Override
     public Response<ElementRange> execute() throws InvalidCommand {
         synchronized (DB.INSTANCE) {

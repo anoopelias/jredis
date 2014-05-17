@@ -13,6 +13,10 @@ public class ZcardCommand implements Command<Integer> {
         key = args[0];
     }
 
+    public ZcardCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     @Override
     public Response<Integer> execute() throws InvalidCommand {
         synchronized (DB.INSTANCE) {

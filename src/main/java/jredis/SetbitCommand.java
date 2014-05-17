@@ -45,6 +45,10 @@ public class SetbitCommand implements Command<Boolean> {
         }
     }
 
+    public SetbitCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     @Override
     public Response<Boolean> execute() throws InvalidCommand {
         synchronized (DB.INSTANCE) {

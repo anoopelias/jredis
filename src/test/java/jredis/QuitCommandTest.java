@@ -18,7 +18,7 @@ public class QuitCommandTest {
 
     @Test
     public void test_quit_null() throws InvalidCommand {
-        Command<?> command = new QuitCommand(null);
+        Command<?> command = new QuitCommand(new String[0]);
         assertEquals("OK", command.execute().value());
     }
 

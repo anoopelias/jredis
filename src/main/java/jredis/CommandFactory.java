@@ -20,7 +20,7 @@ public class CommandFactory {
      * @return
      * @throws InvalidCommand
      */
-    public Command<?> createCommand(String name, String[] args)
+    public Command<?> createCommand(String name, BinaryString[] args)
             throws InvalidCommand {
 
         Command<?> c = null;
@@ -55,10 +55,10 @@ public class CommandFactory {
 
     }
 
-    private void print(Command<?> c, String name, String[] args) {
+    private void print(Command<?> c, String name, BinaryString[] args) {
         StringBuilder sb = new StringBuilder("Command : " + c + " " + name + " ");
         if (args != null) {
-            for (String arg : args) {
+            for (BinaryString arg : args) {
                 sb.append(arg + " ");
             }
         }

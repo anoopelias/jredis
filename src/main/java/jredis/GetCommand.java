@@ -24,6 +24,10 @@ public class GetCommand implements Command<String> {
         key = args[0];
     }
 
+    public GetCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     @Override
     public Response<String> execute() throws InvalidCommand {
         

@@ -125,4 +125,27 @@ public class Protocol {
         }
     }
 
+    /**
+     * Convert bytes to string.
+     * 
+     * @param bytes
+     * @param offset
+     * @param length
+     * @return
+     */
+    public static String[] toStringArray(BinaryString[] binaryStrings) {
+        if (binaryStrings != null) {
+
+            String[] strings = new String[binaryStrings.length];
+
+            for (int i = 0; i < binaryStrings.length; i++)
+                strings[i] = binaryStrings[i].toString();
+
+            return strings;
+        }
+        
+        return null;
+
+    }
+
 }

@@ -21,6 +21,10 @@ public class QuitCommand implements Command<String> {
             throw new InvalidCommand("Invalid args");
     }
 
+    public QuitCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     @Override
     public Response<String> execute() throws InvalidCommand {
         return new ResponseOk();

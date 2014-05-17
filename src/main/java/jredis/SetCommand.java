@@ -36,6 +36,10 @@ public class SetCommand implements Command<String> {
         setOptions(Arrays.copyOfRange(args, 2, args.length));
     }
 
+    public SetCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
     /**
      * Read all the options from the input.
      * 

@@ -46,10 +46,10 @@ public class CommandReader {
             if (!hasNext())
                 return null;
 
-            String[] command = command(len());
+            BinaryString[] command = command(len());
 
-            String type = command[0];
-            String[] args = Arrays.copyOfRange(command, 1, command.length);
+            String type = command[0].toString();
+            BinaryString[] args = Arrays.copyOfRange(command, 1, command.length);
 
             return CommandFactory.INSTANCE.createCommand(type, args);
 
@@ -99,8 +99,8 @@ public class CommandReader {
      * @throws IOException
      * @throws InvalidCommand
      */
-    private String[] command(int len) throws IOException, InvalidCommand {
-        String[] command = new String[len];
+    private BinaryString[] command(int len) throws IOException, InvalidCommand {
+        BinaryString[] command = new BinaryString[len];
         for (int i = 0; i < len; i++)
             command[i] = arg();
 
@@ -114,14 +114,14 @@ public class CommandReader {
      * @throws IOException
      * @throws InvalidCommand
      */
-    private String arg() throws IOException, InvalidCommand {
+    private BinaryString arg() throws IOException, InvalidCommand {
         ch(DOLLAR);
         byte[] b = new byte[num()];
 
         stream.read(b);
         crlf();
 
-        return Protocol.toString(b);
+        return new BinaryString(b);
     }
 
     /**

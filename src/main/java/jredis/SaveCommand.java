@@ -28,6 +28,11 @@ public class SaveCommand implements Command<String> {
     }
 
 
+    public SaveCommand(BinaryString[] args) throws InvalidCommand {
+        this(Protocol.toStringArray(args));
+    }
+
+
     @Override
     public Response<String> execute() throws InvalidCommand {
 
