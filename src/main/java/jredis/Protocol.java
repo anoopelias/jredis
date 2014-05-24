@@ -157,7 +157,7 @@ public class Protocol {
      * @param length
      * @return
      */
-    public static BinaryString[] toBinaryStringArray(String[] strings) {
+    public static BinaryString[] toBinaryStrings(String[] strings) {
         if (strings != null) {
 
             BinaryString[] binaryStrings = new BinaryString[strings.length];

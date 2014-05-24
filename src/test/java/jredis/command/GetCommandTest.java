@@ -1,16 +1,16 @@
 package jredis.command;
 
-import jredis.command.Command;
-import jredis.command.GetCommand;
+import jredis.Protocol;
+import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 
 import org.junit.Test;
 
 public class GetCommandTest {
     
-    private String[] NO_ARGS = {};
-    private String[] ONE_ARG = {"Numbers"};
-    private String[] TWO_ARGS = {"Numbers", "1.05"};
+    private BinaryString[] NO_ARGS = {};
+    private BinaryString[] ONE_ARG = Protocol.toBinaryStrings(new String[]{"Numbers"});
+    private BinaryString[] TWO_ARGS = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05"});
     
     @Test(expected=InvalidCommand.class)
     public void test_no_args() throws InvalidCommand {

@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import jredis.DB;
+import jredis.Protocol;
 import jredis.Server;
 import jredis.command.Command;
 import jredis.command.GetCommand;
@@ -44,7 +45,7 @@ public class SaveCommandTest {
         DB.INSTANCE.clear();
         
         new Loader(new FileInputStream(rdb)).load();
-        command = new GetCommand(argsGet);
+        command = new GetCommand(Protocol.toBinaryStrings(argsGet));
         
         assertEquals("Ford", command.execute().value());
         

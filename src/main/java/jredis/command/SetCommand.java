@@ -34,7 +34,7 @@ public class SetCommand implements Command<String> {
      * @throws InvalidCommand
      */
     public SetCommand(String[] args) throws InvalidCommand {
-        this(Protocol.toBinaryStringArray(args));
+        this(Protocol.toBinaryStrings(args));
     }
 
     /**
