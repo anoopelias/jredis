@@ -1,6 +1,5 @@
 package jredis.command;
 
-import jredis.Protocol;
 import jredis.data.Response;
 import jredis.data.ResponseOk;
 import jredis.domain.BinaryString;
@@ -20,13 +19,9 @@ public class QuitCommand implements Command<String> {
      * @param args
      * @throws InvalidCommand
      */
-    public QuitCommand(String[] args) throws InvalidCommand {
+    public QuitCommand(BinaryString[] args) throws InvalidCommand {
         if(args != null && args.length > 0)
             throw new InvalidCommand("Invalid args");
-    }
-
-    public QuitCommand(BinaryString[] args) throws InvalidCommand {
-        this(Protocol.toStringArray(args));
     }
 
     @Override

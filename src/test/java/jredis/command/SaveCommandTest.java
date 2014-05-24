@@ -33,7 +33,7 @@ public class SaveCommandTest {
         Command<?> command = new SetCommand(argsSet);
         command.execute();
         
-        command = new SaveCommand(new String[0]);
+        command = new SaveCommand(new BinaryString[0]);
         command.execute();
         
         File rdb = new File(Server.config(Server.DATA_DUMP));

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import jredis.DB;
-import jredis.Protocol;
 import jredis.Server;
 import jredis.data.Response;
 import jredis.data.ResponseOk;
@@ -29,14 +28,9 @@ public class SaveCommand implements Command<String> {
      * @param args
      * @throws InvalidCommand
      */
-    public SaveCommand(String[] args) throws InvalidCommand {
+    public SaveCommand(BinaryString[] args) throws InvalidCommand {
         if(args != null && args.length > 0)
             throw new InvalidCommand("Invalid args");
-    }
-
-
-    public SaveCommand(BinaryString[] args) throws InvalidCommand {
-        this(Protocol.toStringArray(args));
     }
 
 

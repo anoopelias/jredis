@@ -1,16 +1,16 @@
 package jredis.command;
 
+import static jredis.TestUtil.h;
 import static org.junit.Assert.assertEquals;
-import jredis.command.Command;
-import jredis.command.QuitCommand;
+import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 
 import org.junit.Test;
 
 public class QuitCommandTest {
     
-    private static String[] NO_ARGS = {};
-    private static String[] ONE_ARG = {"Now"};
+    private static BinaryString[] NO_ARGS = {};
+    private static BinaryString[] ONE_ARG = h(new String[]{"Now"});
     
     @Test
     public void test_quit() throws InvalidCommand {
@@ -20,7 +20,7 @@ public class QuitCommandTest {
 
     @Test
     public void test_quit_null() throws InvalidCommand {
-        Command<?> command = new QuitCommand(new String[0]);
+        Command<?> command = new QuitCommand(new BinaryString[0]);
         assertEquals("OK", command.execute().value());
     }
 
