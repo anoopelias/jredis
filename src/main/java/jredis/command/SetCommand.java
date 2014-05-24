@@ -19,7 +19,7 @@ import jredis.exception.InvalidCommand;
  */
 public class SetCommand implements Command<String> {
 
-    private String key;
+    private BinaryString key;
     private BinaryString value;
 
     private boolean isNx;
@@ -33,21 +33,11 @@ public class SetCommand implements Command<String> {
      * @param args
      * @throws InvalidCommand
      */
-    public SetCommand(String[] args) throws InvalidCommand {
-        this(Protocol.toBinaryStrings(args));
-    }
-
-    /**
-     * Constructor to create SetCommand with its args.
-     * 
-     * @param args
-     * @throws InvalidCommand
-     */
     public SetCommand(BinaryString[] args) throws InvalidCommand {
         if (args.length < 2)
             throw new InvalidCommand("Not enough args");
 
-        key = args[0].toString();
+        key = args[0];
         value = args[1];
 
         setOptions(Protocol.toStringArray(Arrays.copyOfRange(args, 2,
@@ -106,6 +96,7 @@ public class SetCommand implements Command<String> {
     @Override
     public Response<String> execute() {
         TimedBinaryString byteString = createValue();
+        String key = this.key.toString();
 
         synchronized (DB.INSTANCE) {
 

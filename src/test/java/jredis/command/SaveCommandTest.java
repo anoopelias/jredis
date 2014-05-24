@@ -10,10 +10,7 @@ import java.io.FileNotFoundException;
 import jredis.DB;
 import jredis.Protocol;
 import jredis.Server;
-import jredis.command.Command;
-import jredis.command.GetCommand;
-import jredis.command.SaveCommand;
-import jredis.command.SetCommand;
+import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 import jredis.exception.InvalidFileFormat;
 import jredis.rdf.Loader;
@@ -30,8 +27,8 @@ public class SaveCommandTest {
     
     @Test
     public void test_save() throws InvalidCommand, FileNotFoundException, InvalidFileFormat {
-        String[] argsSet = {"Focus", "Ford"};
-        String[] argsGet = {"Focus"};
+        BinaryString[] argsSet = Protocol.toBinaryStrings(new String[]{"Focus", "Ford"});
+        BinaryString[] argsGet = Protocol.toBinaryStrings(new String[]{"Focus"});
         
         Command<?> command = new SetCommand(argsSet);
         command.execute();
@@ -45,7 +42,7 @@ public class SaveCommandTest {
         DB.INSTANCE.clear();
         
         new Loader(new FileInputStream(rdb)).load();
-        command = new GetCommand(Protocol.toBinaryStrings(argsGet));
+        command = new GetCommand(argsGet);
         
         assertEquals("Ford", command.execute().value());
         
