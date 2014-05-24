@@ -205,12 +205,12 @@ public class SetGetCommandsTest {
 
     @Test(expected = InvalidCommand.class)
     public void test_set_nx_with_key_as_zset() throws InvalidCommand {
-        String[] addArgs = { "Numbers", "1.0", "One" };
+        BinaryString[] addArgs = Protocol.toBinaryStrings(new String[]{ "Numbers", "1.0", "One" });
         Command<?> command = new ZaddCommand(addArgs);
         assertEquals(1, command.execute().value());
 
-        String[] setArgs = { "Numbers", "MyNumber", "NX" };
-        command = new SetCommand(Protocol.toBinaryStrings(setArgs));
+        BinaryString[] setArgs = Protocol.toBinaryStrings(new String[]{ "Numbers", "MyNumber", "NX" });
+        command = new SetCommand(setArgs);
         assertNull(command.execute().value());
 
         String[] cardArgs = { "Numbers" };
@@ -227,12 +227,12 @@ public class SetGetCommandsTest {
 
     @Test(expected = InvalidCommand.class)
     public void test_get_with_key_as_zset() throws InvalidCommand {
-        String[] addArgs = { "Numbers", "1.0", "One" };
+        BinaryString[] addArgs = Protocol.toBinaryStrings(new String[]{ "Numbers", "1.0", "One" });
         Command<?> command = new ZaddCommand(addArgs);
         assertEquals(1, command.execute().value());
 
-        String[] getArgs = { "Numbers", "MyNumber" };
-        command = new GetCommand(Protocol.toBinaryStrings(getArgs));
+        BinaryString[] getArgs = Protocol.toBinaryStrings(new String[]{ "Numbers", "MyNumber" });
+        command = new GetCommand(getArgs);
         command.execute().value();
 
     }

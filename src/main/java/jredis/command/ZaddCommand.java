@@ -12,25 +12,21 @@ import jredis.exception.InvalidCommand;
 
 public class ZaddCommand implements Command<Integer> {
 
-    private String key;
+    private BinaryString key;
     private double score;
-    private String value;
+    private BinaryString value;
 
-    public ZaddCommand(String[] args) throws InvalidCommand {
+    public ZaddCommand(BinaryString[] args) throws InvalidCommand {
         if (args.length != 3)
             throw new InvalidCommand("Invalid arg length");
         
         try {
             key = args[0];
-            score = Protocol.parseDouble(args[1]);
+            score = Protocol.parseDouble(args[1].toString());
             value = args[2];
         } catch (NumberFormatException e) {
             throw new InvalidCommand("Unparsable score");
         }
-    }
-
-    public ZaddCommand(BinaryString[] args) throws InvalidCommand {
-        this(Protocol.toStringArray(args));
     }
 
     @Override
@@ -39,13 +35,13 @@ public class ZaddCommand implements Command<Integer> {
         boolean inserted;
 
         synchronized (DB.INSTANCE) {
-            ElementSet map = ZsetHelper.get(key);
+            ElementSet map = ZsetHelper.get(key.toString());
             if (map == null) {
                 map = new TreeElementSet();
-                DB.INSTANCE.put(key, map);
+                DB.INSTANCE.put(key.toString(), map);
             }
 
-            inserted = map.insert(new Element(value, score));
+            inserted = map.insert(new Element(value.toString(), score));
         }
 
         return new ResponseNumber(inserted ? 1 : 0);

@@ -1,20 +1,21 @@
 package jredis.command;
 
-import jredis.command.ZaddCommand;
+import jredis.Protocol;
+import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 
 import org.junit.Test;
 
 public class ZaddCommandTest {
     
-    private String[] NO_ARGS = {};
-    private String[] ONE_ARG = {"Numbers"};
-    private String[] TWO_ARGS = {"Numbers", "1.05"};
-    private String[] FOUR_ARGS = {"Numbers", "1.05", "One", "Two"};
-    private String[] INTEGER_SCORE = {"Numbers", "1", "One"};
-    private String[] NEGATIVE_SCORE = {"Numbers", "-1.5", "One"};
+    private BinaryString[] NO_ARGS = {};
+    private BinaryString[] ONE_ARG = Protocol.toBinaryStrings(new String[]{"Numbers"});
+    private BinaryString[] TWO_ARGS = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05"});
+    private BinaryString[] FOUR_ARGS = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "One", "Two"});
+    private BinaryString[] INTEGER_SCORE = Protocol.toBinaryStrings(new String[]{"Numbers", "1", "One"});
+    private BinaryString[] NEGATIVE_SCORE = Protocol.toBinaryStrings(new String[]{"Numbers", "-1.5", "One"});
 
-    private String[] STRING_SCORE = {"Numbers", "1K", "One"};
+    private BinaryString[] STRING_SCORE = Protocol.toBinaryStrings(new String[]{"Numbers", "1K", "One"});
 
 
     @Test(expected=InvalidCommand.class)
