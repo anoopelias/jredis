@@ -22,11 +22,11 @@ public class BitHelper {
      */
     public static BinaryString get(BinaryString key) throws InvalidCommand {
         try {
-            TimedBinaryString value = DB.INSTANCE.get(key.toString(),
+            TimedBinaryString value = DB.INSTANCE.get(key,
                     TimedBinaryString.class);
             
             if(value != null && !value.isValid()) {
-                DB.INSTANCE.remove(key.toString());
+                DB.INSTANCE.remove(key);
                 return null;
             }
 
@@ -50,7 +50,7 @@ public class BitHelper {
         if (byteString == null) {
             byteString = new BinaryString();
             TimedBinaryString timedByteString = new TimedBinaryString(byteString);
-            DB.INSTANCE.put(key.toString(), timedByteString);
+            DB.INSTANCE.put(key, timedByteString);
         }
         
         return byteString;

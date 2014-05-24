@@ -4,20 +4,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import jredis.domain.BinaryString;
+
 /**
  * Data map to store data.
  * 
  * @author anoopelias
  *
  */
-public class DB implements Iterable<String> {
+public class DB implements Iterable<BinaryString> {
 
     public static DB INSTANCE = new DB();
 
     private DB() {
     }
 
-    private Map<String, Object> data = new HashMap<String, Object>();
+    private Map<BinaryString, Object> data = new HashMap<BinaryString, Object>();
 
     /**
      * Put data in to the key value store.
@@ -29,7 +31,7 @@ public class DB implements Iterable<String> {
      * @param key
      * @param value
      */
-    public synchronized <T> void put(String key, T value) {
+    public synchronized <T> void put(BinaryString key, T value) {
         data.put(key, value);
     }
 
@@ -41,7 +43,7 @@ public class DB implements Iterable<String> {
      * @param key
      * @return
      */
-    public synchronized <T> T get(String key, Class<T> type) {
+    public synchronized <T> T get(BinaryString key, Class<T> type) {
         return type.cast(data.get(key));
     }
     
@@ -54,7 +56,7 @@ public class DB implements Iterable<String> {
      * @param key
      * @return
      */
-    public synchronized void remove(String key) {
+    public synchronized void remove(BinaryString key) {
         data.remove(key);
     }
 
@@ -63,14 +65,14 @@ public class DB implements Iterable<String> {
      * 
      */
     public synchronized void clear() {
-        data = new HashMap<String, Object>();
+        data = new HashMap<BinaryString, Object>();
     }
     
     /**
      * Iterator to iterate through all the keys.
      * 
      */
-    public synchronized Iterator<String> iterator() {
+    public synchronized Iterator<BinaryString> iterator() {
         return data.keySet().iterator();
     }
 

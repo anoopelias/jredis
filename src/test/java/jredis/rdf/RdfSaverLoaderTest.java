@@ -32,41 +32,46 @@ public class RdfSaverLoaderTest {
 
     @Test
     public void test_save_load_string() throws InvalidFileFormat {
-        DB.INSTANCE.put("John", new TimedBinaryString(new BinaryString("Nash")));
+        DB.INSTANCE.put(new BinaryString("John"), new TimedBinaryString(
+                new BinaryString("Nash")));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Saver saver = new Saver(os);
         saver.save();
 
         DB.INSTANCE.clear();
-        assertNull(DB.INSTANCE.get("John", TimedBinaryString.class));
+        assertNull(DB.INSTANCE.get(new BinaryString("John"),
+                TimedBinaryString.class));
 
         InputStream is = new ByteArrayInputStream(os.toByteArray());
         Loader loader = new Loader(is);
         loader.load();
 
-        TimedBinaryString john = DB.INSTANCE.get("John", TimedBinaryString.class);
+        TimedBinaryString john = DB.INSTANCE.get(new BinaryString("John"),
+                TimedBinaryString.class);
         assertEquals("Nash", john.value().toString());
     }
 
     @Test
     public void test_save_load_timed_string() throws InvalidFileFormat,
             InterruptedException {
-        DB.INSTANCE.put("John", new TimedBinaryString(new BinaryString("Nash"),
-                System.currentTimeMillis() + 200));
+        DB.INSTANCE.put(new BinaryString("John"), new TimedBinaryString(
+                new BinaryString("Nash"), System.currentTimeMillis() + 200));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Saver saver = new Saver(os);
         saver.save();
 
         DB.INSTANCE.clear();
-        assertNull(DB.INSTANCE.get("John", TimedBinaryString.class));
+        assertNull(DB.INSTANCE.get(new BinaryString("John"),
+                TimedBinaryString.class));
 
         InputStream is = new ByteArrayInputStream(os.toByteArray());
         Loader loader = new Loader(is);
         loader.load();
 
-        TimedBinaryString john = DB.INSTANCE.get("John", TimedBinaryString.class);
+        TimedBinaryString john = DB.INSTANCE.get(new BinaryString("John"),
+                TimedBinaryString.class);
         assertEquals("Nash", john.value().toString());
         assertTrue(john.isValid());
 
@@ -77,8 +82,8 @@ public class RdfSaverLoaderTest {
     @Test
     public void test_save_load_timed_string_invalid() throws InvalidFileFormat,
             InterruptedException {
-        DB.INSTANCE.put("John", new TimedBinaryString(new BinaryString("Nash"),
-                System.currentTimeMillis() + 200));
+        DB.INSTANCE.put(new BinaryString("John"), new TimedBinaryString(
+                new BinaryString("Nash"), System.currentTimeMillis() + 200));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Saver saver = new Saver(os);
@@ -91,7 +96,8 @@ public class RdfSaverLoaderTest {
         Loader loader = new Loader(is);
         loader.load();
 
-        assertNull(DB.INSTANCE.get("John", TimedBinaryString.class));
+        assertNull(DB.INSTANCE.get(new BinaryString("John"),
+                TimedBinaryString.class));
     }
 
     @Test
@@ -112,20 +118,22 @@ public class RdfSaverLoaderTest {
         element = new Element("Minus One Hunded And Seventy Five", -175.0);
         elementSet.insert(element);
 
-        DB.INSTANCE.put("Numbers", elementSet);
+        DB.INSTANCE.put(new BinaryString("Numbers"), elementSet);
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Saver saver = new Saver(os);
         saver.save();
 
         DB.INSTANCE.clear();
-        assertNull(DB.INSTANCE.get("Numbers", ElementSet.class));
+        assertNull(DB.INSTANCE.get(new BinaryString("Numbers"),
+                ElementSet.class));
 
         InputStream is = new ByteArrayInputStream(os.toByteArray());
         Loader loader = new Loader(is);
         loader.load();
 
-        ElementSet es = DB.INSTANCE.get("Numbers", ElementSet.class);
+        ElementSet es = DB.INSTANCE.get(new BinaryString("Numbers"),
+                ElementSet.class);
         Iterator<Element> iter = es.iterator();
         Element e = iter.next();
         assertEquals("Minus One Hunded And Seventy Five", e.getMember());
@@ -138,11 +146,12 @@ public class RdfSaverLoaderTest {
         e = iter.next();
         assertEquals("TwentyThreePointSevenFive", e.getMember());
         assertEquals(Double.valueOf(23.75), e.getScore());
-        
+
         e = iter.next();
-        assertEquals("One Thousand Eight Hundred And Ninenty Six", e.getMember());
+        assertEquals("One Thousand Eight Hundred And Ninenty Six",
+                e.getMember());
         assertEquals(Double.valueOf(1896), e.getScore());
-        
+
         assertFalse(iter.hasNext());
     }
 

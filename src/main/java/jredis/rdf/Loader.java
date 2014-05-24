@@ -84,7 +84,7 @@ public class Loader {
      */
     private void loadStringValue(long time) throws IOException,
             InvalidFileFormat {
-        String key = reader.readString().toString();
+        BinaryString key = reader.readString();
         TimedBinaryString value = readValue(time);
 
         if (value.isValid())
@@ -100,7 +100,7 @@ public class Loader {
      */
     private void loadElementSetValue(long time) throws IOException,
             InvalidFileFormat {
-        String key = reader.readString().toString();
+        BinaryString key = reader.readString();
         ElementSet value = reader.readElementSet();
         DB.INSTANCE.put(key, value);
     }

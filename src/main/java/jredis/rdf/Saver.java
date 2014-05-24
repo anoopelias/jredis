@@ -49,7 +49,7 @@ public class Saver {
      * @throws IOException
      */
     private void writeAllKeys() throws IOException {
-        for(String key : DB.INSTANCE) {
+        for(BinaryString key : DB.INSTANCE) {
             Object obj = DB.INSTANCE.get(key, Object.class);
             if(obj instanceof TimedBinaryString) {
                 writeTbs(key, (TimedBinaryString)obj);
@@ -68,9 +68,9 @@ public class Saver {
      * @param obj
      * @throws IOException
      */
-    private void writeElementSet(String key, ElementSet obj) throws IOException {
+    private void writeElementSet(BinaryString key, ElementSet obj) throws IOException {
         rdfWriter.write(RdfProtocol.ValueType.SORTED_ZIPLIST);
-        rdfWriter.write(new BinaryString(key));
+        rdfWriter.write(key);
         rdfWriter.write(obj);
     }
 
@@ -81,14 +81,14 @@ public class Saver {
      * @param tbs
      * @throws IOException
      */
-    private void writeTbs(String key, TimedBinaryString tbs)
+    private void writeTbs(BinaryString key, TimedBinaryString tbs)
             throws IOException {
         
         if(tbs.expiryTime() != null)
             rdfWriter.write(tbs.expiryTime());
             
         rdfWriter.write(RdfProtocol.ValueType.STRING);
-        rdfWriter.write(new BinaryString(key)); // TODO : DB Key should ideally be ByteString
+        rdfWriter.write(key); // TODO : DB Key should ideally be ByteString
         rdfWriter.write(tbs.value());
     }
 

@@ -10,6 +10,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import jredis.domain.BinaryString;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +62,7 @@ public class SynchronizationTest {
             Boolean isConsistent = true;
 
             for (int i = 0; i < 100; i++) {
-                String key = id + "_key_" + i;
+                BinaryString key = new BinaryString(id + "_key_" + i);
                 String val = id + "_val_" + i;
 
                 DB.INSTANCE.put(key, val);

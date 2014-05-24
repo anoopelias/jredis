@@ -38,7 +38,7 @@ public class ZaddCommand implements Command<Integer> {
             ElementSet map = ZsetHelper.get(key);
             if (map == null) {
                 map = new TreeElementSet();
-                DB.INSTANCE.put(key.toString(), map);
+                DB.INSTANCE.put(key, map);
             }
 
             inserted = map.insert(new Element(value.toString(), score));

@@ -96,7 +96,6 @@ public class SetCommand implements Command<String> {
     @Override
     public Response<String> execute() {
         TimedBinaryString byteString = createValue();
-        String key = this.key.toString();
 
         synchronized (DB.INSTANCE) {
 
@@ -134,7 +133,7 @@ public class SetCommand implements Command<String> {
      * @param key
      * @return
      */
-    private boolean hasKey(String key) {
+    private boolean hasKey(BinaryString key) {
         return DB.INSTANCE.get(key, Object.class) != null;
     }
 
