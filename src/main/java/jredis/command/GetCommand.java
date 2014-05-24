@@ -30,7 +30,7 @@ public class GetCommand implements Command<String> {
     @Override
     public Response<String> execute() throws InvalidCommand {
         
-        BinaryString value = BitHelper.get(key.toString());
+        BinaryString value = BitHelper.get(key);
 
         if (value == null)
             return new ResponseString();

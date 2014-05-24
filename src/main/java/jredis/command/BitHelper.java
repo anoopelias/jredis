@@ -20,13 +20,13 @@ public class BitHelper {
      * @return
      * @throws InvalidCommand if key already exists as another type.
      */
-    public static BinaryString get(String key) throws InvalidCommand {
+    public static BinaryString get(BinaryString key) throws InvalidCommand {
         try {
-            TimedBinaryString value = DB.INSTANCE.get(key,
+            TimedBinaryString value = DB.INSTANCE.get(key.toString(),
                     TimedBinaryString.class);
             
             if(value != null && !value.isValid()) {
-                DB.INSTANCE.remove(key);
+                DB.INSTANCE.remove(key.toString());
                 return null;
             }
 
@@ -44,13 +44,13 @@ public class BitHelper {
      * @return
      * @throws InvalidCommand
      */
-    public static BinaryString getOrCreate(String key) throws InvalidCommand {
+    public static BinaryString getOrCreate(BinaryString key) throws InvalidCommand {
         BinaryString byteString = get(key);
         
         if (byteString == null) {
             byteString = new BinaryString();
             TimedBinaryString timedByteString = new TimedBinaryString(byteString);
-            DB.INSTANCE.put(key, timedByteString);
+            DB.INSTANCE.put(key.toString(), timedByteString);
         }
         
         return byteString;

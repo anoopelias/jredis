@@ -1,6 +1,5 @@
 package jredis.command;
 
-import jredis.Protocol;
 import jredis.data.Response;
 import jredis.data.ResponseBit;
 import jredis.domain.BinaryString;
@@ -14,7 +13,7 @@ import jredis.exception.InvalidCommand;
  */
 public class GetbitCommand implements Command<Boolean> {
 
-    private String key;
+    private BinaryString key;
     private int offset;
 
     /**
@@ -23,15 +22,14 @@ public class GetbitCommand implements Command<Boolean> {
      * @param args
      * @throws InvalidCommand
      */
-    public GetbitCommand(String[] args) throws InvalidCommand {
-
+    public GetbitCommand(BinaryString[] args) throws InvalidCommand {
         if (args.length != 2)
             throw new InvalidCommand("Invalid Number of args");
 
         key = args[0];
 
         try {
-            offset = Integer.parseInt(args[1]);
+            offset = Integer.parseInt(args[1].toString());
 
             if (offset < 0)
                 throw new InvalidCommand("Offset below range");
@@ -39,11 +37,6 @@ public class GetbitCommand implements Command<Boolean> {
         } catch (NumberFormatException e) {
             throw new InvalidCommand("Unparsable offset");
         }
-
-    }
-
-    public GetbitCommand(BinaryString[] args) throws InvalidCommand {
-        this(Protocol.toStringArray(args));
     }
 
     @Override
