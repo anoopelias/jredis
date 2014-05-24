@@ -31,8 +31,8 @@ public class ZsetCommandsTest {
 
     private static BinaryString[] ADD_INTEGER = h(new String[]{"Integer", "12", "Tweleve" });
 
-    private static String[] CARD = {"Nums" };
-    private static String[] CARD_NONE = {"Strings" };
+    private static BinaryString[] CARD = h(new String[]{"Nums" });
+    private static BinaryString[] CARD_NONE = h(new String[]{"Strings" });
 
     @Before
     public void setup() {

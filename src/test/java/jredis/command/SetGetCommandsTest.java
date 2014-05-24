@@ -212,7 +212,7 @@ public class SetGetCommandsTest {
         command = new SetCommand(setArgs);
         assertNull(command.execute().value());
 
-        String[] cardArgs = { "Numbers" };
+        BinaryString[] cardArgs = h(new String[]{ "Numbers" });
         command = new ZcardCommand(cardArgs);
         assertEquals(1, command.execute().value());
 

@@ -1,15 +1,16 @@
 package jredis.command;
 
-import jredis.command.ZcardCommand;
+import static jredis.TestUtil.h;
+import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 
 import org.junit.Test;
 
 public class ZcardCommandTest {
 
-    private String[] NO_ARGS = {};
-    private String[] ONE_ARG = { "Number" };
-    private String[] TWO_ARGS = { "Number", "1.05"};
+    private BinaryString[] NO_ARGS = {};
+    private BinaryString[] ONE_ARG = h(new String[]{ "Number" });
+    private BinaryString[] TWO_ARGS = h(new String[]{ "Number", "1.05"});
 
     @Test(expected = InvalidCommand.class)
     public void test_no_args() throws InvalidCommand {
