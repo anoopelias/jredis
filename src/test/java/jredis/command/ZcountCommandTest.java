@@ -1,19 +1,20 @@
 package jredis.command;
 
-import jredis.command.ZcountCommand;
+import static jredis.TestUtil.h;
+import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 
 import org.junit.Test;
 
 public class ZcountCommandTest {
 
-    private String[] NO_ARGS = {};
-    private String[] ONE_ARG = {"Numbers"};
-    private String[] TWO_ARGS = {"Numbers", "1.05"};
-    private String[] THREE_ARGS = {"Numbers", "1.05", "5.05"};
+    private BinaryString[] NO_ARGS = {};
+    private BinaryString[] ONE_ARG = h(new String[]{"Numbers"});
+    private BinaryString[] TWO_ARGS = h(new String[]{"Numbers", "1.05"});
+    private BinaryString[] THREE_ARGS = h(new String[]{"Numbers", "1.05", "5.05"});
 
-    private String[] STRING_FROM = {"Numbers", "HIJK", "5.05"};
-    private String[] STRING_TO = {"Numbers", "1.05F", "Bazingaa!"};
+    private BinaryString[] STRING_FROM = h(new String[]{"Numbers", "HIJK", "5.05"});
+    private BinaryString[] STRING_TO = h(new String[]{"Numbers", "1.05F", "Bazingaa!"});
 
     @Test(expected = InvalidCommand.class)
     public void test_no_args() throws InvalidCommand {

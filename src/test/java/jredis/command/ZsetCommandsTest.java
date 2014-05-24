@@ -75,11 +75,11 @@ public class ZsetCommandsTest {
         Command<?> command = new ZaddCommand(ADD_INFINITY);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
-        String[] range = {"Nums", "5", "+inf"};
+        BinaryString[] range = h(new String[]{"Nums", "5", "+inf"});
         command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
-        String[] args = {"Nums", "0", "2"};
+        BinaryString[] args = h(new String[]{"Nums", "0", "2"});
         ZrangeCommand rangeCommand = new ZrangeCommand(args);
         Iterator<Element> results = rangeCommand.execute().value().getElements().iterator();
         
@@ -93,7 +93,7 @@ public class ZsetCommandsTest {
         Command<?> command = new ZaddCommand(ADD_POSITIVE_INFINITY);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
-        String[] range = {"Nums", "5", "inf"};
+        BinaryString[] range = h(new String[]{"Nums", "5", "inf"});
         command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
@@ -111,7 +111,7 @@ public class ZsetCommandsTest {
         Command<?> command = new ZaddCommand(ADD_NEGATIVE_INFINITY);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
-        String[] range = {"Nums", "-inf", "inf"};
+        BinaryString[] range = h(new String[]{"Nums", "-inf", "inf"});
         command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
@@ -129,7 +129,7 @@ public class ZsetCommandsTest {
     public void test_count() throws InvalidCommand {
         addAll();
 
-        String[] range = {"Nums", "2.5", "4.5"};
+        BinaryString[] range = h(new String[]{"Nums", "2.5", "4.5"});
         Command<?> command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(2), command.execute().value());
     }
@@ -138,7 +138,7 @@ public class ZsetCommandsTest {
     public void test_count_inclusive() throws InvalidCommand {
         addAll();
 
-        String[] range = {"Nums", "2.0", "4.0"};
+        BinaryString[] range = h(new String[]{"Nums", "2.0", "4.0"});
         Command<?> command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(3), command.execute().value());
     }
@@ -147,7 +147,7 @@ public class ZsetCommandsTest {
     public void test_count_from_infinity_to_infinity() throws InvalidCommand {
         addAll();
 
-        String[] range = {"Nums", "-inf", "+inf"};
+        BinaryString[] range = h(new String[]{"Nums", "-inf", "+inf"});
         Command<?> command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(7), command.execute().value());
     }
@@ -156,7 +156,7 @@ public class ZsetCommandsTest {
     public void test_count_to_infinity() throws InvalidCommand {
         addAll();
 
-        String[] range = {"Nums", "6.0", "inf"};
+        BinaryString[] range = h(new String[]{"Nums", "6.0", "inf"});
         Command<?> command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(3), command.execute().value());
     }
@@ -165,7 +165,7 @@ public class ZsetCommandsTest {
     public void test_count_infinity_to_minus_infinity() throws InvalidCommand {
         addAll();
 
-        String[] range = {"Nums", "inf", "-inf"};
+        BinaryString[] range = h(new String[]{"Nums", "inf", "-inf"});
         Command<?> command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(0), command.execute().value());
     }
@@ -174,11 +174,11 @@ public class ZsetCommandsTest {
     public void test_count_equal_value() throws InvalidCommand {
         addAll();
 
-        String[] range = {"Nums", "3.0", "3.0"};
+        BinaryString[] range = h(new String[]{"Nums", "3.0", "3.0"});
         Command<?> command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
-        String[] range2 = {"Nums", "4.5", "4.5"};
+        BinaryString[] range2 = h(new String[]{"Nums", "4.5", "4.5"});
         command = new ZcountCommand(range2);
         assertEquals(Integer.valueOf(0), command.execute().value());
     }

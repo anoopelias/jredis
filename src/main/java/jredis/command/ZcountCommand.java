@@ -16,7 +16,7 @@ import jredis.exception.InvalidCommand;
  */
 public class ZcountCommand implements Command<Integer> {
 
-    private String key;
+    private BinaryString key;
     private Double from;
     private Double to;
 
@@ -26,17 +26,13 @@ public class ZcountCommand implements Command<Integer> {
      * @param args
      * @throws InvalidCommand
      */
-    public ZcountCommand(String[] args) throws InvalidCommand {
+    public ZcountCommand(BinaryString[] args) throws InvalidCommand {
         if(args.length != 3)
             throw new InvalidCommand("Invalid number of args");
         
         key = args[0];
-        from = parse(args[1]);
-        to = parse(args[2]);
-    }
-
-    public ZcountCommand(BinaryString[] args) throws InvalidCommand {
-        this(Protocol.toStringArray(args));
+        from = parse(args[1].toString());
+        to = parse(args[2].toString());
     }
 
     private double parse(String arg) throws InvalidCommand {
@@ -52,7 +48,7 @@ public class ZcountCommand implements Command<Integer> {
     @Override
     public Response<Integer> execute() throws InvalidCommand {
         synchronized (DB.INSTANCE) {
-            ElementSet set = ZsetHelper.get(key);
+            ElementSet set = ZsetHelper.get(key.toString());
             if (set == null)
                 return new ResponseNumber(0);
 
