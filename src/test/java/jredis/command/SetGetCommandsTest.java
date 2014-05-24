@@ -1,9 +1,9 @@
 package jredis.command;
 
+import static jredis.TestUtil.h;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import jredis.DB;
-import jredis.Protocol;
 import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 
@@ -12,30 +12,29 @@ import org.junit.Test;
 
 public class SetGetCommandsTest {
 
-    public static BinaryString[] SET = Protocol.toBinaryStrings(new String[]{ "Rahul", "Dravid" });
-    public static BinaryString[] GET = Protocol
-            .toBinaryStrings(new String[] { "Rahul" });
+    public static BinaryString[] SET = h(new String[]{ "Rahul", "Dravid" });
+    public static BinaryString[] GET = h(new String[] { "Rahul" });
 
-    public static BinaryString[] SET_NX = Protocol.toBinaryStrings(new String[]{ "Rahul", "Gandhi", "NX" });
-    public static BinaryString[] SET_NX_NX = Protocol.toBinaryStrings(new String[]{ "Rahul", "Gandhi", "NX", "NX" });
-    public static BinaryString[] SET_XX = Protocol.toBinaryStrings(new String[]{ "Rahul", "Gandhi", "XX" });
-    public static BinaryString[] SET_NX_XX = Protocol.toBinaryStrings(new String[]{ "Rahul", "Gandhi", "NX", "XX" });
+    public static BinaryString[] SET_NX = h(new String[]{ "Rahul", "Gandhi", "NX" });
+    public static BinaryString[] SET_NX_NX = h(new String[]{ "Rahul", "Gandhi", "NX", "NX" });
+    public static BinaryString[] SET_XX = h(new String[]{ "Rahul", "Gandhi", "XX" });
+    public static BinaryString[] SET_NX_XX = h(new String[]{ "Rahul", "Gandhi", "NX", "XX" });
 
-    public static BinaryString[] SET_PX = Protocol.toBinaryStrings(new String[]{ "Rahul", "Dravid", "PX", "100" });
-    public static BinaryString[] SET_EX = Protocol.toBinaryStrings(new String[]{ "Rahul", "Dravid", "EX", "2" });
-    public static BinaryString[] SET_EX_PX_COMBINATION = Protocol.toBinaryStrings(new String[]{ "Rahul", "Dravid", "EX",
+    public static BinaryString[] SET_PX = h(new String[]{ "Rahul", "Dravid", "PX", "100" });
+    public static BinaryString[] SET_EX = h(new String[]{ "Rahul", "Dravid", "EX", "2" });
+    public static BinaryString[] SET_EX_PX_COMBINATION = h(new String[]{ "Rahul", "Dravid", "EX",
             "100", "PX", "100" });
 
-    public static BinaryString[] SET_PX_NO_TIME = Protocol.toBinaryStrings(new String[]{ "Rahul", "Dravid", "PX" });
-    public static BinaryString[] SET_EX_NO_TIME = Protocol.toBinaryStrings(new String[]{ "Rahul", "Dravid", "EX" });
-    public static BinaryString[] SET_PX_INVALID_TIME = Protocol.toBinaryStrings(new String[]{ "Rahul", "Dravid", "PX",
+    public static BinaryString[] SET_PX_NO_TIME = h(new String[]{ "Rahul", "Dravid", "PX" });
+    public static BinaryString[] SET_EX_NO_TIME = h(new String[]{ "Rahul", "Dravid", "EX" });
+    public static BinaryString[] SET_PX_INVALID_TIME = h(new String[]{ "Rahul", "Dravid", "PX",
             "NX" });
-    public static BinaryString[] SET_EX_INVALID_TIME = Protocol.toBinaryStrings(new String[]{ "Rahul", "Dravid", "EX",
+    public static BinaryString[] SET_EX_INVALID_TIME = h(new String[]{ "Rahul", "Dravid", "EX",
             "XX" });
 
-    public static BinaryString[] SET_PX_XX_COMBINATION = Protocol.toBinaryStrings(new String[]{ "Rahul", "Gandhi", "PX",
+    public static BinaryString[] SET_PX_XX_COMBINATION = h(new String[]{ "Rahul", "Gandhi", "PX",
             "100", "XX" });
-    public static BinaryString[] SET_PX_NX_COMBINATION = Protocol.toBinaryStrings(new String[]{ "Rahul", "Gandhi", "PX",
+    public static BinaryString[] SET_PX_NX_COMBINATION = h(new String[]{ "Rahul", "Gandhi", "PX",
             "100", "NX" });
 
     @Before
@@ -55,7 +54,7 @@ public class SetGetCommandsTest {
     @Test
     public void test_get_null() throws InvalidCommand {
         Command<String> command = new GetCommand(
-                Protocol.toBinaryStrings(new String[] { "MangoMan" }));
+                h(new String[] { "MangoMan" }));
         assertNull(command.execute().value());
     }
 
@@ -205,11 +204,11 @@ public class SetGetCommandsTest {
 
     @Test(expected = InvalidCommand.class)
     public void test_set_nx_with_key_as_zset() throws InvalidCommand {
-        BinaryString[] addArgs = Protocol.toBinaryStrings(new String[]{ "Numbers", "1.0", "One" });
+        BinaryString[] addArgs = h(new String[]{ "Numbers", "1.0", "One" });
         Command<?> command = new ZaddCommand(addArgs);
         assertEquals(1, command.execute().value());
 
-        BinaryString[] setArgs = Protocol.toBinaryStrings(new String[]{ "Numbers", "MyNumber", "NX" });
+        BinaryString[] setArgs = h(new String[]{ "Numbers", "MyNumber", "NX" });
         command = new SetCommand(setArgs);
         assertNull(command.execute().value());
 
@@ -218,7 +217,7 @@ public class SetGetCommandsTest {
         assertEquals(1, command.execute().value());
 
         String[] setArgs2 = { "Numbers", "MyNumber", "XX" };
-        command = new SetCommand(Protocol.toBinaryStrings(setArgs2));
+        command = new SetCommand(h(setArgs2));
         assertEquals("OK", command.execute().value());
 
         command = new ZcardCommand(cardArgs);
@@ -227,11 +226,11 @@ public class SetGetCommandsTest {
 
     @Test(expected = InvalidCommand.class)
     public void test_get_with_key_as_zset() throws InvalidCommand {
-        BinaryString[] addArgs = Protocol.toBinaryStrings(new String[]{ "Numbers", "1.0", "One" });
+        BinaryString[] addArgs = h(new String[]{ "Numbers", "1.0", "One" });
         Command<?> command = new ZaddCommand(addArgs);
         assertEquals(1, command.execute().value());
 
-        BinaryString[] getArgs = Protocol.toBinaryStrings(new String[]{ "Numbers", "MyNumber" });
+        BinaryString[] getArgs = h(new String[]{ "Numbers", "MyNumber" });
         command = new GetCommand(getArgs);
         command.execute().value();
 

@@ -1,9 +1,9 @@
 package jredis.command;
 
+import static jredis.TestUtil.h;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import jredis.DB;
-import jredis.Protocol;
 import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 
@@ -11,23 +11,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BitCommandsTest {
-    private static BinaryString[] SETBIT = Protocol.toBinaryStrings(new String[]{"Keys", "7", "1"});
-    private static BinaryString[] GETBIT = Protocol.toBinaryStrings(new String[]{"Keys", "7"});
+    private static BinaryString[] SETBIT = h(new String[]{"Keys", "7", "1"});
+    private static BinaryString[] GETBIT = h(new String[]{"Keys", "7"});
 
-    private static BinaryString[] SETBIT_ZERO = Protocol.toBinaryStrings(new String[]{"Keys", "200", "0"});
-    private static BinaryString[] GETBIT_ZERO = Protocol.toBinaryStrings(new String[]{"Keys", "200"});
+    private static BinaryString[] SETBIT_ZERO = h(new String[]{"Keys", "200", "0"});
+    private static BinaryString[] GETBIT_ZERO = h(new String[]{"Keys", "200"});
     
-    private static BinaryString[] NO_ARGS = Protocol.toBinaryStrings(new String[]{}); 
-    private static BinaryString[] ONE_ARG = Protocol.toBinaryStrings(new String[]{"Keys"});
+    private static BinaryString[] NO_ARGS = h(new String[]{}); 
+    private static BinaryString[] ONE_ARG = h(new String[]{"Keys"});
     
-    private static BinaryString[] SETBIT_INVALID_OFFSET = Protocol.toBinaryStrings(new String[]{"Keys", "K", "1"});
-    private static BinaryString[] SETBIT_OFFSET_BELOW_0 = Protocol.toBinaryStrings(new String[]{"Keys", "-1", "1"});
-    private static BinaryString[] SETBIT_INVALID_VALUE = Protocol.toBinaryStrings(new String[]{"Keys", "7", "K"});
-    private static BinaryString[] SETBIT_VALUE_ABOVE_1 = Protocol.toBinaryStrings(new String[]{"Keys", "7", "2"});
-    private static BinaryString[] SETBIT_VALUE_BELOW_0 = Protocol.toBinaryStrings(new String[]{"Keys", "7", "-1"});
+    private static BinaryString[] SETBIT_INVALID_OFFSET = h(new String[]{"Keys", "K", "1"});
+    private static BinaryString[] SETBIT_OFFSET_BELOW_0 = h(new String[]{"Keys", "-1", "1"});
+    private static BinaryString[] SETBIT_INVALID_VALUE = h(new String[]{"Keys", "7", "K"});
+    private static BinaryString[] SETBIT_VALUE_ABOVE_1 = h(new String[]{"Keys", "7", "2"});
+    private static BinaryString[] SETBIT_VALUE_BELOW_0 = h(new String[]{"Keys", "7", "-1"});
 
-    private static BinaryString[] GETBIT_INVALID_OFFSET = Protocol.toBinaryStrings(new String[]{"Keys", "K"});
-    private static BinaryString[] GETBIT_OFFSET_BELOW_0 = Protocol.toBinaryStrings(new String[]{"Keys", "-1"});
+    private static BinaryString[] GETBIT_INVALID_OFFSET = h(new String[]{"Keys", "K"});
+    private static BinaryString[] GETBIT_OFFSET_BELOW_0 = h(new String[]{"Keys", "-1"});
 
     @Before
     public void setup() {

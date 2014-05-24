@@ -1,7 +1,7 @@
 package jredis.command;
 
+import static jredis.TestUtil.h;
 import jredis.DB;
-import jredis.Protocol;
 import jredis.domain.BinaryString;
 import jredis.exception.InvalidCommand;
 
@@ -11,34 +11,34 @@ import org.junit.Test;
 public class SetCommandTest {
     
     private BinaryString[] NO_ARGS = {};
-    private BinaryString[] ONE_ARG = Protocol.toBinaryStrings(new String[]{"Numbers"});
-    private BinaryString[] TWO_ARGS = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05"});
+    private BinaryString[] ONE_ARG = h(new String[]{"Numbers"});
+    private BinaryString[] TWO_ARGS = h(new String[]{"Numbers", "1.05"});
     
-    private BinaryString[] THREE_ARGS_NUM = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "85"});
-    private BinaryString[] THREE_ARGS_STR = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "FX"});
+    private BinaryString[] THREE_ARGS_NUM = h(new String[]{"Numbers", "1.05", "85"});
+    private BinaryString[] THREE_ARGS_STR = h(new String[]{"Numbers", "1.05", "FX"});
 
-    private BinaryString[] NX = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "NX"});
-    private BinaryString[] XX = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "XX"});
-    private BinaryString[] NX_XX = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "NX", "XX"});
+    private BinaryString[] NX = h(new String[]{"Numbers", "1.05", "NX"});
+    private BinaryString[] XX = h(new String[]{"Numbers", "1.05", "XX"});
+    private BinaryString[] NX_XX = h(new String[]{"Numbers", "1.05", "NX", "XX"});
 
-    private BinaryString[] PX = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "PX", "1000"});
-    private BinaryString[] EX = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "EX", "10"});
-    private BinaryString[] PX_EX = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "PX", "1000", "EX", "10"});
+    private BinaryString[] PX = h(new String[]{"Numbers", "1.05", "PX", "1000"});
+    private BinaryString[] EX = h(new String[]{"Numbers", "1.05", "EX", "10"});
+    private BinaryString[] PX_EX = h(new String[]{"Numbers", "1.05", "PX", "1000", "EX", "10"});
 
-    private BinaryString[] PX_REV_ORDER = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "1000", "PX"});
-    private BinaryString[] EX_REV_ORDER = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "10", "EX"});
+    private BinaryString[] PX_REV_ORDER = h(new String[]{"Numbers", "1.05", "1000", "PX"});
+    private BinaryString[] EX_REV_ORDER = h(new String[]{"Numbers", "1.05", "10", "EX"});
 
-    private BinaryString[] PX_NO_ARG = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "PX"});
-    private BinaryString[] EX_NO_ARG = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "EX"});
+    private BinaryString[] PX_NO_ARG = h(new String[]{"Numbers", "1.05", "PX"});
+    private BinaryString[] EX_NO_ARG = h(new String[]{"Numbers", "1.05", "EX"});
 
-    private BinaryString[] PX_STRING_ARG = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "PX", "AVC"});
-    private BinaryString[] EX_STRING_ARG = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "EX", "HIJ"});
+    private BinaryString[] PX_STRING_ARG = h(new String[]{"Numbers", "1.05", "PX", "AVC"});
+    private BinaryString[] EX_STRING_ARG = h(new String[]{"Numbers", "1.05", "EX", "HIJ"});
 
-    private BinaryString[] PX_NX = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "PX", "1000", "NX"});
-    private BinaryString[] EX_XX = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "XX", "EX", "10"});
+    private BinaryString[] PX_NX = h(new String[]{"Numbers", "1.05", "PX", "1000", "NX"});
+    private BinaryString[] EX_XX = h(new String[]{"Numbers", "1.05", "XX", "EX", "10"});
 
-    private BinaryString[] PX_XX_INVALID = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "PX", "XX", "1000"});
-    private BinaryString[] EX_NX_INVALID = Protocol.toBinaryStrings(new String[]{"Numbers", "1.05", "NX", "10", "EX"});
+    private BinaryString[] PX_XX_INVALID = h(new String[]{"Numbers", "1.05", "PX", "XX", "1000"});
+    private BinaryString[] EX_NX_INVALID = h(new String[]{"Numbers", "1.05", "NX", "10", "EX"});
     
     @Before
     public void setup() {

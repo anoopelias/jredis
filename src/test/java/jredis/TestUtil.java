@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
+import jredis.domain.BinaryString;
+
 /**
  * Utilities for test.
  * 
@@ -125,6 +127,10 @@ public class TestUtil {
         }
 
         return ret;
+    }
+    
+    public static BinaryString[] h(String[] args) {
+        return Protocol.toBinaryStrings(args);
     }
 
 }

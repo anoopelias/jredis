@@ -1,5 +1,6 @@
 package jredis.command;
 
+import static jredis.TestUtil.h;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -7,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Iterator;
 
 import jredis.DB;
-import jredis.Protocol;
 import jredis.domain.BinaryString;
 import jredis.domain.Element;
 import jredis.exception.InvalidCommand;
@@ -17,19 +17,19 @@ import org.junit.Test;
 
 public class ZsetCommandsTest {
     
-    private static BinaryString[] ADD_ONE = Protocol.toBinaryStrings(new String[]{"Nums", "1.0", "One" });
-    private static BinaryString[] ADD_TWO = Protocol.toBinaryStrings(new String[]{"Nums", "2.0", "Two" });
-    private static BinaryString[] ADD_THREE = Protocol.toBinaryStrings(new String[]{"Nums", "3.0", "Three" });
-    private static BinaryString[] ADD_FOUR = Protocol.toBinaryStrings(new String[]{"Nums", "4.0", "Four" });
-    private static BinaryString[] ADD_FOUR_REVISED = Protocol.toBinaryStrings(new String[]{"Nums", "5.0", "Four" });
-    private static BinaryString[] ADD_SIX = Protocol.toBinaryStrings(new String[]{"Nums", "6.0", "Six" });
-    private static BinaryString[] ADD_SEVEN = Protocol.toBinaryStrings(new String[]{"Nums", "7.0", "Seven" });
-    private static BinaryString[] ADD_EIGHT = Protocol.toBinaryStrings(new String[]{"Nums", "8.0", "Eight" });
-    private static BinaryString[] ADD_INFINITY = Protocol.toBinaryStrings(new String[]{"Nums", "inf", "Infinity" });
-    private static BinaryString[] ADD_NEGATIVE_INFINITY = Protocol.toBinaryStrings(new String[]{"Nums", "-inf", "NegativeInfinity" });
-    private static BinaryString[] ADD_POSITIVE_INFINITY = Protocol.toBinaryStrings(new String[]{"Nums", "+inf", "PositiveInfinity" });
+    private static BinaryString[] ADD_ONE = h(new String[]{"Nums", "1.0", "One" });
+    private static BinaryString[] ADD_TWO = h(new String[]{"Nums", "2.0", "Two" });
+    private static BinaryString[] ADD_THREE = h(new String[]{"Nums", "3.0", "Three" });
+    private static BinaryString[] ADD_FOUR = h(new String[]{"Nums", "4.0", "Four" });
+    private static BinaryString[] ADD_FOUR_REVISED = h(new String[]{"Nums", "5.0", "Four" });
+    private static BinaryString[] ADD_SIX = h(new String[]{"Nums", "6.0", "Six" });
+    private static BinaryString[] ADD_SEVEN = h(new String[]{"Nums", "7.0", "Seven" });
+    private static BinaryString[] ADD_EIGHT = h(new String[]{"Nums", "8.0", "Eight" });
+    private static BinaryString[] ADD_INFINITY = h(new String[]{"Nums", "inf", "Infinity" });
+    private static BinaryString[] ADD_NEGATIVE_INFINITY = h(new String[]{"Nums", "-inf", "NegativeInfinity" });
+    private static BinaryString[] ADD_POSITIVE_INFINITY = h(new String[]{"Nums", "+inf", "PositiveInfinity" });
 
-    private static BinaryString[] ADD_INTEGER = Protocol.toBinaryStrings(new String[]{"Integer", "12", "Tweleve" });
+    private static BinaryString[] ADD_INTEGER = h(new String[]{"Integer", "12", "Tweleve" });
 
     private static String[] CARD = {"Nums" };
     private static String[] CARD_NONE = {"Strings" };
