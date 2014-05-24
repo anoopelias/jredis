@@ -88,7 +88,7 @@ public class Saver {
             rdfWriter.write(tbs.expiryTime());
             
         rdfWriter.write(RdfProtocol.ValueType.STRING);
-        rdfWriter.write(key); // TODO : DB Key should ideally be ByteString
+        rdfWriter.write(key);
         rdfWriter.write(tbs.value());
     }
 
