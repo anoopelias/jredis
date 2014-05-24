@@ -97,7 +97,7 @@ public class ZsetCommandsTest {
         command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
-        String[] args = {"Nums", "0", "2"};
+        BinaryString[] args = h(new String[]{"Nums", "0", "2"});
         ZrangeCommand rangeCommand = new ZrangeCommand(args);
         Iterator<Element> results = rangeCommand.execute().value().getElements().iterator();
         
@@ -115,7 +115,7 @@ public class ZsetCommandsTest {
         command = new ZcountCommand(range);
         assertEquals(Integer.valueOf(1), command.execute().value());
         
-        String[] args = {"Nums", "0", "2"};
+        BinaryString[] args = h(new String[]{"Nums", "0", "2"});
         ZrangeCommand rangeCommand = new ZrangeCommand(args);
         Iterator<Element> results = rangeCommand.execute().value().getElements().iterator();
         
@@ -187,7 +187,7 @@ public class ZsetCommandsTest {
     public void test_range() throws InvalidCommand {
         addAll();
         
-        String[] args = {"Nums", "3", "5"};
+        BinaryString[] args = h(new String[]{"Nums", "3", "5"});
         ZrangeCommand command = new ZrangeCommand(args);
         Iterator<Element> results = command.execute().value().getElements().iterator();
         
@@ -205,7 +205,7 @@ public class ZsetCommandsTest {
     public void test_range_negative_start() throws InvalidCommand {
         addAll();
         
-        String[] args = {"Nums", "-3", "5"};
+        BinaryString[] args = h(new String[]{"Nums", "-3", "5"});
         ZrangeCommand command = new ZrangeCommand(args);
         Iterator<Element> results = command.execute().value().getElements().iterator();
         
@@ -221,7 +221,7 @@ public class ZsetCommandsTest {
     public void test_range_negative_end() throws InvalidCommand {
         addAll();
         
-        String[] args = {"Nums", "1", "-5"};
+        BinaryString[] args = h(new String[]{"Nums", "1", "-5"});
         ZrangeCommand command = new ZrangeCommand(args);
         Iterator<Element> results = command.execute().value().getElements().iterator();
         
@@ -237,7 +237,7 @@ public class ZsetCommandsTest {
     public void test_range_same_positive() throws InvalidCommand {
         addAll();
         
-        String[] args = {"Nums", "3", "3"};
+        BinaryString[] args = h(new String[]{"Nums", "3", "3"});
         ZrangeCommand command = new ZrangeCommand(args);
         Iterator<Element> results = command.execute().value().getElements().iterator();
         
@@ -251,7 +251,7 @@ public class ZsetCommandsTest {
     public void test_range_same_negative() throws InvalidCommand {
         addAll();
         
-        String[] args = {"Nums", "-2", "-2"};
+        BinaryString[] args = h(new String[]{"Nums", "-2", "-2"});
         ZrangeCommand command = new ZrangeCommand(args);
         Iterator<Element> results = command.execute().value().getElements().iterator();
         
@@ -265,7 +265,7 @@ public class ZsetCommandsTest {
     public void test_range_with_scores() throws InvalidCommand {
         addAll();
         
-        String[] args = {"Nums", "1", "4", "WITHSCORES"};
+        BinaryString[] args = h(new String[]{"Nums", "1", "4", "WITHSCORES"});
         ZrangeCommand command = new ZrangeCommand(args);
         assertTrue(command.execute().value().isScored());
 
@@ -275,7 +275,7 @@ public class ZsetCommandsTest {
     public void test_range_with__integer_scores() throws InvalidCommand {
         new ZaddCommand(ADD_INTEGER).execute();
         
-        String[] args = {"Integer", "0", "1", "WITHSCORES"};
+        BinaryString[] args = h(new String[]{"Integer", "0", "1", "WITHSCORES"});
         ZrangeCommand command = new ZrangeCommand(args);
         Iterator<Element> results = command.execute().value().getElements().iterator();
         

@@ -1,6 +1,7 @@
 package jredis.command;
 
 import jredis.DB;
+import jredis.domain.BinaryString;
 import jredis.domain.ElementSet;
 import jredis.exception.InvalidCommand;
 
@@ -12,9 +13,9 @@ import jredis.exception.InvalidCommand;
  */
 public class ZsetHelper {
 
-    public static ElementSet get(String key) throws InvalidCommand {
+    public static ElementSet get(BinaryString key) throws InvalidCommand {
         try {
-            return DB.INSTANCE.get(key, ElementSet.class);
+            return DB.INSTANCE.get(key.toString(), ElementSet.class);
         } catch (ClassCastException e) {
             throw new InvalidCommand("Key already set as another type");
         }

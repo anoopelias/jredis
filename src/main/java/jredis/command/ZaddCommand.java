@@ -35,7 +35,7 @@ public class ZaddCommand implements Command<Integer> {
         boolean inserted;
 
         synchronized (DB.INSTANCE) {
-            ElementSet map = ZsetHelper.get(key.toString());
+            ElementSet map = ZsetHelper.get(key);
             if (map == null) {
                 map = new TreeElementSet();
                 DB.INSTANCE.put(key.toString(), map);
