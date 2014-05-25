@@ -12,7 +12,6 @@ import java.util.List;
 
 import jredis.Protocol;
 import jredis.domain.BinaryString;
-import jredis.domain.ByteArray;
 import jredis.domain.Element;
 import jredis.domain.ElementSet;
 import jredis.rdf.RdfProtocol.ValueType;
@@ -105,7 +104,7 @@ public class RdfWriter {
      * @param unsignedInt
      * @throws IOException
      */
-    private ByteArray lenToBytes(long unsignedInt) throws IOException {
+    private BinaryString lenToBytes(long unsignedInt) throws IOException {
         byte[] bytes = null;
         if (unsignedInt >>> 6 == 0) {// If the number is only 6 bits
             bytes = new byte[1];
@@ -120,7 +119,7 @@ public class RdfWriter {
 
             to4Bytes(unsignedInt, bytes, 1);
         }
-        return new ByteArray(bytes);
+        return new BinaryString(bytes);
     }
 
     /**
@@ -129,10 +128,10 @@ public class RdfWriter {
      * @param s
      * @throws IOException
      */
-    private List<ByteArray> toBytes(String s) throws IOException {
-        ByteArray strBytes = new ByteArray(Protocol.toBytes(s));
+    private List<BinaryString> toBytes(String s) throws IOException {
+        BinaryString strBytes = new BinaryString(Protocol.toBytes(s));
 
-        List<ByteArray> bytes = new ArrayList<>();
+        List<BinaryString> bytes = new ArrayList<>();
         bytes.add(lenToBytes(strBytes.length()));
         bytes.add(strBytes);
 
@@ -149,7 +148,7 @@ public class RdfWriter {
 
         long prevLength = 0;
         int tail = -1;
-        List<ByteArray> bytes = new ArrayList<>();
+        List<BinaryString> bytes = new ArrayList<>();
 
         // Start with zllen
         bytes.add(to2Bytes(es.size() * 2));
@@ -157,7 +156,7 @@ public class RdfWriter {
         for (Element e : es) {
 
             // Add member
-            List<ByteArray> entry = toBytes(e.getMember());
+            List<BinaryString> entry = toBytes(e.getMember());
             entry.add(0, toPrevLength(prevLength));
             bytes.addAll(entry);
             prevLength = len(entry);
@@ -171,7 +170,7 @@ public class RdfWriter {
         }
 
         // Adding zlend to the end
-        bytes.add(new ByteArray(new byte[] { (byte) 0xff }));
+        bytes.add(new BinaryString(new byte[] { (byte) 0xff }));
 
         /*
          * Adding zltail
@@ -188,22 +187,22 @@ public class RdfWriter {
         // Adding length
         bytes.add(0, lenToBytes(len));
 
-        for (ByteArray byt : bytes)
+        for (BinaryString byt : bytes)
             byt.write(os);
 
         os.flush();
     }
 
-    private ByteArray toPrevLength(long prevLength) {
+    private BinaryString toPrevLength(long prevLength) {
         if (prevLength < 254)
-            return new ByteArray(new byte[] { (byte) prevLength });
+            return new BinaryString(new byte[] { (byte) prevLength });
         else {
             byte[] bytes = new byte[5];
             bytes[0] = (byte) (254);
 
             to4Bytes(prevLength, bytes, 1);
 
-            return new ByteArray(bytes);
+            return new BinaryString(bytes);
         }
 
     }
@@ -230,9 +229,9 @@ public class RdfWriter {
      * @param bytes
      * @return
      */
-    private long len(List<ByteArray> bytes) {
+    private long len(List<BinaryString> bytes) {
         long len = 0;
-        for (ByteArray b : bytes)
+        for (BinaryString b : bytes)
             len += b.length();
         return len;
     }
@@ -244,7 +243,7 @@ public class RdfWriter {
      * @return
      * @throws IOException
      */
-    private List<ByteArray> toBytes(double d) throws IOException {
+    private List<BinaryString> toBytes(double d) throws IOException {
         double df = Math.floor(d);
         if ((d == df) && !Double.isInfinite(d)) {
             return new ArrayList<>(Arrays.asList(toBytes((long) df)));
@@ -260,14 +259,14 @@ public class RdfWriter {
      * @return
      * @throws IOException
      */
-    private ByteArray to4Bytes(long unsignedInt) throws IOException {
+    private BinaryString to4Bytes(long unsignedInt) throws IOException {
         byte[] bytes = new byte[4];
         bytes[0] = (byte) (unsignedInt);
         bytes[1] = (byte) (unsignedInt >>> 8);
         bytes[2] = (byte) (unsignedInt >>> 16);
         bytes[3] = (byte) (unsignedInt >>> 24);
 
-        return new ByteArray(bytes);
+        return new BinaryString(bytes);
     }
 
     /**
@@ -276,9 +275,9 @@ public class RdfWriter {
      * @param i
      * @return
      */
-    public static ByteArray toBytes(long i) {
+    public static BinaryString toBytes(long i) {
         if (i >= 0 && i <= 12)
-            return new ByteArray(new byte[] { (byte) (i + 1 | (byte) 0xf0) });
+            return new BinaryString(new byte[] { (byte) (i + 1 | (byte) 0xf0) });
 
         if (Math.abs(i) <= Byte.MAX_VALUE)
             return toBytes(i, 1);
@@ -304,7 +303,7 @@ public class RdfWriter {
      * @param size
      * @return
      */
-    private static ByteArray toBytes(long num, int size) {
+    private static BinaryString toBytes(long num, int size) {
         byte[] by = new byte[size + 1];
         switch (size) {
         case 1:
@@ -327,7 +326,7 @@ public class RdfWriter {
         for (int i = 0; i < size; i++)
             by[i + 1] = (byte) (num >> (i * 8));
 
-        return new ByteArray(by);
+        return new BinaryString(by);
     }
 
     /**
@@ -337,12 +336,12 @@ public class RdfWriter {
      *            unsigned integer not greater than 2 bytes.
      * @return
      */
-    private ByteArray to2Bytes(int i) {
+    private BinaryString to2Bytes(int i) {
         byte[] bytes = new byte[2];
         bytes[0] = (byte) i;
         bytes[1] = (byte) (i >>> 8);
 
-        return new ByteArray(bytes);
+        return new BinaryString(bytes);
     }
 
 }
