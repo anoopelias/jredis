@@ -3,6 +3,12 @@ package jredis.domain;
 import java.util.Set;
 
 
+/**
+ * An element set interface for sorted set of elements.
+ * 
+ * @author anoopelias
+ *
+ */
 public interface ElementSet extends Iterable<Element> {
     
     /**
