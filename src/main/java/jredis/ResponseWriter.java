@@ -18,7 +18,6 @@ import java.util.Set;
 import jredis.data.ElementRange;
 import jredis.data.ResponseOk;
 import jredis.domain.BinaryString;
-import jredis.domain.ByteArray;
 import jredis.domain.Element;
 import jredis.exception.InvalidCommand;
 
@@ -112,11 +111,10 @@ public class ResponseWriter {
             out.write(NULL_STRING);
             out.write(CRLF);
         } else {
-            ByteArray bValue = value.toByteArray();
             out.write(DOLLAR);
-            out.write(toBytes(bValue.length()));
+            out.write(toBytes(value.length()));
             out.write(CRLF);
-            bValue.write(out);
+            value.write(out);
             out.write(CRLF);
         }
     }

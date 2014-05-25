@@ -1,5 +1,7 @@
 package jredis.domain;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 
 import jredis.Protocol;
@@ -64,22 +66,6 @@ public class BinaryString {
     }
 
     /**
-     * Set bit value at offset.
-     * 
-     * @param offset
-     * @return the original value of this bit before setting it.
-     */
-    public boolean setBit(int offset, boolean bit) {
-        boolean ret = getBit(offset);
-
-        int bytePos = offset / BYTE_SIZE;
-        int bitPos = offset % BYTE_SIZE;
-        setBitValue(bytePos, bitPos, bit);
-
-        return ret;
-    }
-
-    /**
      * Check if a bit inside a byte is set.
      * 
      * Ref :
@@ -94,6 +80,22 @@ public class BinaryString {
         return (value[bytePos] & (1 << lsb(bitPos))) != 0;
     }
 
+    /**
+     * Set bit value at offset.
+     * 
+     * @param offset
+     * @return the original value of this bit before setting it.
+     */
+    public boolean setBit(int offset, boolean bit) {
+        boolean ret = getBit(offset);
+
+        int bytePos = offset / BYTE_SIZE;
+        int bitPos = offset % BYTE_SIZE;
+        setBitValue(bytePos, bitPos, bit);
+
+        return ret;
+    }
+    
     /**
      * 
      * @param b
@@ -126,6 +128,26 @@ public class BinaryString {
     }
 
     /**
+     * Get the length of the BinaryString.
+     * 
+     * @return
+     */
+    public int length() {
+        return length;
+    }
+    
+    /**
+     * Write the bytes to an output stream.
+     * 
+     * @param os
+     * @throws IOException
+     */
+    public void write(OutputStream os) throws IOException {
+        for (int i = 0; i < length; i++)
+            os.write(value[i]);
+    }
+
+    /**
      * Get position from lsb side.
      * 
      * @param bitPos
@@ -133,15 +155,6 @@ public class BinaryString {
      */
     private int lsb(int bitPos) {
         return BYTE_SIZE - (bitPos + 1);
-    }
-
-    /**
-     * Get the value in terms of byte array.
-     * 
-     * @return
-     */
-    public ByteArray toByteArray() {
-        return new ByteArray(value, length);
     }
 
     /*
@@ -174,9 +187,13 @@ public class BinaryString {
         BinaryString other = (BinaryString) obj;
         if (length != other.length)
             return false;
-        if (!Arrays.equals(value, other.value))
-            return false;
+        
+        // Checks only till length.
+        for (int i = 0; i < length; i++)
+            if (value[i] != other.value[i])
+                return false;
+        
         return true;
     }
-
+    
 }

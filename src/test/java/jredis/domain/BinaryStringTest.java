@@ -25,7 +25,7 @@ public class BinaryStringTest {
     @Test
     public void test_string() {
         BinaryString byteString = new BinaryString(SOME_STRING);
-        assertEquals(12, byteString.toByteArray().length());
+        assertEquals(12, byteString.length());
         assertEquals(SOME_STRING, byteString.toString());
     }
 
@@ -39,13 +39,13 @@ public class BinaryStringTest {
     @Test
     public void test_get_byte_array_default() throws UnsupportedEncodingException {
         BinaryString byteString = new BinaryString();
-        assertEquals(0, byteString.toByteArray().length());
+        assertEquals(0, byteString.length());
     }
 
     @Test
     public void test_get_byte_array_bytes() throws UnsupportedEncodingException {
         BinaryString byteString = new BinaryString(BYTE);
-        assertEquals(10, byteString.toByteArray().length());
+        assertEquals(10, byteString.length());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class BinaryStringTest {
     public void test_get_byte_array() throws UnsupportedEncodingException {
         BinaryString byteString = new BinaryString(SOME_STRING);
 
-        assertEquals(12, byteString.toByteArray().length());
+        assertEquals(12, byteString.length());
         assertEquals(SOME_STRING, byteString.toString());
     }
 
@@ -179,16 +179,16 @@ public class BinaryStringTest {
 
         int pos = 8 * 128 + 1;
         byteString.setBit(pos++, true);
-        assertEquals(129, byteString.toByteArray().length());
+        assertEquals(129, byteString.length());
 
         for(int i=0; i<6; i++) {
             byteString.setBit(pos++, true);
         }
 
-        assertEquals(129, byteString.toByteArray().length());
+        assertEquals(129, byteString.length());
         byteString.setBit(pos++, true);
         
-        assertEquals(130, byteString.toByteArray().length());
+        assertEquals(130, byteString.length());
     }
 
 }
