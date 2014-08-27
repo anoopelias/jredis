@@ -3,6 +3,7 @@
 A Java based clone of Redis.
 
 Only a subset commands are implemented right now,
+
 1.  `SET`
 2.  `GET`
 3.  `SETBIT`
