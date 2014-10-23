@@ -80,6 +80,9 @@ public class Processor implements Callable<Object> {
 
     private Response<?> exec(final Command<?> c) throws InvalidCommand {
         try {
+            
+            //TODO: Need to benchmark against Netty's SingleThreadedEventExecutor
+            
             return service.submit(new Callable<Response<?>>() {
 
                 @Override
