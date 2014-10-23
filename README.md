@@ -46,6 +46,4 @@ $ ./start.sh
 * And most important - to have some fun.
 
 ## To Do
-This project is far from complete. Some of items that is yet to be taken care,
-* Concurrency testing and implementation
 * Performance benchmarks against the original
