@@ -18,6 +18,10 @@ Apart from the above, we cover loading an rdf file during startup as well.
 
 ## Usage
 
+### Test
+
+[Travis CI](https://travis-ci.org/anoopelias/jredis)
+
 ### Build
 
 To build from source,
