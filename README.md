@@ -1,4 +1,4 @@
-# jredis
+# jredis [![Build Status](https://travis-ci.org/anoopelias/jredis.svg?branch=master)](https://travis-ci.org/anoopelias/jredis)
 
 A Java based clone of Redis.
 
@@ -17,10 +17,6 @@ Only a subset commands are implemented right now,
 Apart from the above, we cover loading an rdf file during startup as well.
 
 ## Usage
-
-### Test
-
-[Travis CI](https://travis-ci.org/anoopelias/jredis)
 
 ### Build
 
